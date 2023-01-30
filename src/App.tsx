@@ -6,7 +6,7 @@ import * as exchangeRatesService from './api/exchange-rates-service';
 function App() {
 
     React.useEffect(() => {
-        exchangeRatesService.getConvert('GBP', 'EUR', 5)
+        exchangeRatesService.getConvertedCurrency('GBP', 'EUR', 5)
             .then((res) => console.log(res))
             .catch((e) => console.log(e));
     })
