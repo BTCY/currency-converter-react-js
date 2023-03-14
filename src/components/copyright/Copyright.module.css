@@ -1,0 +1,10 @@
+ .text {
+     color: #808080;
+     width: 100%;
+     padding-right: 5px;
+ }
+
+ .link {
+     color: #808080;
+     text-decoration: none;
+ }
