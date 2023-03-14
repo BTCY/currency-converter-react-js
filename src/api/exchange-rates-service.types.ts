@@ -1,6 +1,15 @@
 /**
-*   Converted currency
-*/
+ * @file API Types: exchange rates.
+ * 
+ * {@link https://apilayer.com/marketplace/exchangerates_data-api API}
+ */
+
+
+/**
+ * Converted currency
+ * 
+ * @interface IApiConvertedCurrency 
+ */
 export interface IApiConvertedCurrency {
     date: string,
     historical: string,
@@ -19,8 +28,10 @@ export interface IApiConvertedCurrency {
 
 
 /**
-*   Currency fluctuations 
-*/
+ * Currency fluctuations 
+ * 
+ * @interface IApiCurrencyFluctuations 
+ */
 export interface IApiCurrencyFluctuations {
     base: string,
     end_date: string,
@@ -41,8 +52,10 @@ interface IApiCurrencyFluctuationsRates {
 
 
 /**
-*   Real-time exchange rate
-*/
+ * Real-time exchange rate
+ * 
+ * @interface IApiLatestExchangeRates 
+ */
 export interface IApiLatestExchangeRates {
     base: string,
     date: string,
@@ -55,8 +68,10 @@ export interface IApiLatestExchangeRates {
 
 
 /**
-*   All available currencies
-*/
+ * All available currencies
+ * 
+ * @interface IApiAllAvailableCurrencies 
+ */
 export interface IApiAllAvailableCurrencies {
     success: boolean,
     symbols: {
@@ -66,8 +81,10 @@ export interface IApiAllAvailableCurrencies {
 
 
 /**
-*   Exchange rate history
-*/
+ * Exchange rate history
+ * 
+ * @interface IApiExchangeRateHistory 
+ */
 export interface IApiExchangeRateHistory {
     base: string,
     end_date: string,
@@ -85,8 +102,10 @@ interface IApiExchangeRateHistoryData {
 
 
 /**
-*   Exchange rate history by date
-*/
+ * Exchange rate history by date
+ * 
+ * @interface IApiExchangeRateHistoryByDate 
+ */
 export interface IApiExchangeRateHistoryByDate {
     base: string,
     date: string,
