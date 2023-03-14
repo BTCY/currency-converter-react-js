@@ -12,7 +12,7 @@ interface IHeader {
 const Header = ({ children }: IHeader) => {
 
     return (
-        <Navbar expand="lg" className={styles.header}>
+        <Navbar expand="sm" className={styles.header}>
             {children}
         </Navbar>
     );

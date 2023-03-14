@@ -5,3 +5,11 @@
  .link {
      color: white;
  }
+
+ .toggleButton {
+     color: white;
+     background-color: white;
+     font-size: 13px;
+     margin: 5px 0px;
+     overflow: hidden;
+ }
