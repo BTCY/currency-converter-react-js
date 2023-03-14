@@ -1,11 +1,12 @@
 import { ReactElement } from "react";
+import { AboutPage } from "../features/about/AboutPage";
 import { HomePage } from "../features/home/HomePage";
+import { NotFoundPage } from "../features/not-found/NotFoundPage";
 
 
 
 export interface IRouteData {
     [key: string]: {
-        label: string;
         component: ReactElement;
         link: string;
     }
@@ -14,8 +15,15 @@ export interface IRouteData {
 
 export const RoutesData: IRouteData = {
     home: {
-        label: 'home',
         component: <HomePage />,
         link: '/',
+    },
+    about: {
+        component: <AboutPage />,
+        link: '/about',
+    },
+    notFound: {
+        component: <NotFoundPage />,
+        link: '*',
     },
 }
