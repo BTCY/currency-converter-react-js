@@ -6,8 +6,11 @@ import Footer from '../../layout/Footer';
 import Header from '../../layout/Header';
 import Layout from '../../layout/Layout';
 
+/**
+ * Not found page (404)
+ */
 
-export function NotFoundPage() {
+const NotFoundPage = () => {
 
     return (
         <Layout>
@@ -28,3 +31,5 @@ export function NotFoundPage() {
         </Layout>
     );
 }
+
+export default NotFoundPage;

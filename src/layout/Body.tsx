@@ -1,8 +1,8 @@
 import styles from './Body.module.css';
 
-/*
-*   Layout: application body
-*/
+/**
+ *   Layout: application body
+ */
 
 interface IBody {
     children?: React.ReactNode;

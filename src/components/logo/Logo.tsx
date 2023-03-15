@@ -1,10 +1,10 @@
+import styles from './Logo.module.css';
 import { Navbar } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import styles from './Logo.module.css';
 
-/*
-*   Logotype
-*/
+/**
+ *   Logotype
+ */
 
 const Logo = () => {
 

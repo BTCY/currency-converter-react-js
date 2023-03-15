@@ -1,9 +1,11 @@
 import { ReactElement } from "react";
-import { AboutPage } from "../features/about/AboutPage";
-import { HomePage } from "../features/home/HomePage";
-import { NotFoundPage } from "../features/not-found/NotFoundPage";
+import AboutPage from "../features/about/AboutPage";
+import HomePage from "../features/home/HomePage";
+import NotFoundPage from "../features/not-found/NotFoundPage";
 
-
+/**
+ * App routes
+ */
 
 export interface IRouteData {
     [key: string]: {

@@ -6,8 +6,11 @@ import Footer from '../../layout/Footer';
 import Header from '../../layout/Header';
 import Layout from '../../layout/Layout';
 
+/**
+ * About page
+ */
 
-export function AboutPage() {
+const AboutPage = () => {
 
     return (
         <Layout>
@@ -28,3 +31,5 @@ export function AboutPage() {
         </Layout>
     );
 }
+
+export default AboutPage;

@@ -1,8 +1,8 @@
 import styles from './Footer.module.css';
 
-/*
-*   Layout: application footer 
-*/
+/**
+ *   Layout: application footer 
+ */
 
 interface IFooter {
     children?: React.ReactNode;
