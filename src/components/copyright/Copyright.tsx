@@ -1,9 +1,9 @@
-import { Link } from 'react-router-dom';
 import styles from './Copyright.module.css';
+import { Link } from 'react-router-dom';
 
-/*
-*   Copyright
-*/
+/**
+ * Copyright
+ */
 
 const Copyright = () => {
 

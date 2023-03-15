@@ -1,11 +1,11 @@
+import styles from './HeaderMenu.module.css';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import styles from './HeaderMenu.module.css';
 import { NavLink } from 'react-router-dom';
 
-/*
-*   Header menu
-*/
+/**
+ * Header menu
+ */
 
 const HeaderMenu = () => {
 

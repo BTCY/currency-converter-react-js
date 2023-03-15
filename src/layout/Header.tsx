@@ -1,13 +1,14 @@
 import styles from './Header.module.css';
 import Navbar from 'react-bootstrap/Navbar';
 
-/*
-*   Layout: application header 
-*/
+/**
+ *   Layout: application header 
+ */
 
 interface IHeader {
     children?: React.ReactNode;
 }
+
 
 const Header = ({ children }: IHeader) => {
 
