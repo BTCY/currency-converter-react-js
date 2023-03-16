@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../stores/hooks';
 // import { getAllAvailableCurrencies } from '../../api/exchange-rates-service';
 
 /**
@@ -6,6 +7,9 @@ import { useEffect } from 'react';
  */
 
 const Home = () => {
+
+    // const count = useAppSelector(selectCount);
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
 
