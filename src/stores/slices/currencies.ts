@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { getAllAvailableCurrencies } from '../../api/exchange-rates-service';
 import { RootState, AppThunk } from '../store';
 // import { fetchCount } from './counterAPI';
 
@@ -14,35 +15,31 @@ const initialState: ICurrenciesState = {
     status: 'idle',
 };
 
-// export const incrementAsync = createAsyncThunk(
-//     'currencies/fetchCount',
-//     async (amount: number) => {
-//         const response = await fetchCount(amount);
-//         return response.data;
-//     }
-// );
+export const availableCurrenciesThunk = createAsyncThunk(
+    'currencies/availableCurrencies',
+    async () => await getAllAvailableCurrencies()
+);
 
 export const currenciesSlice = createSlice({
     name: 'currencies',
     initialState,
-    reducers: {
-        availableCurrencies: (state) => {
-            state.value += 1;
-        },
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+            .addCase(availableCurrenciesThunk.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(availableCurrenciesThunk.fulfilled, (state, action) => {
+                state.status = 'idle';
+                state.availableCurrencies = action.payload;
+            })
+            .addCase(availableCurrenciesThunk.rejected, (state, action) => {
+                state.status = 'failed';
+                // state.value += action.payload;
+            })
     },
-    // extraReducers: (builder) => {
-    //     builder
-    //         .addCase(incrementAsync.pending, (state) => {
-    //             state.status = 'loading';
-    //         })
-    //         .addCase(incrementAsync.fulfilled, (state, action) => {
-    //             state.status = 'idle';
-    //             // state.value += action.payload;
-    //         })
-    // },
 });
 
-export const { availableCurrencies } = currenciesSlice.actions;
 
 export const selectAvailableCurrencies = (state: RootState) => state.currencies.availableCurrencies;
 

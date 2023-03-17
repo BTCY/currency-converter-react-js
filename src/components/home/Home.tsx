@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../stores/hooks';
+import { selectAvailableCurrencies, availableCurrenciesThunk } from '../../stores/slices/currencies';
 // import { getAllAvailableCurrencies } from '../../api/exchange-rates-service';
 
 /**
@@ -8,15 +9,14 @@ import { useAppDispatch, useAppSelector } from '../../stores/hooks';
 
 const Home = () => {
 
-    // const count = useAppSelector(selectCount);
+    const availableCurrencies = useAppSelector(selectAvailableCurrencies);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
+        dispatch(availableCurrenciesThunk())
+    }, [dispatch]);
 
-        // getAllAvailableCurrencies()
-        //     .then((res) => console.log(res))
-        //     .catch((e) => console.log(e));
-    });
+
 
     return (
         <>TODO</>
