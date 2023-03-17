@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getAllAvailableCurrencies } from '../../api/exchange-rates-service';
 import { RootState, AppThunk } from '../store';
+import { putInIndexedDB, getFromIndexedDB, Stores, KeyPaths } from '../../api/indexedDB-service';
 // import { fetchCount } from './counterAPI';
 
 export interface ICurrenciesState {
@@ -17,7 +18,23 @@ const initialState: ICurrenciesState = {
 
 export const availableCurrenciesThunk = createAsyncThunk(
     'currencies/availableCurrencies',
-    async () => await getAllAvailableCurrencies()
+    async () => {
+
+        // let res = await getAllAvailableCurrencies()
+        // putInIndexedDB(
+        //     Stores.AvailableCurrencies,
+        //     {
+        //         [KeyPaths.CurrCode]: 'EUR',
+        //         update_timestamp: +new Date(),
+        //         data: 'res'
+        //     }
+        // );
+        // console.log(await getFromIndexedDB(
+        //     Stores.AvailableCurrencies,
+        //     'EUR',
+        // ))
+        return 'res'
+    }
 );
 
 export const currenciesSlice = createSlice({
