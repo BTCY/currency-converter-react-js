@@ -25,8 +25,8 @@ export const availableCurrenciesThunk = createAsyncThunk(
         //     Stores.AvailableCurrencies,
         //     {
         //         [KeyPaths.CurrCode]: 'EUR',
-        //         update_timestamp: +new Date(),
-        //         data: 'res'
+        //         update_timestamp: Number(new Date()),
+        //         data: undefined
         //     }
         // );
         // console.log(await getFromIndexedDB(
