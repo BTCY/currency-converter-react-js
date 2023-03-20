@@ -7,7 +7,7 @@ import {
 } from './exchange-rates-service.types';
 
 /**
- * @file API: exchange-rates
+ * @file API: exchange-rates.
  * 
  * {@link https://apilayer.com/marketplace/exchangerates_data-api API}  
  */
