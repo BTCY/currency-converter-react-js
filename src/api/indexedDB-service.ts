@@ -105,12 +105,12 @@ export const putInIndexedDB = (
  * Get data from Indexed DB.
  * 
  * @param   {Stores}     storeName   store name where to get data from  
- * @param   {KeyPaths}   keyValue    key by which to find and get data  
+ * @param   {KeyPaths}   keyPath     key by which to find and get data  
  * @return  {Promise<IStoreDataInIndexedDB | undefined>}
  */
 export const getFromIndexedDB = (
     storeName: Stores,
-    keyValue: KeyPaths,
+    keyPath: KeyPaths,
 ): Promise<IStoreDataInIndexedDB | undefined> => {
     return new Promise(
         (resolve, reject) => {
@@ -128,7 +128,7 @@ export const getFromIndexedDB = (
                     .objectStore(storeName);
 
                 // get result
-                const getResult = store.get(keyValue);
+                const getResult = store.get(keyPath);
                 getResult.onerror = () => reject(new Error("ERROR_getFromIndexedDB()_get"));
                 getResult.onsuccess = (e: any) => {
                     resolve(e.target.result);
