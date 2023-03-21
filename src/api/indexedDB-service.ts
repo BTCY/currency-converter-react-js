@@ -18,6 +18,7 @@ export const iDB_VERSION = 1;
  * @enum Stores   
  */
 export const enum Stores {
+
     /** Store with available currencies */
     AvailableCurrencies = 'availableCurrencies',
 
@@ -32,8 +33,12 @@ export const enum Stores {
  * @enum KeyPaths   
  */
 export const enum KeyPaths {
+
     /** Currency code */
     CurrCode = 'curr_code',
+
+    /** All available currencies */
+    AvailableCurrencies = 'available_currencies',
 };
 
 
@@ -60,7 +65,7 @@ const createStructure = (request: IDBOpenDBRequest): void => {
     try { request.result.deleteObjectStore(Stores.AvailableCurrencies) } catch (e) { }
     try { request.result.deleteObjectStore(Stores.Currencies) } catch (e) { }
 
-    request.result.createObjectStore(Stores.AvailableCurrencies, { keyPath: KeyPaths.CurrCode });
+    request.result.createObjectStore(Stores.AvailableCurrencies, { keyPath: KeyPaths.AvailableCurrencies });
     request.result.createObjectStore(Stores.Currencies, { keyPath: KeyPaths.CurrCode });
 };
 
@@ -110,7 +115,7 @@ export const putInIndexedDB = (
  */
 export const getFromIndexedDB = (
     storeName: Stores,
-    keyPath: KeyPaths,
+    keyPath: string,
 ): Promise<IStoreDataInIndexedDB | undefined> => {
     return new Promise(
         (resolve, reject) => {
