@@ -2,7 +2,11 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getAllAvailableCurrencies } from '../../api/exchange-rates-service';
 import { RootState, AppThunk } from '../store';
 import { putInIndexedDB, getFromIndexedDB, Stores, KeyPaths } from '../../api/indexedDB-service';
+import { diff } from '../../utils/dateTimeHelper';
 // import { fetchCount } from './counterAPI';
+
+
+const ALLOW_DIFF_IN_MINUTES = 60;
 
 export interface ICurrenciesState {
     value: number;
@@ -19,7 +23,22 @@ const initialState: ICurrenciesState = {
 export const availableCurrenciesThunk = createAsyncThunk(
     'currencies/availableCurrencies',
     async () => {
+        const data = await getFromIndexedDB(Stores.AvailableCurrencies, 'all');
+        const diffInMinutes = diff(new Date(), data?.update_timestamp);
 
+        if (diffInMinutes === undefined || diffInMinutes > ALLOW_DIFF_IN_MINUTES)
+            console.log(1)
+
+
+        // console.log(data)
+        // let data = await getFromIndexedDB(
+        //     Stores.AvailableCurrencies,
+        //     {
+        //         [KeyPaths.AvailableCurrencies]: 'all',
+        //         update_timestamp: Number(new Date()),
+        //         data: undefined
+        //     }
+        // );
         // let res = await getAllAvailableCurrencies()
         // putInIndexedDB(
         //     Stores.AvailableCurrencies,
