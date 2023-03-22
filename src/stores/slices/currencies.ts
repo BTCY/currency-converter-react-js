@@ -3,7 +3,8 @@ import { getAllAvailableCurrencies } from '../../api/exchange-rates-service';
 import { RootState, AppThunk } from '../store';
 import { putInIndexedDB, getFromIndexedDB, KEY_PATH } from '../../api/indexedDB-service';
 import { diff } from '../../utils/dateTimeHelper';
-import { Stores } from '../../api/indexedDB-service.types';
+import { IStoreDataInIndexedDB, Stores } from '../../api/indexedDB-service.types';
+import { IApiAllAvailableCurrencies } from '../../api/exchange-rates-service.types';
 
 
 const ALLOW_DIFF_IN_MINUTES = 60;
@@ -22,7 +23,7 @@ const initialState: ICurrenciesState = {
 
 export const availableCurrenciesThunk = createAsyncThunk(
     'currencies/availableCurrencies',
-    async () => {
+    async  <T extends Stores>(): Promise<IStoreDataInIndexedDB<T> | undefined> => {
         let allAvailableCurrencies = await getFromIndexedDB(Stores.AvailableCurrencies, 'all');
         const diffInMinutes = diff(new Date(), allAvailableCurrencies?.update_timestamp);
 
@@ -47,6 +48,7 @@ export const availableCurrenciesThunk = createAsyncThunk(
         return allAvailableCurrencies
     }
 );
+
 
 export const currenciesSlice = createSlice({
     name: 'currencies',
