@@ -13,10 +13,10 @@ const Home = () => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(availableCurrenciesThunk())
+        // dispatch(availableCurrenciesThunk())
     }, [dispatch]);
 
-
+    // console.log(availableCurrencies)
 
     return (
         <>TODO</>

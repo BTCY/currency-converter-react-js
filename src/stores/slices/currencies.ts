@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { getAllAvailableCurrencies } from '../../api/exchange-rates-service';
 import { RootState, AppThunk } from '../store';
-import { putInIndexedDB, getFromIndexedDB, Stores, KeyPaths } from '../../api/indexedDB-service';
+import { putInIndexedDB, getFromIndexedDB, KEY_PATH } from '../../api/indexedDB-service';
 import { diff } from '../../utils/dateTimeHelper';
-// import { fetchCount } from './counterAPI';
+import { Stores } from '../../api/indexedDB-service.types';
 
 
 const ALLOW_DIFF_IN_MINUTES = 60;
@@ -23,36 +23,28 @@ const initialState: ICurrenciesState = {
 export const availableCurrenciesThunk = createAsyncThunk(
     'currencies/availableCurrencies',
     async () => {
-        const data = await getFromIndexedDB(Stores.AvailableCurrencies, 'all');
-        const diffInMinutes = diff(new Date(), data?.update_timestamp);
+        let allAvailableCurrencies = await getFromIndexedDB(Stores.AvailableCurrencies, 'all');
+        const diffInMinutes = diff(new Date(), allAvailableCurrencies?.update_timestamp);
 
-        if (diffInMinutes === undefined || diffInMinutes > ALLOW_DIFF_IN_MINUTES)
-            console.log(1)
+        if (diffInMinutes === undefined || diffInMinutes > ALLOW_DIFF_IN_MINUTES) {
+            try {
+                const result = await getAllAvailableCurrencies();
+                if (result) {
+                    allAvailableCurrencies = {
+                        [KEY_PATH]: 'all',
+                        store: Stores.AvailableCurrencies,
+                        update_timestamp: Number(new Date()),
+                        data: result
+                    };
 
+                    await putInIndexedDB(Stores.AvailableCurrencies, allAvailableCurrencies);
+                }
+            } catch (e) {
+                console.log(e)
+            }
+        }
 
-        // console.log(data)
-        // let data = await getFromIndexedDB(
-        //     Stores.AvailableCurrencies,
-        //     {
-        //         [KeyPaths.AvailableCurrencies]: 'all',
-        //         update_timestamp: Number(new Date()),
-        //         data: undefined
-        //     }
-        // );
-        // let res = await getAllAvailableCurrencies()
-        // putInIndexedDB(
-        //     Stores.AvailableCurrencies,
-        //     {
-        //         [KeyPaths.CurrCode]: 'EUR',
-        //         update_timestamp: Number(new Date()),
-        //         data: undefined
-        //     }
-        // );
-        // console.log(await getFromIndexedDB(
-        //     Stores.AvailableCurrencies,
-        //     'EUR',
-        // ))
-        return 'res'
+        return allAvailableCurrencies
     }
 );
 

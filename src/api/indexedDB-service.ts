@@ -1,4 +1,4 @@
-import { IStoreDataInIndexedDB } from "./indexedDB-service.types";
+import { IStoreDataInIndexedDB, Stores } from "./indexedDB-service.types";
 
 /**
  * @file API: Indexed DB.
@@ -11,35 +11,8 @@ export const iDB_NAME = 'CurrDashboardDB';
 /** DB version */
 export const iDB_VERSION = 1;
 
-
-/** 
- * Stores: available stores in Indexed DB.
- * 
- * @enum Stores   
- */
-export const enum Stores {
-
-    /** Store with available currencies */
-    AvailableCurrencies = 'availableCurrencies',
-
-    /** Store with converted currency */
-    Currencies = 'currencies',
-};
-
-
-/** 
- * Keys: available keys in Indexed DB.
- * 
- * @enum KeyPaths   
- */
-export const enum KeyPaths {
-
-    /** Currency code */
-    CurrCode = 'curr_code',
-
-    /** All available currencies */
-    AvailableCurrencies = 'available_currencies',
-};
+/** Primary key */
+export const KEY_PATH = 'key';
 
 
 /**
@@ -63,10 +36,10 @@ const createStructure = (request: IDBOpenDBRequest): void => {
         throw (new Error("ERROR_createStructure()_no_connect"));
 
     try { request.result.deleteObjectStore(Stores.AvailableCurrencies) } catch (e) { }
-    try { request.result.deleteObjectStore(Stores.Currencies) } catch (e) { }
+    try { request.result.deleteObjectStore(Stores.ConvertedCurrency) } catch (e) { }
 
-    request.result.createObjectStore(Stores.AvailableCurrencies, { keyPath: KeyPaths.AvailableCurrencies });
-    request.result.createObjectStore(Stores.Currencies, { keyPath: KeyPaths.CurrCode });
+    request.result.createObjectStore(Stores.AvailableCurrencies, { keyPath: KEY_PATH });
+    request.result.createObjectStore(Stores.ConvertedCurrency, { keyPath: KEY_PATH });
 };
 
 
@@ -77,9 +50,9 @@ const createStructure = (request: IDBOpenDBRequest): void => {
  * @param   {IStoreDataInIndexedDB}   objectValues   data
  * @return  {Promise<any>}
  */
-export const putInIndexedDB = (
+export const putInIndexedDB = <T extends Stores>(
     storeName: Stores,
-    objectValues: IStoreDataInIndexedDB
+    objectValues: IStoreDataInIndexedDB<T>
 ): Promise<unknown> => {
     return new Promise(
         (resolve, reject) => {
@@ -113,10 +86,10 @@ export const putInIndexedDB = (
  * @param   {KeyPaths}   keyPath     key by which to find and get data  
  * @return  {Promise<IStoreDataInIndexedDB | undefined>}
  */
-export const getFromIndexedDB = (
+export const getFromIndexedDB = <T extends Stores>(
     storeName: Stores,
     keyPath: string,
-): Promise<IStoreDataInIndexedDB | undefined> => {
+): Promise<IStoreDataInIndexedDB<T> | undefined> => {
     return new Promise(
         (resolve, reject) => {
             if (!indexedDBSupport())
