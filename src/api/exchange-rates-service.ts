@@ -98,7 +98,7 @@ export const getLatestExchangeRates = (
  * 
  * @return  {IApiAllAvailableCurrencies}    All available currencies
  */
-export const getAllAvailableCurrencies = (): Promise<IApiAllAvailableCurrencies[]> =>
+export const getAllAvailableCurrencies = (): Promise<IApiAllAvailableCurrencies> =>
     axios.get(
         'https://api.apilayer.com/exchangerates_data/symbols', {
         headers

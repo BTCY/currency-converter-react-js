@@ -23,7 +23,7 @@ const initialState: ICurrenciesState = {
 
 export const availableCurrenciesThunk = createAsyncThunk(
     'currencies/availableCurrencies',
-    async  <T extends Stores>(): Promise<IStoreDataInIndexedDB<T> | undefined> => {
+    async (): Promise<IApiAllAvailableCurrencies | undefined> => {
         let allAvailableCurrencies = await getFromIndexedDB(Stores.AvailableCurrencies, 'all');
         const diffInMinutes = diff(new Date(), allAvailableCurrencies?.update_timestamp);
 
@@ -45,7 +45,7 @@ export const availableCurrenciesThunk = createAsyncThunk(
             }
         }
 
-        return allAvailableCurrencies
+        return allAvailableCurrencies?.data as IApiAllAvailableCurrencies | undefined
     }
 );
 
@@ -71,6 +71,6 @@ export const currenciesSlice = createSlice({
 });
 
 
-export const selectAvailableCurrencies = (state: RootState) => state.currencies.availableCurrencies;
+export const selectAvailableCurrencies = (state: RootState) => state.currencies.availableCurrencies as IApiAllAvailableCurrencies | undefined;
 
 export default currenciesSlice.reducer;
