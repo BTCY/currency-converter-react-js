@@ -21,7 +21,7 @@ export type StoreData<T> =
     T extends Stores.ConvertedCurrency ? IApiConvertedCurrency :
     T extends Stores.CurrencyFluctuations ? IApiCurrencyFluctuations :
     T extends Stores.LatestExchangeRates ? IApiLatestExchangeRates :
-    T extends Stores.AvailableCurrencies ? IApiAllAvailableCurrencies[] :
+    T extends Stores.AvailableCurrencies ? IApiAllAvailableCurrencies :
     T extends Stores.ExchangeRateHistory ? IApiExchangeRateHistory :
     T extends Stores.ExchangeRateHistoryByDate ? IApiExchangeRateHistoryByDate :
     any;

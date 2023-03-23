@@ -17,8 +17,7 @@ const Home = () => {
         dispatch(availableCurrenciesThunk())
     }, [dispatch]);
 
-    // console.log(availableCurrencies)
-
+    // console.log(availableCurrencies) 
     return (
         <>
             {/* {!!availableCurrencies?.data &&
