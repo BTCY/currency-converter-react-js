@@ -7,7 +7,7 @@ import { IStoreDataInIndexedDB, Stores } from '../../api/indexedDB-service.types
 import { IApiAllAvailableCurrencies } from '../../api/exchange-rates-service.types';
 
 
-const ALLOW_DIFF_IN_MINUTES = 60;
+const ALLOW_DIFF_IN_MINUTES = 1440;
 
 export interface ICurrenciesState {
     value: number;
