@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../stores/hooks';
-import { selectAvailableCurrencies, availableCurrenciesThunk } from '../../stores/slices/currencies';
-import Widget from '../common/Widget';
+import { selectAvailableCurrencies, availableCurrenciesThunk } from '../../stores/slices/currenciesSlice';
+import TabTemplate from '../common/TabTemplate/TabTemplate';
 import Form from 'react-bootstrap/Form';
+import { Button } from 'react-bootstrap';
 // import { getAllAvailableCurrencies } from '../../api/exchange-rates-service';
 
 /**
@@ -20,17 +21,42 @@ const ConvertWidget = () => {
 
     // console.log(availableCurrencies) 
     return (
-        <>
-            <Widget title={'Currency conversion'}>
-                {!!availableCurrencies?.symbols &&
-                    <Form.Select aria-label="Default select example">
-                        {Object.keys(availableCurrencies.symbols).map(k =>
-                            <option key={k} value={k}>{availableCurrencies.symbols[k]}</option>
-                        )}
-                    </Form.Select>
-                }
-            </Widget>
-        </>
+        <TabTemplate title={'Currency conversion'}>
+            <Form>
+                {/* From */}
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Label>Currency from</Form.Label>
+                    {!!availableCurrencies?.symbols &&
+                        <Form.Select aria-label="currency-conversion-from">
+                            <option>Select currency from</option>
+                            {Object.keys(availableCurrencies.symbols).map(k =>
+                                <option key={k} value={k}>{availableCurrencies.symbols[k]}</option>
+                            )}
+                        </Form.Select>
+                    }
+                </Form.Group>
+
+                {/* To */}
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Label>Currency to</Form.Label>
+                    {!!availableCurrencies?.symbols &&
+                        <Form.Select aria-label="currency-conversion-from">
+                            <option>Select currency to</option>
+                            {Object.keys(availableCurrencies.symbols).map(k =>
+                                <option key={k} value={k}>{availableCurrencies.symbols[k]}</option>
+                            )}
+                        </Form.Select>
+                    }
+                </Form.Group>
+
+                <Button variant="primary" type="submit">
+                    Convert
+                </Button>
+            </Form>
+
+
+
+        </TabTemplate>
     );
 }
 
