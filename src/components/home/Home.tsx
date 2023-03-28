@@ -1,5 +1,5 @@
 import { Container, Tab, Tabs } from 'react-bootstrap';
-import ConvertWidget from '../convert-widget/ConvertWidget';
+import CurrencyConversionTab from '../currency-conversion-tab/CurrencyConversionTab';
 
 /**
  *   Home
@@ -16,7 +16,7 @@ const Home = () => {
                 justify
             >
                 <Tab eventKey="converter" title="Currency Converter">
-                    <ConvertWidget />
+                    <CurrencyConversionTab />
                 </Tab>
                 <Tab eventKey="2" title="2">
                     TODO
@@ -27,9 +27,7 @@ const Home = () => {
                 <Tab eventKey="4" title="4">
                     TODO
                 </Tab>
-            </Tabs>
-
-            {/* <ConvertWidget /> */}
+            </Tabs> 
         </Container>
     );
 }

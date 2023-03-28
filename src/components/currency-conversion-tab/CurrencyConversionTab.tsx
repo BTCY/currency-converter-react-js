@@ -7,10 +7,10 @@ import { Button } from 'react-bootstrap';
 // import { getAllAvailableCurrencies } from '../../api/exchange-rates-service';
 
 /**
- *   ConvertWidget
+ *   CurrencyConversionTab
  */
 
-const ConvertWidget = () => {
+const CurrencyConversionTab = () => {
 
     const availableCurrencies = useAppSelector(selectAvailableCurrencies);
     const dispatch = useAppDispatch();
@@ -60,4 +60,4 @@ const ConvertWidget = () => {
     );
 }
 
-export default ConvertWidget;
+export default CurrencyConversionTab;
