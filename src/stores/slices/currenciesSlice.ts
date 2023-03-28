@@ -1,23 +1,26 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { getAllAvailableCurrencies } from '../../api/exchange-rates-service';
+import { getAllAvailableCurrencies, getConvertedCurrency } from '../../api/exchange-rates-service';
 import { RootState, AppThunk } from '../store';
 import { putInIndexedDB, getFromIndexedDB, KEY_PATH } from '../../api/indexedDB-service';
 import { diff } from '../../utils/dateTimeHelper';
 import { IStoreDataInIndexedDB, Stores } from '../../api/indexedDB-service.types';
-import { IApiAllAvailableCurrencies } from '../../api/exchange-rates-service.types';
+import { IApiAllAvailableCurrencies, IApiConvertedCurrency } from '../../api/exchange-rates-service.types';
+import { IConvertedCurrencyThunk } from './currenciesSlice.types';
 
 
 const ALLOW_DIFF_IN_MINUTES = 1440;
 
 export interface ICurrenciesState {
     value: number;
-    availableCurrencies: {} | undefined;
+    availableCurrencies: IApiAllAvailableCurrencies | undefined;
+    convertedCurrency: IApiConvertedCurrency | undefined;
     status: 'idle' | 'loading' | 'failed';
 }
 
 const initialState: ICurrenciesState = {
     value: 0,
     availableCurrencies: undefined,
+    convertedCurrency: undefined,
     status: 'idle',
 };
 
@@ -49,6 +52,37 @@ export const availableCurrenciesThunk = createAsyncThunk(
     }
 );
 
+export const convertedCurrency = createAsyncThunk(
+    'currencies/convertedCurrency',
+    async (
+        param: IConvertedCurrencyThunk
+    ): Promise<IApiConvertedCurrency | undefined> => {
+        const key = param.from + '_' + param.to + '_' + param.amount;
+        let convertedCurrency = await getFromIndexedDB(Stores.ConvertedCurrency, key);
+        const diffInMinutes = diff(new Date(), convertedCurrency?.update_timestamp);
+
+        if (diffInMinutes === undefined || diffInMinutes > ALLOW_DIFF_IN_MINUTES) {
+            try {
+                const result = await getConvertedCurrency(param.from, param.to, param.amount, param.date);
+                if (result) {
+                    convertedCurrency = {
+                        [KEY_PATH]: key,
+                        store: Stores.ConvertedCurrency,
+                        update_timestamp: Number(new Date()),
+                        data: result
+                    };
+
+                    await putInIndexedDB(Stores.ConvertedCurrency, convertedCurrency);
+                }
+            } catch (e) {
+                console.log(e)
+            }
+        }
+
+        return convertedCurrency?.data as IApiConvertedCurrency | undefined;
+    }
+);
+
 
 export const currenciesSlice = createSlice({
     name: 'currencies',
@@ -67,10 +101,22 @@ export const currenciesSlice = createSlice({
                 state.status = 'failed';
                 // state.value += action.payload;
             })
+            .addCase(convertedCurrency.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(convertedCurrency.fulfilled, (state, action) => {
+                state.status = 'idle';
+                state.convertedCurrency = action.payload;
+            })
+            .addCase(convertedCurrency.rejected, (state, action) => {
+                state.status = 'failed';
+                // state.value += action.payload;
+            })
     },
 });
 
 
-export const selectAvailableCurrencies = (state: RootState) => state.currencies.availableCurrencies as IApiAllAvailableCurrencies | undefined;
+export const selectAvailableCurrencies = (state: RootState) => state.currencies.availableCurrencies;
+export const selectConvertedCurrency = (state: RootState) => state.currencies.convertedCurrency;
 
 export default currenciesSlice.reducer;
