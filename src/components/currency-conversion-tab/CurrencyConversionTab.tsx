@@ -24,11 +24,11 @@ const CurrencyConversionTab = () => {
         <TabTemplate title={'Currency conversion'}>
             <Form>
                 {/* From */}
-                <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Group className="mb-3" controlId="currencyFrom">
                     <Form.Label>Currency from</Form.Label>
                     {!!availableCurrencies?.symbols &&
                         <Form.Select aria-label="currency-conversion-from">
-                            <option>Select currency from</option>
+                            <option>—</option>
                             {Object.keys(availableCurrencies.symbols).map(k =>
                                 <option key={k} value={k}>{availableCurrencies.symbols[k]}</option>
                             )}
@@ -37,16 +37,22 @@ const CurrencyConversionTab = () => {
                 </Form.Group>
 
                 {/* To */}
-                <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Group className="mb-3" controlId="currencyTo">
                     <Form.Label>Currency to</Form.Label>
                     {!!availableCurrencies?.symbols &&
                         <Form.Select aria-label="currency-conversion-from">
-                            <option>Select currency to</option>
+                            <option>—</option>
                             {Object.keys(availableCurrencies.symbols).map(k =>
                                 <option key={k} value={k}>{availableCurrencies.symbols[k]}</option>
                             )}
                         </Form.Select>
                     }
+                </Form.Group>
+
+                {/* Amount */}
+                <Form.Group className="mb-3" controlId="currencyAmount">
+                    <Form.Label>Amount</Form.Label>
+                    <Form.Control type="number" />
                 </Form.Group>
 
                 <Button variant="primary" type="submit">

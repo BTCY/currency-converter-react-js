@@ -12,7 +12,7 @@ interface IFooter {
 const Footer = ({ children }: IFooter) => {
 
     return (
-        <div className={`${styles.footer} fixed-bottom`}>
+        <div className={styles.footer}>
             {children}
         </div>
     );
