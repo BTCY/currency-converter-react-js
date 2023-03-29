@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../stores/hooks';
 import { selectAvailableCurrencies, availableCurrenciesThunk } from '../../stores/slices/currenciesSlice';
 import TabTemplate from '../common/TabTemplate/TabTemplate';
 import Form from 'react-bootstrap/Form';
-import { Button } from 'react-bootstrap';
+import { Button, Col, Row } from 'react-bootstrap';
 // import { getAllAvailableCurrencies } from '../../api/exchange-rates-service';
 
 /**
@@ -23,41 +23,50 @@ const CurrencyConversionTab = () => {
     return (
         <TabTemplate title={'Currency conversion'}>
             <Form>
-                {/* From */}
-                <Form.Group className="mb-3" controlId="currencyFrom">
-                    <Form.Label>Currency from</Form.Label>
-                    {!!availableCurrencies?.symbols &&
-                        <Form.Select aria-label="currency-conversion-from">
-                            <option>—</option>
-                            {Object.keys(availableCurrencies.symbols).map(k =>
-                                <option key={k} value={k}>{availableCurrencies.symbols[k]}</option>
-                            )}
-                        </Form.Select>
-                    }
-                </Form.Group>
+                <Row>
+                    {/* Select: sCurrency from */}
+                    <Col md={4} xs={12} className="mb-2">
+                        <Form.Group controlId="currencyFrom">
+                            <Form.Label>Currency from</Form.Label>
+                            {!!availableCurrencies?.symbols &&
+                                <Form.Select aria-label="currency-conversion-from">
+                                    {Object.keys(availableCurrencies.symbols).map(k =>
+                                        <option key={k} value={k}>{k} - {availableCurrencies.symbols[k]}</option>
+                                    )}
+                                </Form.Select>
+                            }
+                        </Form.Group>
+                    </Col>
 
-                {/* To */}
-                <Form.Group className="mb-3" controlId="currencyTo">
-                    <Form.Label>Currency to</Form.Label>
-                    {!!availableCurrencies?.symbols &&
-                        <Form.Select aria-label="currency-conversion-from">
-                            <option>—</option>
-                            {Object.keys(availableCurrencies.symbols).map(k =>
-                                <option key={k} value={k}>{availableCurrencies.symbols[k]}</option>
-                            )}
-                        </Form.Select>
-                    }
-                </Form.Group>
+                    {/* Select: Currency to */}
+                    <Col md={4} xs={12} className="mb-2">
+                        <Form.Group controlId="currencyTo">
+                            <Form.Label>Currency to</Form.Label>
+                            {!!availableCurrencies?.symbols &&
+                                <Form.Select aria-label="currency-conversion-from">
+                                    {Object.keys(availableCurrencies.symbols).map(k =>
+                                        <option key={k} value={k}>{k} - {availableCurrencies.symbols[k]}</option>
+                                    )}
+                                </Form.Select>
+                            }
+                        </Form.Group>
+                    </Col>
 
-                {/* Amount */}
-                <Form.Group className="mb-3" controlId="currencyAmount">
-                    <Form.Label>Amount</Form.Label>
-                    <Form.Control type="number" />
-                </Form.Group>
+                    {/* Input: Amount */}
+                    <Col md={2} xs={12} className="mb-2">
+                        <Form.Group controlId="currencyAmount">
+                            <Form.Label>Amount</Form.Label>
+                            <Form.Control type="number" min={1} />
+                        </Form.Group>
+                    </Col>
 
-                <Button variant="primary" type="submit">
-                    Convert
-                </Button>
+                    {/* Button: Convert */}
+                    <Col md={2} xs={12} className="mb-2">
+                        <Button className="mb-2" variant="primary" type="submit" >
+                            Convert
+                        </Button>
+                    </Col>
+                </Row>
             </Form>
 
 
