@@ -12,7 +12,7 @@ interface IBody {
 const Body = ({ children }: IBody) => {
 
     return (
-        <div className={styles.body}>
+        <div className={`${styles.body} justify-content-start`}>
             {children}
         </div>
 
