@@ -1,9 +1,9 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getAllAvailableCurrencies, getConvertedCurrency } from '../../api/exchange-rates-service';
-import { RootState, AppThunk } from '../store';
+import { RootState } from '../store';
 import { putInIndexedDB, getFromIndexedDB, KEY_PATH } from '../../api/indexedDB-service';
 import { diff } from '../../utils/dateTimeHelper';
-import { IStoreDataInIndexedDB, Stores } from '../../api/indexedDB-service.types';
+import { Stores } from '../../api/indexedDB-service.types';
 import { IApiAllAvailableCurrencies, IApiConvertedCurrency } from '../../api/exchange-rates-service.types';
 import { IConvertedCurrencyThunk } from './currenciesSlice.types';
 
@@ -52,7 +52,7 @@ export const availableCurrenciesThunk = createAsyncThunk(
     }
 );
 
-export const convertedCurrency = createAsyncThunk(
+export const convertedCurrencyThunk = createAsyncThunk(
     'currencies/convertedCurrency',
     async (
         param: IConvertedCurrencyThunk
@@ -97,20 +97,18 @@ export const currenciesSlice = createSlice({
                 state.status = 'idle';
                 state.availableCurrencies = action.payload;
             })
-            .addCase(availableCurrenciesThunk.rejected, (state, action) => {
+            .addCase(availableCurrenciesThunk.rejected, (state) => {
                 state.status = 'failed';
-                // state.value += action.payload;
             })
-            .addCase(convertedCurrency.pending, (state) => {
+            .addCase(convertedCurrencyThunk.pending, (state) => {
                 state.status = 'loading';
             })
-            .addCase(convertedCurrency.fulfilled, (state, action) => {
+            .addCase(convertedCurrencyThunk.fulfilled, (state, action) => {
                 state.status = 'idle';
                 state.convertedCurrency = action.payload;
             })
-            .addCase(convertedCurrency.rejected, (state, action) => {
+            .addCase(convertedCurrencyThunk.rejected, (state) => {
                 state.status = 'failed';
-                // state.value += action.payload;
             })
     },
 });
