@@ -10,7 +10,7 @@ import TabTemplate from '../common/TabTemplate/TabTemplate';
 import Form from 'react-bootstrap/Form';
 import FormCustom from '../common/TabTemplate/FormCustom';
 import * as Yup from 'yup';
-import { useSelector } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 import { IApiConvertedCurrency } from '../../api/exchange-rates-service.types';
 // import { getAllAvailableCurrencies } from '../../api/exchange-rates-service';
 
@@ -20,12 +20,12 @@ import { IApiConvertedCurrency } from '../../api/exchange-rates-service.types';
 
 const CurrencyConversionTab = () => {
 
-    const availableCurrencies = useAppSelector(selectAvailableCurrencies);
-    const res = useAppSelector(selectConvertedCurrency);
+    const availableCurrencies = useAppSelector(selectAvailableCurrencies, shallowEqual);
+    const convertedCurrency = useAppSelector(selectConvertedCurrency, shallowEqual);
     const dispatch = useAppDispatch();
     // console.log(useSelector((store: any) => store?.currencies))
     const [validationEnabled, setValidationEnabled] = useState(true);
-    const [convertedCurrency, setConvertedCurrency] = useState<IApiConvertedCurrency | undefined>(undefined);
+    // const [convertedCurrency, setConvertedCurrency] = useState<IApiConvertedCurrency | undefined>(undefined);
 
     console.log(useAppSelector(selectConvertedCurrency))
 
@@ -67,12 +67,8 @@ const CurrencyConversionTab = () => {
 
     useEffect(() => {
         dispatch(availableCurrenciesThunk())
-    }, [dispatch]);
-
-
-    useEffect(() => {
-        setConvertedCurrency(res)
-    }, [res]);
+    }, [dispatch]); 
+ 
 
     console.log(convertedCurrency)
     return (
