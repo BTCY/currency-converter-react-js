@@ -14,7 +14,9 @@ const Header = ({ children }: IHeader) => {
 
     return (
         <Navbar expand="sm" className={styles.header}>
-            {children}
+            <div className={styles.headerContent}>
+                {children}
+            </div>
         </Navbar>
     );
 

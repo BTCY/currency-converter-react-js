@@ -1,5 +1,15 @@
  .header {
      background-color: #0849ac;
-     padding: 0px 8px;
+     align-items: center;
+     justify-content: center;
+     padding: 0px;
+     width: 100%;
  }
- 
+
+ .headerContent {
+     padding: 0px 12px;
+     display: flex;
+     align-items: center;
+     max-width: 1140px;
+     width: 100%;
+ }

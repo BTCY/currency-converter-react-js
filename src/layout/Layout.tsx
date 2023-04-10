@@ -12,7 +12,7 @@ interface ILayout {
 const Layout = ({ children }: ILayout) => {
 
     return (
-        <div className={`${styles.layout} bg-white d-flex flex-column justify-content-between`}>
+        <div className={styles.layout}>
             {children}
         </div>
     );
