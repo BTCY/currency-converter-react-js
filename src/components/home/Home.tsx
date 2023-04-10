@@ -1,4 +1,5 @@
-import { Container, Tab, Tabs } from 'react-bootstrap';
+import { Tab, Tabs } from 'react-bootstrap';
+import styles from './Home.module.css';
 import CurrencyConversionTab from '../currency-conversion-tab/CurrencyConversionTab';
 
 /**
@@ -8,27 +9,43 @@ import CurrencyConversionTab from '../currency-conversion-tab/CurrencyConversion
 const Home = () => {
 
     return (
-        <Container>
+        <div className={styles.tabsWrap}>
             <Tabs
-                defaultActiveKey="converter"
                 id="home-tab"
-                className="mb-3"
+                defaultActiveKey="converter"
                 justify
             >
-                <Tab eventKey="converter" title="Currency Converter">
+                <Tab
+                    eventKey="converter"
+                    title="Converter"
+                >
                     <CurrencyConversionTab />
                 </Tab>
-                <Tab eventKey="2" title="2">
+
+                <Tab
+                    eventKey="2"
+                    title="2"
+                >
                     TODO
                 </Tab>
-                <Tab eventKey="3" title="3">
+
+                <Tab
+                    eventKey="3"
+                    title="3"
+                >
+                    <CurrencyConversionTab />
                     TODO
                 </Tab>
-                <Tab eventKey="4" title="4">
+
+                <Tab
+                    eventKey="4"
+                    title="4"
+                >
+                    <CurrencyConversionTab />
                     TODO
                 </Tab>
-            </Tabs> 
-        </Container>
+            </Tabs>
+        </div>
     );
 }
 

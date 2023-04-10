@@ -1,7 +1,16 @@
  .tabTemplateWrap {
-     padding-top: 15px;
- } 
- 
+     height: 100% !important;
+     flex-direction: column;
+     flex: 1;
+     min-height: calc(100vh - 170px);
+     justify-content: space-between;
+     background: #ffffff;
+     padding: 30px 12px;
+     border: 1px solid #dee2e6;
+     border-top: none;
+     border-radius: 0 0 0.375rem 0.375rem;
+ }
+
  .h2 {
      margin-bottom: 35px;
  }

@@ -1,3 +1,5 @@
  .footer {
-     padding: 8px;
+     padding: 8px 12px;
+     max-width: 1140px;
+     width: 100%;
  }

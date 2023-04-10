@@ -1,4 +1,7 @@
  .body {
-     padding: 16px 8px;
-     height: 100%;
+     padding: 16px 12px;
+     flex: 1;
+     display: flex;
+     max-width: 1140px;
+     width: 100%;
  }
