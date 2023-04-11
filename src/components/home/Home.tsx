@@ -1,4 +1,5 @@
 import { Tab, Tabs } from 'react-bootstrap';
+import { ArrowRight } from 'react-bootstrap-icons';
 import styles from './Home.module.css';
 import CurrencyConversionTab from '../currency-conversion-tab/CurrencyConversionTab';
 
@@ -26,14 +27,13 @@ const Home = () => {
                     eventKey="2"
                     title="2"
                 >
-                    TODO
+                    TODO <ArrowRight />
                 </Tab>
 
                 <Tab
                     eventKey="3"
                     title="3"
                 >
-                    <CurrencyConversionTab />
                     TODO
                 </Tab>
 
@@ -41,7 +41,6 @@ const Home = () => {
                     eventKey="4"
                     title="4"
                 >
-                    <CurrencyConversionTab />
                     TODO
                 </Tab>
             </Tabs>
