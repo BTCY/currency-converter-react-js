@@ -8,10 +8,11 @@ import { Button, Col, Row } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import TabTemplate from '../common/TabTemplate/TabTemplate';
 import Form from 'react-bootstrap/Form';
-import FormCustom from '../common/TabTemplate/FormCustom';
+import FormCustom from '../common/FormCustom/FormCustom';
 import * as Yup from 'yup';
 import { shallowEqual, useSelector } from 'react-redux';
 import { IApiConvertedCurrency } from '../../api/exchange-rates-service.types';
+import SelectSkeleton from '../common/SelectSkeleton/SelectSkeleton';
 // import { getAllAvailableCurrencies } from '../../api/exchange-rates-service';
 
 /**
@@ -21,13 +22,14 @@ import { IApiConvertedCurrency } from '../../api/exchange-rates-service.types';
 const CurrencyConversionTab = () => {
 
     const availableCurrencies = useAppSelector(selectAvailableCurrencies, shallowEqual);
+    const [availableCurrenciesIsLoading, setAvailableCurrenciesIsLoading] = useState<boolean>(true);
     const convertedCurrency = useAppSelector(selectConvertedCurrency, shallowEqual);
     const dispatch = useAppDispatch();
     // console.log(useSelector((store: any) => store?.currencies))
     const [validationEnabled, setValidationEnabled] = useState(true);
     // const [convertedCurrency, setConvertedCurrency] = useState<IApiConvertedCurrency | undefined>(undefined);
 
-    console.log(useAppSelector(selectConvertedCurrency))
+    // console.log(useAppSelector(selectConvertedCurrency))
 
     const { values, touched, errors, ...formik } = useFormik({
         validateOnChange: validationEnabled,
@@ -66,20 +68,27 @@ const CurrencyConversionTab = () => {
 
 
     useEffect(() => {
+        setAvailableCurrenciesIsLoading(true); 
         dispatch(availableCurrenciesThunk())
-    }, [dispatch]); 
- 
+            .finally(() => setAvailableCurrenciesIsLoading(false));
+    }, [dispatch]);
 
-    console.log(convertedCurrency)
+
+    // console.log(availableCurrenciesIsLoading)
+    // console.log(availableCurrencies)
+
     return (
         <TabTemplate title={'Currency conversion'}>
             <FormCustom>
                 <Row className='mb-5'>
-                    {/* Select: sCurrency from */}
+                    {/* Select: Currency from */}
                     <Col md={4} xs={12} className='mb-2'>
                         <Form.Group controlId='currencyFrom'>
                             <Form.Label>Currency from</Form.Label>
-                            {!!availableCurrencies?.symbols &&
+
+                            <SelectSkeleton isShow={availableCurrenciesIsLoading} />
+
+                            {!availableCurrenciesIsLoading && availableCurrencies?.symbols &&
                                 <Form.Select
                                     name='currencyFrom'
                                     aria-label='currency from'
@@ -100,7 +109,10 @@ const CurrencyConversionTab = () => {
                     <Col md={4} xs={12} className='mb-2'>
                         <Form.Group controlId='currencyTo'>
                             <Form.Label>Currency to</Form.Label>
-                            {!!availableCurrencies?.symbols &&
+
+                            <SelectSkeleton isShow={availableCurrenciesIsLoading} />
+
+                            {!availableCurrenciesIsLoading && availableCurrencies?.symbols &&
                                 <Form.Select
                                     name='currencyTo'
                                     aria-label='currency to'
@@ -121,15 +133,20 @@ const CurrencyConversionTab = () => {
                     <Col md={2} xs={12} className='mb-2'>
                         <Form.Group controlId='currencyAmount'>
                             <Form.Label>Amount</Form.Label>
-                            <Form.Control
-                                type='number'
-                                aria-label='currency amount'
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                value={values.amount}
-                                required
-                                min={1}
-                            />
+
+                            <SelectSkeleton isShow={availableCurrenciesIsLoading} />
+
+                            {!availableCurrenciesIsLoading && availableCurrencies?.symbols &&
+                                <Form.Control
+                                    type='number'
+                                    aria-label='currency amount'
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    value={values.amount}
+                                    required
+                                    min={1}
+                                />
+                            }
                         </Form.Group>
                     </Col>
 
@@ -154,8 +171,8 @@ const CurrencyConversionTab = () => {
                     </>
                 }
             </Row>
-
         </TabTemplate>
+
     );
 }
 
