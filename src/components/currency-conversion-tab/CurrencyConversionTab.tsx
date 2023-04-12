@@ -23,17 +23,17 @@ const CurrencyConversionTab = () => {
 
     const availableCurrencies = useAppSelector(selectAvailableCurrencies, shallowEqual);
     const [availableCurrenciesIsLoading, setAvailableCurrenciesIsLoading] = useState<boolean>(true);
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const convertedCurrency = useAppSelector(selectConvertedCurrency, shallowEqual);
     const dispatch = useAppDispatch();
-    // console.log(useSelector((store: any) => store?.currencies))
-    const [validationEnabled, setValidationEnabled] = useState(true);
+    // console.log(useSelector((store: any) => store?.currencies)) 
     // const [convertedCurrency, setConvertedCurrency] = useState<IApiConvertedCurrency | undefined>(undefined);
 
     // console.log(useAppSelector(selectConvertedCurrency))
 
     const { values, touched, errors, ...formik } = useFormik({
-        validateOnChange: validationEnabled,
-        validateOnBlur: validationEnabled,
+        validateOnChange: true,
+        validateOnBlur: true,
         enableReinitialize: true,
         initialValues: {
             currencyFrom: 'USD',
@@ -50,30 +50,30 @@ const CurrencyConversionTab = () => {
         }),
 
         onSubmit: async (values: any) => {
-            setValidationEnabled(true);
 
-            const submit = {
+            const params = {
                 from: values.currencyFrom,
                 to: values.currencyTo,
                 amount: values.amount,
             }
-            dispatch(convertedCurrencyThunk(submit))
+
+            dispatch(convertedCurrencyThunk(params))
+                .finally(() => setIsSubmitting(false))
 
         }
     });
 
-    const handleSubmit = () => {
-        formik.submitForm();
-    };
-
 
     useEffect(() => {
-        setAvailableCurrenciesIsLoading(true); 
+        setAvailableCurrenciesIsLoading(true);
         dispatch(availableCurrenciesThunk())
             .finally(() => setAvailableCurrenciesIsLoading(false));
     }, [dispatch]);
 
-
+    const handleSubmit = () => {
+        setIsSubmitting(true);
+        formik.submitForm();
+    };
     // console.log(availableCurrenciesIsLoading)
     // console.log(availableCurrencies)
 
@@ -156,7 +156,7 @@ const CurrencyConversionTab = () => {
                             className='mb-2'
                             variant='primary'
                             onClick={handleSubmit}
-                            disabled={formik.isSubmitting}
+                            disabled={isSubmitting}
                         >
                             Convert
                         </Button>
