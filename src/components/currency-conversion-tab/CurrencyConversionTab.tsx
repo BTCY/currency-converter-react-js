@@ -12,6 +12,8 @@ import Form from 'react-bootstrap/Form';
 import FormCustom from '../common/FormCustom/FormCustom';
 import SelectSkeleton from '../common/SelectSkeleton/SelectSkeleton';
 import * as Yup from 'yup';
+import { MagnifyingGlass } from 'react-loader-spinner';
+import DelayedSpinner from '../common/DelayedSpinner/DelayedSpinner';
 
 /**
  *   CurrencyConversionTab
@@ -160,11 +162,13 @@ const CurrencyConversionTab = () => {
             </FormCustom>
 
             <Row className='mb-5'>
-                {convertedCurrency?.result && convertedCurrency.success &&
+                {!isSubmitting && convertedCurrency?.result && convertedCurrency.success &&
                     <>
                         <p>result: {convertedCurrency?.result}</p>
                     </>
                 }
+
+                {isSubmitting && <DelayedSpinner />}
             </Row>
         </TabTemplate>
 
