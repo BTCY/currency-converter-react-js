@@ -6,14 +6,12 @@ import {
 } from '../../stores/slices/currenciesSlice';
 import { Button, Col, Row } from 'react-bootstrap';
 import { useFormik } from 'formik';
+import { shallowEqual } from 'react-redux';
 import TabTemplate from '../common/TabTemplate/TabTemplate';
 import Form from 'react-bootstrap/Form';
 import FormCustom from '../common/FormCustom/FormCustom';
-import * as Yup from 'yup';
-import { shallowEqual, useSelector } from 'react-redux';
-import { IApiConvertedCurrency } from '../../api/exchange-rates-service.types';
 import SelectSkeleton from '../common/SelectSkeleton/SelectSkeleton';
-// import { getAllAvailableCurrencies } from '../../api/exchange-rates-service';
+import * as Yup from 'yup';
 
 /**
  *   CurrencyConversionTab
@@ -26,10 +24,7 @@ const CurrencyConversionTab = () => {
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const convertedCurrency = useAppSelector(selectConvertedCurrency, shallowEqual);
     const dispatch = useAppDispatch();
-    // console.log(useSelector((store: any) => store?.currencies)) 
-    // const [convertedCurrency, setConvertedCurrency] = useState<IApiConvertedCurrency | undefined>(undefined);
 
-    // console.log(useAppSelector(selectConvertedCurrency))
 
     const { values, touched, errors, ...formik } = useFormik({
         validateOnChange: true,
@@ -38,14 +33,14 @@ const CurrencyConversionTab = () => {
         initialValues: {
             currencyFrom: 'USD',
             currencyTo: 'EUR',
-            amount: 1,
+            currencyAmount: 1,
         },
         validationSchema: Yup.object({
             currencyFrom: Yup.string()
                 .required('1'),
             currencyTo: Yup.string()
                 .required('1'),
-            amount: Yup.number()
+            currencyAmount: Yup.number()
                 .required('1'),
         }),
 
@@ -54,7 +49,7 @@ const CurrencyConversionTab = () => {
             const params = {
                 from: values.currencyFrom,
                 to: values.currencyTo,
-                amount: values.amount,
+                amount: values.currencyAmount,
             }
 
             dispatch(convertedCurrencyThunk(params))
@@ -74,13 +69,13 @@ const CurrencyConversionTab = () => {
         setIsSubmitting(true);
         formik.submitForm();
     };
-    // console.log(availableCurrenciesIsLoading)
-    // console.log(availableCurrencies)
+
+    console.log(convertedCurrency)
 
     return (
         <TabTemplate title={'Currency conversion'}>
             <FormCustom>
-                <Row className='mb-5'>
+                <Row className='mb-5 align-items-end'>
                     {/* Select: Currency from */}
                     <Col md={4} xs={12} className='mb-2'>
                         <Form.Group controlId='currencyFrom'>
@@ -138,11 +133,12 @@ const CurrencyConversionTab = () => {
 
                             {!availableCurrenciesIsLoading && availableCurrencies?.symbols &&
                                 <Form.Control
+                                    name='currencyAmount'
                                     type='number'
                                     aria-label='currency amount'
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
-                                    value={values.amount}
+                                    value={values.currencyAmount}
                                     required
                                     min={1}
                                 />
@@ -153,7 +149,6 @@ const CurrencyConversionTab = () => {
                     {/* Button: Convert */}
                     <Col md={2} xs={12} className='mb-2'>
                         <Button
-                            className='mb-2'
                             variant='primary'
                             onClick={handleSubmit}
                             disabled={isSubmitting}
