@@ -1,0 +1,57 @@
+import { Col, Row } from "react-bootstrap";
+import { IApiConvertedCurrency } from "../../api/exchange-rates-service.types";
+import styles from './ConversionResult.module.css';
+
+
+interface IConversionResult {
+    result: IApiConvertedCurrency
+}
+
+const ConversionResult = ({
+    result
+}: IConversionResult) => {
+    return (
+        <div className={styles.wrap}>
+
+            <Row>
+                <Col md="auto">
+                    <div className={styles.resultValue}>
+                        {result.query.amount}
+                    </div>
+                    {result.query.from}
+                </Col>
+                <Col className={styles.resultValue} md="auto">x</Col>
+                <Col md="auto">
+                    <div className={styles.resultValue}>
+                        {result.info.rate}
+                    </div>
+                    RATE
+                </Col>
+
+                <Col className={styles.resultValue} md="auto">=</Col>
+
+                <Col md="auto">
+                    <div className={styles.resultValue}>
+                        {result.result}
+                    </div>
+                    {result.query.to}
+                </Col>
+            </Row>
+
+
+            <div className="info">
+                <hr
+                    style={{
+                        color: '#999',
+                        backgroundColor: '#999',
+                        height: 1
+                    }}
+                />
+                1123
+            </div>
+
+        </div>
+    )
+};
+
+export default ConversionResult;
