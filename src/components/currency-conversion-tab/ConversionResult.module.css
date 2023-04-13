@@ -1,0 +1,16 @@
+ .wrap {
+     height: 100% !important;
+ }
+
+ .resultWrap {
+     display: inline-block;
+ }
+
+ .resulBlock {
+     display: inline-block;
+ }
+
+
+ .resultValue {
+     font-size: 3.5em;
+ }
