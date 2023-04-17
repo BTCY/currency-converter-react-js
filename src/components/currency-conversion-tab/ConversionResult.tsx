@@ -1,4 +1,4 @@
-import { Col, Row } from "react-bootstrap";
+import { Col, Nav, Row } from "react-bootstrap";
 import { IApiConvertedCurrency } from "../../api/exchange-rates-service.types";
 import styles from './ConversionResult.module.css';
 
@@ -39,16 +39,27 @@ const ConversionResult = ({
             </Row>
 
 
-            <div className="info">
-                <hr
-                    style={{
-                        color: '#999',
-                        backgroundColor: '#999',
-                        height: 1
-                    }}
-                />
-                1123
-            </div>
+            <Row 
+                style={{
+                    color: '#aaaaaa',
+                    borderTop: '1px solid #aaaaaa'
+                }}
+            >
+                <Col xs="12">
+                    Currency update date: {new Date(result.info.timestamp * 1000).toLocaleString()}.
+                </Col>
+                <Col xs="12">
+                    Data source: 
+                    <a
+                        target="_blank"
+                        href="https://apilayer.com/marketplace/exchangerates_data-api"
+                        className="link-secondary"
+                        rel="noreferrer"
+                    >
+                        Exchange Rates Data API
+                    </a>
+                </Col>
+            </Row>
 
         </div>
     )

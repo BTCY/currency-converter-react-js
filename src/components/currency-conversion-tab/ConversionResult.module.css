@@ -1,5 +1,7 @@
  .wrap {
-     height: 100% !important;
+     height: 100% !important; 
+     justify-content: space-between;
+     background-color: antiquewhite;
  }
 
  .resultWrap {
