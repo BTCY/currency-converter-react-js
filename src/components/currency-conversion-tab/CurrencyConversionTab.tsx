@@ -7,14 +7,14 @@ import {
 import { Button, Col, Row } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { shallowEqual } from 'react-redux';
-import TabTemplate from '../common/TabTemplate/TabTemplate';
+import TabTemplate from '../common/tab-template/TabTemplate';
 import Form from 'react-bootstrap/Form';
-import FormCustom from '../common/FormCustom/FormCustom';
-import SelectSkeleton from '../common/SelectSkeleton/SelectSkeleton';
+import FormCustom from '../common/form-custom/FormCustom';
+import SelectSkeleton from '../common/select-skeleton/SelectSkeleton';
 import * as Yup from 'yup';
-import { MagnifyingGlass } from 'react-loader-spinner';
-import DelayedSpinner from '../common/DelayedSpinner/DelayedSpinner';
+import DelayedSpinner from '../common/delayed-spinner/DelayedSpinner';
 import ConversionResult from './ConversionResult';
+import MetaInfo from './MetaInfo';
 
 /**
  *   CurrencyConversionTab
@@ -162,15 +162,16 @@ const CurrencyConversionTab = () => {
                 </Row>
             </FormCustom>
 
-            <Row className='mb-5'>
-                {/* Result */}
-                {!isSubmitting && convertedCurrency?.result && convertedCurrency?.success === true &&
+            {/* Result */}
+            {!isSubmitting && convertedCurrency?.result && convertedCurrency?.success === true &&
+                <div style={{ backgroundColor: 'ButtonHighlight' }}>
                     <ConversionResult result={convertedCurrency} />
-                }
+                    <MetaInfo result={convertedCurrency} />
+                </div>
+            }
 
-                {/* Loader */}
-                {isSubmitting && <DelayedSpinner />}
-            </Row>
+            {/* Loader */}
+            {isSubmitting && <DelayedSpinner />}
         </TabTemplate>
 
     );

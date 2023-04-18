@@ -1,18 +1,3 @@
- .wrap {
-     height: 100% !important; 
-     justify-content: space-between;
-     background-color: antiquewhite;
- }
-
- .resultWrap {
-     display: inline-block;
- }
-
- .resulBlock {
-     display: inline-block;
- }
-
-
  .resultValue {
      font-size: 3.5em;
  }
