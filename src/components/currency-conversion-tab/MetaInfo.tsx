@@ -1,6 +1,4 @@
-import { Col, Row } from "react-bootstrap";
-import { IApiConvertedCurrency } from "../../api/exchange-rates-service.types";
-import styles from './MetaInfo.module.css';
+import { IApiConvertedCurrency } from '../../api/exchange-rates-service.types';
 
 
 interface IMetaInfo {
@@ -11,22 +9,19 @@ const MetaInfo = ({
     result
 }: IMetaInfo) => {
     return (
-        <Row className={styles.wrap}>
-            <Col xs="12">
-                Currency update date: {new Date(result.info.timestamp * 1000).toLocaleString()}.
-            </Col>
-            <Col xs="12">
-                Data source:
-                <a
-                    target="_blank"
-                    href="https://apilayer.com/marketplace/exchangerates_data-api"
-                    className="link-secondary"
-                    rel="noreferrer"
-                >
-                    Exchange Rates Data API
-                </a>
-            </Col>
-        </Row>
+        <div className='d-flex justify-content-between text-uppercase bg-light text-secondary p-2 rounded'>
+            <small>
+                update date: {new Date(result.info.timestamp * 1000).toLocaleString()}
+            </small>
+            <a
+                target='_blank'
+                href='https://apilayer.com/marketplace/exchangerates_data-api'
+                className='link-secondary text-decoration-none small'
+                rel='noreferrer'
+            >
+                source
+            </a>
+        </div>
     )
 };
 
