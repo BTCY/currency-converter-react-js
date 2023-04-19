@@ -164,9 +164,9 @@ const CurrencyConversionTab = () => {
 
             {/* Result */}
             {!isSubmitting && convertedCurrency?.result && convertedCurrency?.success === true &&
-                <div style={{ backgroundColor: 'ButtonHighlight' }}>
-                    <ConversionResult result={convertedCurrency} />
+                <div>
                     <MetaInfo result={convertedCurrency} />
+                    <ConversionResult result={convertedCurrency} />
                 </div>
             }
 
