@@ -37,9 +37,11 @@ const createStructure = (request: IDBOpenDBRequest): void => {
 
     try { request.result.deleteObjectStore(Stores.AvailableCurrencies) } catch (e) { }
     try { request.result.deleteObjectStore(Stores.ConvertedCurrency) } catch (e) { }
+    try { request.result.deleteObjectStore(Stores.CurrencyFluctuations) } catch (e) { }
 
     request.result.createObjectStore(Stores.AvailableCurrencies, { keyPath: KEY_PATH });
     request.result.createObjectStore(Stores.ConvertedCurrency, { keyPath: KEY_PATH });
+    request.result.createObjectStore(Stores.CurrencyFluctuations, { keyPath: KEY_PATH });
 };
 
 

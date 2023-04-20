@@ -4,3 +4,10 @@ export interface IConvertedCurrencyThunk {
     amount: number;
     date?: string;
 }
+
+export interface ICurrencyFluctuationsThunk { 
+    start_date: string,
+    end_date: string,
+    base?: string,
+    symbols?: string 
+}

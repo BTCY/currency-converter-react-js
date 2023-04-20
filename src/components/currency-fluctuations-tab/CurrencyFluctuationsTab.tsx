@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../stores/hooks';
 import {
     selectAvailableCurrencies, availableCurrenciesThunk,
-    selectConvertedCurrency, convertedCurrencyThunk
+    convertedCurrencyThunk, selectCurrencyFluctuations, currencyFluctuationsThunk
 } from '../../stores/slices/currenciesSlice';
 import { Button, Col, Row } from 'react-bootstrap';
 import { useFormik } from 'formik';
@@ -13,19 +13,20 @@ import FormCustom from '../common/form-custom/FormCustom';
 import SelectSkeleton from '../common/select-skeleton/SelectSkeleton';
 import * as Yup from 'yup';
 import DelayedSpinner from '../common/delayed-spinner/DelayedSpinner';
-import ConversionResult from './ConversionResult';
+import FluctuationsResult from './FluctuationsResult';
 import MetaInfo from './MetaInfo';
+import { ICurrencyFluctuationsThunk } from '../../stores/slices/currenciesSlice.types';
 
 /**
- *   CurrencyConversionTab
+ *   CurrencyFluctuationsTab
  */
 
-const CurrencyConversionTab = () => {
+const CurrencyFluctuationsTab = () => {
 
     const availableCurrencies = useAppSelector(selectAvailableCurrencies, shallowEqual);
     const [availableCurrenciesIsLoading, setAvailableCurrenciesIsLoading] = useState<boolean>(true);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-    const convertedCurrency = useAppSelector(selectConvertedCurrency, shallowEqual);
+    const currencyFluctuations = useAppSelector(selectCurrencyFluctuations, shallowEqual);
     const dispatch = useAppDispatch();
 
 
@@ -49,13 +50,13 @@ const CurrencyConversionTab = () => {
 
         onSubmit: async (values: any) => {
 
-            const params = {
-                from: values.currencyFrom,
-                to: values.currencyTo,
-                amount: values.currencyAmount,
+            const params: ICurrencyFluctuationsThunk = {
+                start_date: '2018-02-25',
+                end_date: "2018-02-26",
+                base: "EUR", 
             }
 
-            dispatch(convertedCurrencyThunk(params))
+            dispatch(currencyFluctuationsThunk(params))
                 .finally(() => setIsSubmitting(false))
 
         }
@@ -73,12 +74,10 @@ const CurrencyConversionTab = () => {
         formik.submitForm();
     };
 
-    console.log(1)
-    // console.log(availableCurrencies)
-    // console.log(convertedCurrency)
+    console.log(2)
 
     return (
-        <TabTemplate title={'Currency conversion'}>
+        <TabTemplate title={'Currency fluctuations'}>
             <FormCustom>
                 <Row className='mb-5 align-items-end'>
                     {/* Select: Currency from */}
@@ -165,18 +164,18 @@ const CurrencyConversionTab = () => {
             </FormCustom>
 
             {/* Result */}
-            {!isSubmitting && convertedCurrency?.result && convertedCurrency?.success === true &&
+            {/* {!isSubmitting && convertedCurrency?.result && convertedCurrency?.success === true &&
                 <div>
                     <MetaInfo result={convertedCurrency} />
-                    <ConversionResult result={convertedCurrency} />
+                    <FluctuationsResult result={convertedCurrency} />
                 </div>
-            }
+            } */}
 
             {/* Loader */}
-            {isSubmitting && <DelayedSpinner />}
+            {/* {isSubmitting && <DelayedSpinner />} */}
         </TabTemplate>
 
     );
 }
 
-export default CurrencyConversionTab;
+export default CurrencyFluctuationsTab;

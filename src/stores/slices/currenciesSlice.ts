@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getAllAvailableCurrencies, getConvertedCurrency } from '../../api/exchange-rates-service';
+import { getAllAvailableCurrencies, getConvertedCurrency, getCurrencyFluctuations } from '../../api/exchange-rates-service';
 import { RootState } from '../store';
 import { putInIndexedDB, getFromIndexedDB, KEY_PATH } from '../../api/indexedDB-service';
 import { diff } from '../../utils/dateTimeHelper';
 import { Stores } from '../../api/indexedDB-service.types';
-import { IApiAllAvailableCurrencies, IApiConvertedCurrency } from '../../api/exchange-rates-service.types';
-import { IConvertedCurrencyThunk } from './currenciesSlice.types';
+import { IApiAllAvailableCurrencies, IApiConvertedCurrency, IApiCurrencyFluctuations } from '../../api/exchange-rates-service.types';
+import { IConvertedCurrencyThunk, ICurrencyFluctuationsThunk } from './currenciesSlice.types';
 
 
 const ALLOW_DIFF_IN_MINUTES = 1440;
@@ -14,6 +14,7 @@ export interface ICurrenciesState {
     value: number;
     availableCurrencies: IApiAllAvailableCurrencies | undefined;
     convertedCurrency: IApiConvertedCurrency | undefined;
+    currencyFluctuations: IApiCurrencyFluctuations | undefined;
     status: 'idle' | 'loading' | 'failed';
 }
 
@@ -21,6 +22,7 @@ const initialState: ICurrenciesState = {
     value: 0,
     availableCurrencies: undefined,
     convertedCurrency: undefined,
+    currencyFluctuations: undefined,
     status: 'idle',
 };
 
@@ -83,6 +85,37 @@ export const convertedCurrencyThunk = createAsyncThunk(
     }
 );
 
+export const currencyFluctuationsThunk = createAsyncThunk(
+    'currencies/currencyFluctuations',
+    async (
+        param: ICurrencyFluctuationsThunk
+    ): Promise<IApiCurrencyFluctuations | undefined> => {
+        const key = param.start_date + '_' + param.end_date + '_' + (param?.base || '') + '_' + (param?.symbols || '');
+        let currencyFluctuations = await getFromIndexedDB(Stores.CurrencyFluctuations, key);
+        const diffInMinutes = diff(new Date(), currencyFluctuations?.update_timestamp);
+
+        if (diffInMinutes === undefined || diffInMinutes > ALLOW_DIFF_IN_MINUTES) {
+            try {
+                const result = await getCurrencyFluctuations(param.start_date, param.end_date, param?.base, param?.symbols);
+                if (result) {
+                    currencyFluctuations = {
+                        [KEY_PATH]: key,
+                        store: Stores.CurrencyFluctuations,
+                        update_timestamp: Number(new Date()),
+                        data: result
+                    };
+
+                    await putInIndexedDB(Stores.CurrencyFluctuations, currencyFluctuations);
+                }
+            } catch (e) {
+                console.log(e)
+            }
+        }
+
+        return currencyFluctuations?.data as IApiCurrencyFluctuations | undefined;
+    }
+);
+
 
 export const currenciesSlice = createSlice({
     name: 'currencies',
@@ -90,7 +123,7 @@ export const currenciesSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(availableCurrenciesThunk.pending, (state) => {
+            .addCase(availableCurrenciesThunk.pending, (state) => { 
                 state.status = 'loading';
             })
             .addCase(availableCurrenciesThunk.fulfilled, (state, action) => {
@@ -110,11 +143,22 @@ export const currenciesSlice = createSlice({
             .addCase(convertedCurrencyThunk.rejected, (state) => {
                 state.status = 'failed';
             })
+            .addCase(currencyFluctuationsThunk.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(currencyFluctuationsThunk.fulfilled, (state, action) => {
+                state.status = 'idle';
+                state.currencyFluctuations = action.payload;
+            })
+            .addCase(currencyFluctuationsThunk.rejected, (state) => {
+                state.status = 'failed';
+            })
     },
 });
 
 
 export const selectAvailableCurrencies = (state: RootState) => state.currencies.availableCurrencies;
 export const selectConvertedCurrency = (state: RootState) => state.currencies.convertedCurrency;
+export const selectCurrencyFluctuations = (state: RootState) => state.currencies.currencyFluctuations;
 
 export default currenciesSlice.reducer;
