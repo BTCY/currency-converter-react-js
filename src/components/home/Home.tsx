@@ -1,7 +1,8 @@
 import { Tab, Tabs } from 'react-bootstrap';
-import { ArrowRight } from 'react-bootstrap-icons';
+// import { ArrowRight } from 'react-bootstrap-icons';
 import styles from './Home.module.css';
 import CurrencyConversionTab from '../currency-conversion-tab/CurrencyConversionTab';
+import CurrencyFluctuationsTab from '../currency-fluctuations-tab/CurrencyFluctuationsTab';
 
 /**
  *   Home
@@ -24,10 +25,10 @@ const Home = () => {
                 </Tab>
 
                 <Tab
-                    eventKey="2"
-                    title="2"
+                    eventKey="fluctuations"
+                    title="Fluctuations"
                 >
-                    TODO <ArrowRight />
+                     <CurrencyFluctuationsTab />
                 </Tab>
 
                 <Tab
