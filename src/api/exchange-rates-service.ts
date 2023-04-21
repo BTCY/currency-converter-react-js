@@ -3,7 +3,7 @@ import { getServerError } from './error-service';
 import {
     IApiConvertedCurrency, IApiCurrencyFluctuations,
     IApiLatestExchangeRates, IApiAllAvailableCurrencies,
-    IApiExchangeRateHistory, IApiExchangeRateHistoryByDate
+    IApiExchangeRateHistory
 } from './exchange-rates-service.types';
 
 /**
@@ -34,7 +34,7 @@ export const getConvertedCurrency = (
     amount: number,
     date: string | undefined = undefined
 ): Promise<IApiConvertedCurrency> =>
-    axios.get(
+    axios.get<IApiConvertedCurrency>(
         'https://api.apilayer.com/exchangerates_data/convert', {
         headers,
         params: { from, to, amount, date }
@@ -60,7 +60,7 @@ export const getCurrencyFluctuations = (
     base: string | undefined = undefined,
     symbols: string | undefined = undefined
 ): Promise<IApiCurrencyFluctuations> =>
-    axios.get(
+    axios.get<IApiCurrencyFluctuations>(
         'https://api.apilayer.com/exchangerates_data/fluctuation', {
         headers,
         params: { start_date, end_date, base, symbols }
@@ -82,7 +82,7 @@ export const getLatestExchangeRates = (
     base: string | undefined = undefined,
     symbols: string | undefined = undefined
 ): Promise<IApiLatestExchangeRates> =>
-    axios.get(
+    axios.get<IApiLatestExchangeRates>(
         'https://api.apilayer.com/exchangerates_data/latest', {
         headers,
         params: { base, symbols }
@@ -99,7 +99,7 @@ export const getLatestExchangeRates = (
  * @return  {IApiAllAvailableCurrencies}    All available currencies
  */
 export const getAllAvailableCurrencies = (): Promise<IApiAllAvailableCurrencies> =>
-    axios.get(
+    axios.get<IApiAllAvailableCurrencies>(
         'https://api.apilayer.com/exchangerates_data/symbols', {
         headers
     })
@@ -124,7 +124,7 @@ export const getExchangeRateHistory = (
     base: string | undefined = undefined,
     symbols: string | undefined = undefined
 ): Promise<IApiExchangeRateHistory> =>
-    axios.get(
+    axios.get<IApiExchangeRateHistory>(
         'https://api.apilayer.com/exchangerates_data/timeseries', {
         headers,
         params: { start_date, end_date, base, symbols }
@@ -132,29 +132,4 @@ export const getExchangeRateHistory = (
         .then(res => res.data)
         .catch(e => {
             throw getServerError(e);
-        });
-
-
-/**
- * Historical rates are available for most currencies all the way back to the year of 1999. 
- * You can query the Fixer API for historical rates by appending a date (format YYYY-MM-DD) to the base URL.
- * 
- * @param   {string}   date                   A date in the past for which historical rates are requested.
- * @param   {string}   [base]                 Enter the three-letter currency code of your preferred base currency.
- * @param   {string}   [symbols]              Enter a list of comma-separated currency codes to limit output currencies.
- * @return  {IApiExchangeRateHistoryByDate}   Exchange rate history by date
- */
-export const getExchangeRateHistoryByDate = (
-    date: string,
-    base: string | undefined = undefined,
-    symbols: string | undefined = undefined
-): Promise<IApiExchangeRateHistoryByDate> =>
-    axios.get(
-        `https://api.apilayer.com/exchangerates_data/${date}`, {
-        headers,
-        params: { base, symbols }
-    })
-        .then(res => res.data)
-        .catch(e => {
-            throw getServerError(e);
-        });
+        }); 

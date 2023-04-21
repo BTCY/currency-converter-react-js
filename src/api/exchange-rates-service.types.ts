@@ -5,6 +5,32 @@
  */
 
 
+export interface IConvertedCurrencyParams {
+    from: string,
+    to: string,
+    amount: number,
+    date?: string,
+}
+
+export interface ICurrencyFluctuationsParams {
+    start_date: string,
+    end_date: string,
+    base?: string,
+    symbols?: string
+}
+
+export interface ILatestExchangeRatesParams {
+    base?: string,
+    symbols?: string
+}
+
+export interface IExchangeRateHistoryParams {
+    start_date: string,
+    end_date: string,
+    base?: string,
+    symbols?: string
+}
+
 /**
  * Converted currency.
  * 
@@ -169,41 +195,3 @@ export interface IApiExchangeRateHistory {
     /** Date and time of update */
     timeseries: boolean
 }
-
-
-/**
- * Exchange rate history by date.
- * 
- * @interface IApiExchangeRateHistoryByDate 
- */
-export interface IApiExchangeRateHistoryByDate {
-
-    /** Base currency */
-    base: string,
-
-    /** Date of rate history */
-    date: string,
-
-    /** Sign that the date is not relevant (taken from history) */
-    historical: boolean,
-
-    /** Exchange rate */
-    rates: {
-
-        /** Date */
-        [key: string]: {
-
-            /** Currency: value */
-            [key: string]: number
-        }
-    },
-
-
-    /** Exchange rate history status */
-    success: boolean,
-
-    /** Date and time of update */
-    timestamp: number
-}
-
-

@@ -15,6 +15,7 @@ import * as Yup from 'yup';
 import DelayedSpinner from '../common/delayed-spinner/DelayedSpinner';
 import ConversionResult from './ConversionResult';
 import MetaInfo from './MetaInfo';
+import { IConvertedCurrencyParams } from '../../api/exchange-rates-service.types';
 
 /**
  *   CurrencyConversionTab
@@ -47,12 +48,12 @@ const CurrencyConversionTab = () => {
                 .required('1'),
         }),
 
-        onSubmit: async (values: any) => {
+        onSubmit: async ({ currencyFrom, currencyTo, currencyAmount }) => {
 
-            const params = {
-                from: values.currencyFrom,
-                to: values.currencyTo,
-                amount: values.currencyAmount,
+            const params: IConvertedCurrencyParams = {
+                from: currencyFrom,
+                to: currencyTo,
+                amount: currencyAmount,
             }
 
             dispatch(convertedCurrencyThunk(params))
@@ -73,9 +74,6 @@ const CurrencyConversionTab = () => {
         formik.submitForm();
     };
 
-    console.log(1)
-    // console.log(availableCurrencies)
-    // console.log(convertedCurrency)
 
     return (
         <TabTemplate title={'Currency conversion'}>

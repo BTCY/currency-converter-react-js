@@ -1,7 +1,7 @@
 import {
     IApiAllAvailableCurrencies, IApiConvertedCurrency,
     IApiCurrencyFluctuations, IApiExchangeRateHistory,
-    IApiExchangeRateHistoryByDate, IApiLatestExchangeRates
+    IApiLatestExchangeRates
 } from "./exchange-rates-service.types";
 import { KEY_PATH } from "./indexedDB-service";
 
@@ -11,7 +11,7 @@ import { KEY_PATH } from "./indexedDB-service";
 
 
 /**
- * Тип: динамический возвращяемый тип вспомогательных отчётов.
+ * Type: dynamic returned from currency API
  * 
  * {@link https://apsmgmtapi.docs.apiary.io/#reference/0/8/0 API: Aps Mgmtapi}  
  * 
@@ -23,7 +23,6 @@ export type StoreData<T> =
     T extends Stores.LatestExchangeRates ? IApiLatestExchangeRates :
     T extends Stores.AvailableCurrencies ? IApiAllAvailableCurrencies :
     T extends Stores.ExchangeRateHistory ? IApiExchangeRateHistory :
-    T extends Stores.ExchangeRateHistoryByDate ? IApiExchangeRateHistoryByDate :
     any;
 
 
