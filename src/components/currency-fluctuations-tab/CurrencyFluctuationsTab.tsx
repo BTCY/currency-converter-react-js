@@ -54,6 +54,7 @@ const CurrencyFluctuationsTab = () => {
                 start_date: '2018-02-25',
                 end_date: "2018-02-26",
                 base: "EUR", 
+                symbols: undefined, 
             }
 
             dispatch(currencyFluctuationsThunk(params))
