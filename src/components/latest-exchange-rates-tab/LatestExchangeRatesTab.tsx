@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../stores/hooks';
 import {
     selectAvailableCurrencies, availableCurrenciesThunk,
-    convertedCurrencyThunk, selectCurrencyFluctuations, currencyFluctuationsThunk
+    latestExchangeRatesThunk, selectCurrencyFluctuations
 } from '../../stores/slices/currenciesSlice';
 import { Button, Col, Row } from 'react-bootstrap';
 import { useFormik } from 'formik';
@@ -13,17 +13,17 @@ import FormCustom from '../common/form-custom/FormCustom';
 import SelectSkeleton from '../common/select-skeleton/SelectSkeleton';
 import * as Yup from 'yup';
 import DelayedSpinner from '../common/delayed-spinner/DelayedSpinner';
-import FluctuationsResult from './FluctuationsResult';
+import LatestExchangeRatesResult from './LatestExchangeRatesResult';
 import MetaInfo from './MetaInfo';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { ICurrencyFluctuationsParams } from '../../api/exchange-rates-service.types';
+import { ILatestExchangeRatesParams } from '../../api/exchange-rates-service.types';
 
 /**
  *   CurrencyFluctuationsTab
  */
 
-const CurrencyFluctuationsTab = () => {
+const LatestExchangeRatesTab = () => {
 
     const availableCurrencies = useAppSelector(selectAvailableCurrencies, shallowEqual);
     const [availableCurrenciesIsLoading, setAvailableCurrenciesIsLoading] = useState<boolean>(true);
@@ -53,14 +53,12 @@ const CurrencyFluctuationsTab = () => {
 
         onSubmit: async (values: any) => {
 
-            const params: ICurrencyFluctuationsParams = {
-                start_date: '2018-02-25',
-                end_date: "2018-02-26",
-                base: "EUR",
-                symbols: undefined, 
+            const params: ILatestExchangeRatesParams = {
+                base: undefined,
+                symbols: undefined
             }
 
-            dispatch(currencyFluctuationsThunk(params))
+            dispatch(latestExchangeRatesThunk(params))
                 .finally(() => setIsSubmitting(false))
 
         }
@@ -174,7 +172,7 @@ const CurrencyFluctuationsTab = () => {
             {/* {!isSubmitting && convertedCurrency?.result && convertedCurrency?.success === true &&
                 <div>
                     <MetaInfo result={convertedCurrency} />
-                    <FluctuationsResult result={convertedCurrency} />
+                    <LatestExchangeRatesResult result={convertedCurrency} />
                 </div>
             } */}
 
@@ -185,4 +183,4 @@ const CurrencyFluctuationsTab = () => {
     );
 }
 
-export default CurrencyFluctuationsTab;
+export default LatestExchangeRatesTab;

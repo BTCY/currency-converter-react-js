@@ -1,11 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getAllAvailableCurrencies, getConvertedCurrency, getCurrencyFluctuations } from '../../api/exchange-rates-service';
+import { getAllAvailableCurrencies, getConvertedCurrency, getCurrencyFluctuations, getExchangeRateHistory, getLatestExchangeRates } from '../../api/exchange-rates-service';
 import { RootState } from '../store';
 import { putInIndexedDB, getFromIndexedDB, KEY_PATH } from '../../api/indexedDB-service';
 import { diff } from '../../utils/dateTimeHelper';
 import { Stores } from '../../api/indexedDB-service.types';
-import { IApiAllAvailableCurrencies, IApiConvertedCurrency, IApiCurrencyFluctuations } from '../../api/exchange-rates-service.types';
-import { IConvertedCurrencyThunk, ICurrencyFluctuationsThunk } from './currenciesSlice.types';
+import {
+    IConvertedCurrencyParams, ICurrencyFluctuationsParams, ILatestExchangeRatesParams, IApiAllAvailableCurrencies,
+    IApiConvertedCurrency, IApiCurrencyFluctuations, IApiExchangeRateHistory, IApiLatestExchangeRates, IExchangeRateHistoryParams
+} from '../../api/exchange-rates-service.types';
 
 
 const ALLOW_DIFF_IN_MINUTES = 1440;
@@ -15,6 +17,8 @@ export interface ICurrenciesState {
     availableCurrencies: IApiAllAvailableCurrencies | undefined;
     convertedCurrency: IApiConvertedCurrency | undefined;
     currencyFluctuations: IApiCurrencyFluctuations | undefined;
+    latestExchangeRates: ILatestExchangeRatesParams | undefined;
+    exchangeRateHistory: IExchangeRateHistoryParams | undefined;
     status: 'idle' | 'loading' | 'failed';
 }
 
@@ -23,6 +27,8 @@ const initialState: ICurrenciesState = {
     availableCurrencies: undefined,
     convertedCurrency: undefined,
     currencyFluctuations: undefined,
+    latestExchangeRates: undefined,
+    exchangeRateHistory: undefined,
     status: 'idle',
 };
 
@@ -57,15 +63,15 @@ export const availableCurrenciesThunk = createAsyncThunk(
 export const convertedCurrencyThunk = createAsyncThunk(
     'currencies/convertedCurrency',
     async (
-        param: IConvertedCurrencyThunk
+        params: IConvertedCurrencyParams
     ): Promise<IApiConvertedCurrency | undefined> => {
-        const key = param.from + '_' + param.to + '_' + param.amount;
+        const key = params.from + '_' + params.to + '_' + params.amount;
         let convertedCurrency = await getFromIndexedDB(Stores.ConvertedCurrency, key);
         const diffInMinutes = diff(new Date(), convertedCurrency?.update_timestamp);
 
         if (diffInMinutes === undefined || diffInMinutes > ALLOW_DIFF_IN_MINUTES) {
             try {
-                const result = await getConvertedCurrency(param.from, param.to, param.amount, param.date);
+                const result = await getConvertedCurrency(params.from, params.to, params.amount);
                 if (result) {
                     convertedCurrency = {
                         [KEY_PATH]: key,
@@ -88,15 +94,15 @@ export const convertedCurrencyThunk = createAsyncThunk(
 export const currencyFluctuationsThunk = createAsyncThunk(
     'currencies/currencyFluctuations',
     async (
-        param: ICurrencyFluctuationsThunk
+        params: ICurrencyFluctuationsParams
     ): Promise<IApiCurrencyFluctuations | undefined> => {
-        const key = param.start_date + '_' + param.end_date + '_' + (param?.base || '') + '_' + (param?.symbols || '');
+        const key = params.start_date + '_' + params.end_date + '_' + (params?.base || '') + '_' + (params?.symbols || '');
         let currencyFluctuations = await getFromIndexedDB(Stores.CurrencyFluctuations, key);
         const diffInMinutes = diff(new Date(), currencyFluctuations?.update_timestamp);
 
         if (diffInMinutes === undefined || diffInMinutes > ALLOW_DIFF_IN_MINUTES) {
             try {
-                const result = await getCurrencyFluctuations(param.start_date, param.end_date, param?.base, param?.symbols);
+                const result = await getCurrencyFluctuations(params.start_date, params.end_date, params?.base, params?.symbols);
                 if (result) {
                     currencyFluctuations = {
                         [KEY_PATH]: key,
@@ -116,6 +122,68 @@ export const currencyFluctuationsThunk = createAsyncThunk(
     }
 );
 
+export const latestExchangeRatesThunk = createAsyncThunk(
+    'currencies/latestExchangeRates',
+    async (
+        params: ILatestExchangeRatesParams
+    ): Promise<IApiLatestExchangeRates | undefined> => {
+        const key = (params?.base || 'base') + '_' + (params?.symbols || 'symbols');
+        let latestExchangeRates = await getFromIndexedDB(Stores.LatestExchangeRates, key);
+        const diffInMinutes = diff(new Date(), latestExchangeRates?.update_timestamp);
+
+        if (diffInMinutes === undefined || diffInMinutes > ALLOW_DIFF_IN_MINUTES) {
+            try {
+                const result = await getLatestExchangeRates(params?.base, params?.symbols);
+                if (result) {
+                    latestExchangeRates = {
+                        [KEY_PATH]: key,
+                        store: Stores.LatestExchangeRates,
+                        update_timestamp: Number(new Date()),
+                        data: result
+                    };
+
+                    await putInIndexedDB(Stores.LatestExchangeRates, latestExchangeRates);
+                }
+            } catch (e) {
+                console.log(e)
+            }
+        }
+
+        return latestExchangeRates?.data as IApiLatestExchangeRates | undefined;
+    }
+);
+
+export const exchangeRateHistoryThunk = createAsyncThunk(
+    'currencies/exchangeRateHistory',
+    async (
+        params: IExchangeRateHistoryParams
+    ): Promise<IApiExchangeRateHistory | undefined> => {
+        const key = params.start_date + '_' + params.end_date + '_' + (params?.base || '') + '_' + (params?.symbols || '');
+        let exchangeRateHistory = await getFromIndexedDB(Stores.ExchangeRateHistory, key);
+        const diffInMinutes = diff(new Date(), exchangeRateHistory?.update_timestamp);
+
+        if (diffInMinutes === undefined || diffInMinutes > ALLOW_DIFF_IN_MINUTES) {
+            try {
+                const result = await getExchangeRateHistory(params.start_date, params.end_date, params?.base, params?.symbols);
+                if (result) {
+                    exchangeRateHistory = {
+                        [KEY_PATH]: key,
+                        store: Stores.ExchangeRateHistory,
+                        update_timestamp: Number(new Date()),
+                        data: result
+                    };
+
+                    await putInIndexedDB(Stores.ExchangeRateHistory, exchangeRateHistory);
+                }
+            } catch (e) {
+                console.log(e)
+            }
+        }
+
+        return exchangeRateHistory?.data as IApiExchangeRateHistory | undefined;
+    }
+);
+
 
 export const currenciesSlice = createSlice({
     name: 'currencies',
@@ -123,7 +191,8 @@ export const currenciesSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(availableCurrenciesThunk.pending, (state) => { 
+            // Available Currencies
+            .addCase(availableCurrenciesThunk.pending, (state) => {
                 state.status = 'loading';
             })
             .addCase(availableCurrenciesThunk.fulfilled, (state, action) => {
@@ -133,6 +202,7 @@ export const currenciesSlice = createSlice({
             .addCase(availableCurrenciesThunk.rejected, (state) => {
                 state.status = 'failed';
             })
+            // Converted Currency
             .addCase(convertedCurrencyThunk.pending, (state) => {
                 state.status = 'loading';
             })
@@ -143,6 +213,7 @@ export const currenciesSlice = createSlice({
             .addCase(convertedCurrencyThunk.rejected, (state) => {
                 state.status = 'failed';
             })
+            // Currency Fluctuations
             .addCase(currencyFluctuationsThunk.pending, (state) => {
                 state.status = 'loading';
             })
@@ -153,6 +224,28 @@ export const currenciesSlice = createSlice({
             .addCase(currencyFluctuationsThunk.rejected, (state) => {
                 state.status = 'failed';
             })
+            // Latest Exchange Rates
+            .addCase(latestExchangeRatesThunk.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(latestExchangeRatesThunk.fulfilled, (state, action) => {
+                state.status = 'idle';
+                state.latestExchangeRates = action.payload;
+            })
+            .addCase(latestExchangeRatesThunk.rejected, (state) => {
+                state.status = 'failed';
+            })
+            // Exchange Rate History
+            .addCase(exchangeRateHistoryThunk.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(exchangeRateHistoryThunk.fulfilled, (state, action) => {
+                state.status = 'idle';
+                state.exchangeRateHistory = action.payload;
+            })
+            .addCase(exchangeRateHistoryThunk.rejected, (state) => {
+                state.status = 'failed';
+            })
     },
 });
 
@@ -160,5 +253,7 @@ export const currenciesSlice = createSlice({
 export const selectAvailableCurrencies = (state: RootState) => state.currencies.availableCurrencies;
 export const selectConvertedCurrency = (state: RootState) => state.currencies.convertedCurrency;
 export const selectCurrencyFluctuations = (state: RootState) => state.currencies.currencyFluctuations;
+export const selectLatestExchangeRates = (state: RootState) => state.currencies.latestExchangeRates;
+export const selectExchangeRateHistory = (state: RootState) => state.currencies.exchangeRateHistory;
 
 export default currenciesSlice.reducer;

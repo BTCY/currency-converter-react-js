@@ -1,8 +1,9 @@
 import { Tab, Tabs } from 'react-bootstrap';
-// import { ArrowRight } from 'react-bootstrap-icons';
 import styles from './Home.module.css';
 import CurrencyConversionTab from '../currency-conversion-tab/CurrencyConversionTab';
 import CurrencyFluctuationsTab from '../currency-fluctuations-tab/CurrencyFluctuationsTab';
+import LatestExchangeRatesTab from '../latest-exchange-rates-tab/LatestExchangeRatesTab';
+import ExchangeRateHistoryTab from '../exchange-rate-history-tab/ExchangeRateHistoryTab';
 
 /**
  *   Home
@@ -28,21 +29,21 @@ const Home = () => {
                     eventKey="fluctuations"
                     title="Fluctuations"
                 >
-                     <CurrencyFluctuationsTab />
+                    <CurrencyFluctuationsTab />
                 </Tab>
 
                 <Tab
-                    eventKey="3"
-                    title="3"
+                    eventKey="latestExchangeRates"
+                    title="Latest Exchange Rates"
                 >
-                    TODO
+                    <LatestExchangeRatesTab />
                 </Tab>
 
                 <Tab
-                    eventKey="4"
-                    title="4"
+                    eventKey="exchangeRateHistory"
+                    title="Exchange Rate History"
                 >
-                    TODO
+                    <ExchangeRateHistoryTab />
                 </Tab>
             </Tabs>
         </div>
