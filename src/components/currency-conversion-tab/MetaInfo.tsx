@@ -1,17 +1,15 @@
-import { IApiConvertedCurrency } from '../../api/exchange-rates-service.types';
-
 
 interface IMetaInfo {
-    result: IApiConvertedCurrency
+    updateDateMS: number; 
 }
 
 const MetaInfo = ({
-    result
+    updateDateMS
 }: IMetaInfo) => {
     return (
         <div className='d-flex justify-content-between text-uppercase bg-light text-secondary p-2 rounded'>
             <small>
-                update date: {new Date(result.info.timestamp * 1000).toLocaleString()}
+                update date: {new Date(updateDateMS).toLocaleString()}
             </small>
             <a
                 target='_blank'

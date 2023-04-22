@@ -91,7 +91,7 @@ export interface IApiCurrencyFluctuations {
 
     /** Rates fluctuations */
     rates: {
-        [key: string]: string | IApiCurrencyFluctuationsRates
+        [key: string]: IApiCurrencyFluctuationsRates
     },
 
     /** Start of period */

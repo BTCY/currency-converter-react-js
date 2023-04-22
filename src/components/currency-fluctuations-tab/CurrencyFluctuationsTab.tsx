@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../stores/hooks';
 import {
     selectAvailableCurrencies, availableCurrenciesThunk,
-    convertedCurrencyThunk, selectCurrencyFluctuations, currencyFluctuationsThunk
+    selectCurrencyFluctuations, currencyFluctuationsThunk
 } from '../../stores/slices/currenciesSlice';
 import { Button, Col, Row } from 'react-bootstrap';
 import { useFormik } from 'formik';
@@ -31,33 +31,29 @@ const CurrencyFluctuationsTab = () => {
     const currencyFluctuations = useAppSelector(selectCurrencyFluctuations, shallowEqual);
     const dispatch = useAppDispatch();
 
-    const [startDate, setStartDate] = useState(new Date());
-
     const { values, touched, errors, ...formik } = useFormik({
         validateOnChange: true,
-        validateOnBlur: true,
         enableReinitialize: true,
         initialValues: {
-            currencyFrom: 'USD',
-            currencyTo: 'EUR',
-            currencyAmount: 1,
+            startDate: '2018-02-25',
+            endDate: '2018-02-26',
+            base: 'EUR',
+            symbols: undefined,
         },
         validationSchema: Yup.object({
-            currencyFrom: Yup.string()
-                .required('1'),
-            currencyTo: Yup.string()
-                .required('1'),
-            currencyAmount: Yup.number()
-                .required('1'),
+            startDate: Yup.string(),
+            endDate: Yup.string(),
+            base: Yup.string(),
+            symbols: Yup.string(),
         }),
 
-        onSubmit: async (values: any) => {
+        onSubmit: async ({ startDate, endDate, base, symbols }) => {
 
             const params: ICurrencyFluctuationsParams = {
-                start_date: '2018-02-25',
-                end_date: "2018-02-26",
-                base: "EUR",
-                symbols: undefined, 
+                start_date: startDate,
+                end_date: endDate,
+                base: base,
+                symbols: symbols,
             }
 
             dispatch(currencyFluctuationsThunk(params))
@@ -65,8 +61,7 @@ const CurrencyFluctuationsTab = () => {
 
         }
     });
-
-
+ 
     useEffect(() => {
         setAvailableCurrenciesIsLoading(true);
         dispatch(availableCurrenciesThunk())
@@ -74,85 +69,48 @@ const CurrencyFluctuationsTab = () => {
     }, [dispatch]);
 
     const handleSubmit = () => {
-        setIsSubmitting(true);
+        //setIsSubmitting(true); 
         formik.submitForm();
     };
- 
+
 
     return (
         <TabTemplate title={'Currency fluctuations'}>
             <FormCustom>
                 <DatePicker
-                    selected={startDate}
-                    onChange={(date: any) => setStartDate(date)}
+                    name='startDate'
+                    aria-label='start date'
+                    //selected={values.startDate}
+                    onChange={formik.handleChange}
+                    value={values.startDate}
+                />
+                <DatePicker
+                    name='endDate'
+                    aria-label='end date'
+                    onChange={formik.handleChange}
+                    value={values.endDate}
                 />
                 <Row className='mb-5 align-items-end'>
                     {/* Select: Currency from */}
                     <Col md={4} xs={12} className='mb-2'>
-                        <Form.Group controlId='currencyFrom'>
+                        <Form.Group controlId='base'>
                             <Form.Label>Currency from</Form.Label>
 
                             <SelectSkeleton isShow={availableCurrenciesIsLoading} />
 
                             {!availableCurrenciesIsLoading && availableCurrencies?.symbols &&
                                 <Form.Select
-                                    name='currencyFrom'
-                                    aria-label='currency from'
+                                    name='base'
+                                    aria-label='base'
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
-                                    value={values.currencyFrom}
+                                    value={values.base}
                                     required
                                 >
                                     {Object.keys(availableCurrencies.symbols).map(k =>
                                         <option key={k} value={k}>{k} - {availableCurrencies.symbols[k]}</option>
                                     )}
                                 </Form.Select>
-                            }
-                        </Form.Group>
-                    </Col>
-
-                    {/* Select: Currency to */}
-                    <Col md={4} xs={12} className='mb-2'>
-                        <Form.Group controlId='currencyTo'>
-                            <Form.Label>Currency to</Form.Label>
-
-                            <SelectSkeleton isShow={availableCurrenciesIsLoading} />
-
-                            {!availableCurrenciesIsLoading && availableCurrencies?.symbols &&
-                                <Form.Select
-                                    name='currencyTo'
-                                    aria-label='currency to'
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    value={values.currencyTo}
-                                    required
-                                >
-                                    {Object.keys(availableCurrencies.symbols).map(k =>
-                                        <option key={k} value={k}>{k} - {availableCurrencies.symbols[k]}</option>
-                                    )}
-                                </Form.Select>
-                            }
-                        </Form.Group>
-                    </Col>
-
-                    {/* Input: Amount */}
-                    <Col md={2} xs={12} className='mb-2'>
-                        <Form.Group controlId='currencyAmount'>
-                            <Form.Label>Amount</Form.Label>
-
-                            <SelectSkeleton isShow={availableCurrenciesIsLoading} />
-
-                            {!availableCurrenciesIsLoading && availableCurrencies?.symbols &&
-                                <Form.Control
-                                    name='currencyAmount'
-                                    type='number'
-                                    aria-label='currency amount'
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    value={values.currencyAmount}
-                                    required
-                                    min={1}
-                                />
                             }
                         </Form.Group>
                     </Col>
@@ -171,15 +129,15 @@ const CurrencyFluctuationsTab = () => {
             </FormCustom>
 
             {/* Result */}
-            {/* {!isSubmitting && convertedCurrency?.result && convertedCurrency?.success === true &&
+            {!isSubmitting && currencyFluctuations?.data && currencyFluctuations?.data?.success === true &&
                 <div>
-                    <MetaInfo result={convertedCurrency} />
-                    <FluctuationsResult result={convertedCurrency} />
+                    <MetaInfo updateDateMS={Number(currencyFluctuations.update_timestamp)} />
+                    <FluctuationsResult result={currencyFluctuations.data} />
                 </div>
-            } */}
+            }
 
             {/* Loader */}
-            {/* {isSubmitting && <DelayedSpinner />} */}
+            {isSubmitting && <DelayedSpinner />}
         </TabTemplate>
 
     );

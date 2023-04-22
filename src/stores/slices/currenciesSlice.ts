@@ -3,20 +3,20 @@ import { getAllAvailableCurrencies, getConvertedCurrency, getCurrencyFluctuation
 import { RootState } from '../store';
 import { putInIndexedDB, getFromIndexedDB, KEY_PATH } from '../../api/indexedDB-service';
 import { diff } from '../../utils/dateTimeHelper';
-import { Stores } from '../../api/indexedDB-service.types';
+import { IStoreDataInIndexedDB, Stores } from '../../api/indexedDB-service.types';
 import {
     IConvertedCurrencyParams, ICurrencyFluctuationsParams, ILatestExchangeRatesParams, IApiAllAvailableCurrencies,
-    IApiConvertedCurrency, IApiCurrencyFluctuations, IApiExchangeRateHistory, IApiLatestExchangeRates, IExchangeRateHistoryParams
+    IApiExchangeRateHistory, IApiLatestExchangeRates, IExchangeRateHistoryParams
 } from '../../api/exchange-rates-service.types';
 
 
-const ALLOW_DIFF_IN_MINUTES = 1440;
+const ALLOW_DIFF_IN_MINUTES = 20160;
 
 export interface ICurrenciesState {
     value: number;
     availableCurrencies: IApiAllAvailableCurrencies | undefined;
-    convertedCurrency: IApiConvertedCurrency | undefined;
-    currencyFluctuations: IApiCurrencyFluctuations | undefined;
+    convertedCurrency: IStoreDataInIndexedDB<Stores.ConvertedCurrency> | undefined;
+    currencyFluctuations: IStoreDataInIndexedDB<Stores.CurrencyFluctuations> | undefined;
     latestExchangeRates: ILatestExchangeRatesParams | undefined;
     exchangeRateHistory: IExchangeRateHistoryParams | undefined;
     status: 'idle' | 'loading' | 'failed';
@@ -64,7 +64,7 @@ export const convertedCurrencyThunk = createAsyncThunk(
     'currencies/convertedCurrency',
     async (
         params: IConvertedCurrencyParams
-    ): Promise<IApiConvertedCurrency | undefined> => {
+    ): Promise<IStoreDataInIndexedDB<Stores.ConvertedCurrency>> => {
         const key = params.from + '_' + params.to + '_' + params.amount;
         let convertedCurrency = await getFromIndexedDB(Stores.ConvertedCurrency, key);
         const diffInMinutes = diff(new Date(), convertedCurrency?.update_timestamp);
@@ -87,7 +87,7 @@ export const convertedCurrencyThunk = createAsyncThunk(
             }
         }
 
-        return convertedCurrency?.data as IApiConvertedCurrency | undefined;
+        return convertedCurrency as IStoreDataInIndexedDB<Stores.ConvertedCurrency>;
     }
 );
 
@@ -95,7 +95,7 @@ export const currencyFluctuationsThunk = createAsyncThunk(
     'currencies/currencyFluctuations',
     async (
         params: ICurrencyFluctuationsParams
-    ): Promise<IApiCurrencyFluctuations | undefined> => {
+    ): Promise<IStoreDataInIndexedDB<Stores.CurrencyFluctuations> | undefined> => {
         const key = params.start_date + '_' + params.end_date + '_' + (params?.base || '') + '_' + (params?.symbols || '');
         let currencyFluctuations = await getFromIndexedDB(Stores.CurrencyFluctuations, key);
         const diffInMinutes = diff(new Date(), currencyFluctuations?.update_timestamp);
@@ -118,7 +118,7 @@ export const currencyFluctuationsThunk = createAsyncThunk(
             }
         }
 
-        return currencyFluctuations?.data as IApiCurrencyFluctuations | undefined;
+        return currencyFluctuations as IStoreDataInIndexedDB<Stores.CurrencyFluctuations> | undefined;
     }
 );
 
