@@ -163,10 +163,10 @@ const CurrencyConversionTab = () => {
             </FormCustom>
 
             {/* Result */}
-            {!isSubmitting && convertedCurrency?.result && convertedCurrency?.success === true &&
+            {!isSubmitting && convertedCurrency?.data && convertedCurrency?.data?.success === true &&
                 <div>
-                    <MetaInfo result={convertedCurrency} />
-                    <ConversionResult result={convertedCurrency} />
+                    <MetaInfo updateDateMS={Number(convertedCurrency.update_timestamp)} />
+                    <ConversionResult result={convertedCurrency?.data} />
                 </div>
             }
 
