@@ -2,8 +2,7 @@ import axios from 'axios';
 import { getServerError } from './error-service';
 import {
     IApiConvertedCurrency, IApiCurrencyFluctuations,
-    IApiLatestExchangeRates, IApiAllAvailableCurrencies,
-    IApiExchangeRateHistory
+    IApiLatestExchangeRates, IApiAllAvailableCurrencies
 } from './exchange-rates-service.types';
 
 /**
@@ -107,29 +106,3 @@ export const getAllAvailableCurrencies = (): Promise<IApiAllAvailableCurrencies>
         .catch(e => {
             throw getServerError(e);
         });
-
-
-/**
- * Timeseries endpoint lets you query the API for daily historical rates between two dates of your choice, with a maximum time frame of 365 days.
- * 
- * @param   {string}   start_date        The start date of your preferred timeframe.
- * @param   {string}   end_date          The end date of your preferred timeframe.
- * @param   {string}   [base]            Enter the three-letter currency code of your preferred base currency.
- * @param   {string}   [symbols]         Enter a list of comma-separated currency codes to limit output currencies.
- * @return  {IApiExchangeRateHistory}    Exchange rate history
- */
-export const getExchangeRateHistory = (
-    start_date: string,
-    end_date: string,
-    base: string | undefined = undefined,
-    symbols: string | undefined = undefined
-): Promise<IApiExchangeRateHistory> =>
-    axios.get<IApiExchangeRateHistory>(
-        'https://api.apilayer.com/exchangerates_data/timeseries', {
-        headers,
-        params: { start_date, end_date, base, symbols }
-    })
-        .then(res => res.data)
-        .catch(e => {
-            throw getServerError(e);
-        }); 

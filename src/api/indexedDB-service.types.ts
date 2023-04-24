@@ -1,7 +1,6 @@
 import {
     IApiAllAvailableCurrencies, IApiConvertedCurrency,
-    IApiCurrencyFluctuations, IApiExchangeRateHistory,
-    IApiLatestExchangeRates
+    IApiCurrencyFluctuations,  IApiLatestExchangeRates
 } from "./exchange-rates-service.types";
 import { KEY_PATH } from "./indexedDB-service";
 
@@ -22,7 +21,6 @@ export type StoreData<T> =
     T extends Stores.CurrencyFluctuations ? IApiCurrencyFluctuations :
     T extends Stores.LatestExchangeRates ? IApiLatestExchangeRates :
     T extends Stores.AvailableCurrencies ? IApiAllAvailableCurrencies :
-    T extends Stores.ExchangeRateHistory ? IApiExchangeRateHistory :
     any;
 
 
@@ -44,12 +42,6 @@ export const enum Stores {
 
     /** Store with available currencies */
     AvailableCurrencies = 'availableCurrencies',
-
-    /** Store with exchange rate history */
-    ExchangeRateHistory = 'exchangeRateHistory',
-
-    /** Store with exchange rate history by date */
-    ExchangeRateHistoryByDate = 'exchangeRateHistoryByDate',
 };
 
 

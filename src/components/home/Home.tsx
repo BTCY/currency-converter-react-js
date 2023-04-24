@@ -2,8 +2,7 @@ import { Tab, Tabs } from 'react-bootstrap';
 import styles from './Home.module.css';
 import CurrencyConversionTab from '../currency-conversion-tab/CurrencyConversionTab';
 import CurrencyFluctuationsTab from '../currency-fluctuations-tab/CurrencyFluctuationsTab';
-import LatestExchangeRatesTab from '../latest-exchange-rates-tab/LatestExchangeRatesTab';
-import ExchangeRateHistoryTab from '../exchange-rate-history-tab/ExchangeRateHistoryTab';
+import LatestExchangeRatesTab from '../latest-exchange-rates-tab/LatestExchangeRatesTab'; 
 
 /**
  *   Home
@@ -37,14 +36,7 @@ const Home = () => {
                     title="Latest Exchange Rates"
                 >
                     <LatestExchangeRatesTab />
-                </Tab>
-
-                <Tab
-                    eventKey="exchangeRateHistory"
-                    title="Exchange Rate History"
-                >
-                    <ExchangeRateHistoryTab />
-                </Tab>
+                </Tab> 
             </Tabs>
         </div>
     );
