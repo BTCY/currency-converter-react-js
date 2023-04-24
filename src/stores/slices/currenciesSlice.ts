@@ -1,12 +1,15 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getAllAvailableCurrencies, getConvertedCurrency, getCurrencyFluctuations, getExchangeRateHistory, getLatestExchangeRates } from '../../api/exchange-rates-service';
+import {
+    getAllAvailableCurrencies, getConvertedCurrency, getCurrencyFluctuations,
+    getExchangeRateHistory, getLatestExchangeRates
+} from '../../api/exchange-rates-service';
 import { RootState } from '../store';
 import { putInIndexedDB, getFromIndexedDB, KEY_PATH } from '../../api/indexedDB-service';
 import { diff } from '../../utils/dateTimeHelper';
 import { IStoreDataInIndexedDB, Stores } from '../../api/indexedDB-service.types';
 import {
-    IConvertedCurrencyParams, ICurrencyFluctuationsParams, ILatestExchangeRatesParams, IApiAllAvailableCurrencies,
-    IApiExchangeRateHistory, IApiLatestExchangeRates, IExchangeRateHistoryParams
+    IConvertedCurrencyParams, ICurrencyFluctuationsParams, ILatestExchangeRatesParams,
+    IApiAllAvailableCurrencies, IExchangeRateHistoryParams
 } from '../../api/exchange-rates-service.types';
 
 
@@ -17,8 +20,8 @@ export interface ICurrenciesState {
     availableCurrencies: IApiAllAvailableCurrencies | undefined;
     convertedCurrency: IStoreDataInIndexedDB<Stores.ConvertedCurrency> | undefined;
     currencyFluctuations: IStoreDataInIndexedDB<Stores.CurrencyFluctuations> | undefined;
-    latestExchangeRates: ILatestExchangeRatesParams | undefined;
-    exchangeRateHistory: IExchangeRateHistoryParams | undefined;
+    latestExchangeRates: IStoreDataInIndexedDB<Stores.LatestExchangeRates> | undefined;
+    exchangeRateHistory: IStoreDataInIndexedDB<Stores.ExchangeRateHistory> | undefined;
     status: 'idle' | 'loading' | 'failed';
 }
 
@@ -126,7 +129,7 @@ export const latestExchangeRatesThunk = createAsyncThunk(
     'currencies/latestExchangeRates',
     async (
         params: ILatestExchangeRatesParams
-    ): Promise<IApiLatestExchangeRates | undefined> => {
+    ): Promise<IStoreDataInIndexedDB<Stores.LatestExchangeRates> | undefined> => {
         const key = (params?.base || 'base') + '_' + (params?.symbols || 'symbols');
         let latestExchangeRates = await getFromIndexedDB(Stores.LatestExchangeRates, key);
         const diffInMinutes = diff(new Date(), latestExchangeRates?.update_timestamp);
@@ -149,7 +152,7 @@ export const latestExchangeRatesThunk = createAsyncThunk(
             }
         }
 
-        return latestExchangeRates?.data as IApiLatestExchangeRates | undefined;
+        return latestExchangeRates as IStoreDataInIndexedDB<Stores.LatestExchangeRates> | undefined;
     }
 );
 
@@ -157,7 +160,7 @@ export const exchangeRateHistoryThunk = createAsyncThunk(
     'currencies/exchangeRateHistory',
     async (
         params: IExchangeRateHistoryParams
-    ): Promise<IApiExchangeRateHistory | undefined> => {
+    ): Promise<IStoreDataInIndexedDB<Stores.ExchangeRateHistory> | undefined> => {
         const key = params.start_date + '_' + params.end_date + '_' + (params?.base || '') + '_' + (params?.symbols || '');
         let exchangeRateHistory = await getFromIndexedDB(Stores.ExchangeRateHistory, key);
         const diffInMinutes = diff(new Date(), exchangeRateHistory?.update_timestamp);
@@ -180,7 +183,7 @@ export const exchangeRateHistoryThunk = createAsyncThunk(
             }
         }
 
-        return exchangeRateHistory?.data as IApiExchangeRateHistory | undefined;
+        return exchangeRateHistory as IStoreDataInIndexedDB<Stores.ExchangeRateHistory> | undefined;
     }
 );
 
