@@ -1,42 +1,39 @@
-import { Col,  Row } from "react-bootstrap";
-import { IApiConvertedCurrency } from "../../api/exchange-rates-service.types";
-import styles from './LatestExchangeRatesResult.module.css';
+import { Table } from "react-bootstrap";
+import { IApiLatestExchangeRates, IApiAllAvailableCurrencies } from "../../api/exchange-rates-service.types";
 
 
 interface ILatestExchangeRatesResult {
-    result: IApiConvertedCurrency
+    result: IApiLatestExchangeRates;
+    availableCurrencies: IApiAllAvailableCurrencies | undefined;
 }
 
 const LatestExchangeRatesResult = ({
-    result
+    result,
+    availableCurrencies
 }: ILatestExchangeRatesResult) => {
+    console.log(result)
     return (
-        <Row>
-            <Col md="auto">
-                <div className={styles.resultValue}>
-                    {result.query.amount}
-                </div>
-                {result.query.from}
-            </Col>
-
-            <Col className={styles.resultValue} md="auto">x</Col>
-
-            <Col md="auto">
-                <div className={styles.resultValue}>
-                    {result.info.rate}
-                </div>
-                RATE
-            </Col>
-
-            <Col className={styles.resultValue} md="auto">=</Col>
-
-            <Col md="auto">
-                <div className={styles.resultValue}>
-                    {result.result}
-                </div>
-                {result.query.to}
-            </Col>
-        </Row>
+        <>
+            <h2>Base {result.base}</h2>
+            <Table striped bordered hover>
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Rate</th>
+                        <th>Currency</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {Object.keys(result.rates).map(c =>
+                        <tr key={c}>
+                            <td>{c}</td>
+                            <td>{result.rates[c]}</td>
+                            <td>{availableCurrencies?.symbols[c]}</td>
+                        </tr>
+                    )}
+                </tbody>
+            </Table>
+        </>
     )
 };
 

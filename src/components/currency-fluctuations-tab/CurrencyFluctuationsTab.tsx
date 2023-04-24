@@ -7,17 +7,17 @@ import {
 import { Button, Col, Row } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { shallowEqual } from 'react-redux';
+import { ICurrencyFluctuationsParams } from '../../api/exchange-rates-service.types';
 import TabTemplate from '../common/tab-template/TabTemplate';
 import Form from 'react-bootstrap/Form';
 import FormCustom from '../common/form-custom/FormCustom';
 import SelectSkeleton from '../common/select-skeleton/SelectSkeleton';
-import * as Yup from 'yup';
 import DelayedSpinner from '../common/delayed-spinner/DelayedSpinner';
 import FluctuationsResult from './FluctuationsResult';
-import MetaInfo from './MetaInfo';
 import DatePicker from "react-datepicker";
+import MetaInfo from '../common/MetaInfo';
+import * as Yup from 'yup';
 import "react-datepicker/dist/react-datepicker.css";
-import { ICurrencyFluctuationsParams } from '../../api/exchange-rates-service.types';
 
 /**
  *   CurrencyFluctuationsTab
@@ -61,7 +61,7 @@ const CurrencyFluctuationsTab = () => {
 
         }
     });
- 
+
     useEffect(() => {
         setAvailableCurrenciesIsLoading(true);
         dispatch(availableCurrenciesThunk())
@@ -69,7 +69,7 @@ const CurrencyFluctuationsTab = () => {
     }, [dispatch]);
 
     const handleSubmit = () => {
-        //setIsSubmitting(true); 
+        setIsSubmitting(true);
         formik.submitForm();
     };
 

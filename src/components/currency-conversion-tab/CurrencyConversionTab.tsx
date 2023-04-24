@@ -13,9 +13,9 @@ import FormCustom from '../common/form-custom/FormCustom';
 import SelectSkeleton from '../common/select-skeleton/SelectSkeleton';
 import * as Yup from 'yup';
 import DelayedSpinner from '../common/delayed-spinner/DelayedSpinner';
-import ConversionResult from './ConversionResult';
-import MetaInfo from './MetaInfo';
+import ConversionResult from './ConversionResult'; 
 import { IConvertedCurrencyParams } from '../../api/exchange-rates-service.types';
+import MetaInfo from '../common/MetaInfo';
 
 /**
  *   CurrencyConversionTab
