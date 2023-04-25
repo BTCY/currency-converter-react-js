@@ -14,9 +14,10 @@ import FormCustom from '../common/form-custom/FormCustom';
 import SelectSkeleton from '../common/select-skeleton/SelectSkeleton';
 import DelayedSpinner from '../common/delayed-spinner/DelayedSpinner';
 import LatestExchangeRatesResult from './LatestExchangeRatesResult';
-import MetaInfo from '../common/MetaInfo';
+import MetaInfo from '../common/meta-info/MetaInfo';
 import * as Yup from 'yup';
 import "react-datepicker/dist/react-datepicker.css";
+import ResultContainer from '../common/result-container/ResultContainer';
 
 /**
  *   CurrencyFluctuationsTab
@@ -112,16 +113,16 @@ const LatestExchangeRatesTab = () => {
 
             {/* Result */}
             {!isSubmitting && latestExchangeRates?.data && latestExchangeRates?.data?.success === true &&
-                <div>
+                <ResultContainer>
                     <MetaInfo
                         updateDateMS={Number(latestExchangeRates.update_timestamp)}
                     />
-                    
+
                     <LatestExchangeRatesResult
                         result={latestExchangeRates.data}
                         availableCurrencies={availableCurrencies}
                     />
-                </div>
+                </ResultContainer>
             }
 
             {/* Loader */}
