@@ -3,6 +3,7 @@ import styles from './Home.module.css';
 import CurrencyConversionTab from '../currency-conversion-tab/CurrencyConversionTab';
 import CurrencyFluctuationsTab from '../currency-fluctuations-tab/CurrencyFluctuationsTab';
 import LatestExchangeRatesTab from '../latest-exchange-rates-tab/LatestExchangeRatesTab'; 
+import ExchangeRateHistoryTab from '../exchange-rate-history-tab/ExchangeRateHistoryTab';
 
 /**
  *   Home
@@ -37,6 +38,13 @@ const Home = () => {
                 >
                     <LatestExchangeRatesTab />
                 </Tab> 
+                
+                <Tab
+                    eventKey="exchangeRateHistory"
+                    title="Exchange Rate History"
+                >
+                    <ExchangeRateHistoryTab />
+                </Tab>
             </Tabs>
         </div>
     );

@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
     getAllAvailableCurrencies, getConvertedCurrency, getCurrencyFluctuations,
+    getExchangeRateHistory,
     getLatestExchangeRates
 } from '../../api/exchange-rates-service';
 import { RootState } from '../store';
@@ -9,7 +10,8 @@ import { diff } from '../../utils/dateTimeHelper';
 import { IStoreDataInIndexedDB, Stores } from '../../api/indexedDB-service.types';
 import {
     IConvertedCurrencyParams, ICurrencyFluctuationsParams, ILatestExchangeRatesParams,
-    IApiAllAvailableCurrencies
+    IApiAllAvailableCurrencies,
+    IExchangeRateHistoryParams
 } from '../../api/exchange-rates-service.types';
 
 
@@ -21,6 +23,7 @@ export interface ICurrenciesState {
     convertedCurrency: IStoreDataInIndexedDB<Stores.ConvertedCurrency> | undefined;
     currencyFluctuations: IStoreDataInIndexedDB<Stores.CurrencyFluctuations> | undefined;
     latestExchangeRates: IStoreDataInIndexedDB<Stores.LatestExchangeRates> | undefined;
+    exchangeRateHistory: IStoreDataInIndexedDB<Stores.ExchangeRateHistory> | undefined;
     status: 'idle' | 'loading' | 'failed';
 }
 
@@ -30,6 +33,7 @@ const initialState: ICurrenciesState = {
     convertedCurrency: undefined,
     currencyFluctuations: undefined,
     latestExchangeRates: undefined,
+    exchangeRateHistory: undefined,
     status: 'idle',
 };
 
@@ -154,6 +158,37 @@ export const latestExchangeRatesThunk = createAsyncThunk(
     }
 );
 
+export const exchangeRateHistoryThunk = createAsyncThunk(
+    'currencies/exchangeRateHistory',
+    async (
+        params: IExchangeRateHistoryParams
+    ): Promise<IStoreDataInIndexedDB<Stores.ExchangeRateHistory> | undefined> => {
+        const key = params.start_date + '_' + params.end_date + '_' + (params?.base || '') + '_' + (params?.symbols || '');
+        let exchangeRateHistory = await getFromIndexedDB(Stores.ExchangeRateHistory, key);
+        const diffInMinutes = diff(new Date(), exchangeRateHistory?.update_timestamp);
+
+        if (diffInMinutes === undefined || diffInMinutes > ALLOW_DIFF_IN_MINUTES) {
+            try {
+                const result = await getExchangeRateHistory(params.start_date, params.end_date, params?.base, params?.symbols);
+                if (result) {
+                    exchangeRateHistory = {
+                        [KEY_PATH]: key,
+                        store: Stores.ExchangeRateHistory,
+                        update_timestamp: Number(new Date()),
+                        data: result
+                    };
+
+                    await putInIndexedDB(Stores.ExchangeRateHistory, exchangeRateHistory);
+                }
+            } catch (e) {
+                console.log(e)
+            }
+        }
+
+        return exchangeRateHistory as IStoreDataInIndexedDB<Stores.ExchangeRateHistory> | undefined;
+    }
+);
+
 
 export const currenciesSlice = createSlice({
     name: 'currencies',
@@ -205,6 +240,17 @@ export const currenciesSlice = createSlice({
             .addCase(latestExchangeRatesThunk.rejected, (state) => {
                 state.status = 'failed';
             })
+            // Exchange Rate History
+            .addCase(exchangeRateHistoryThunk.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(exchangeRateHistoryThunk.fulfilled, (state, action) => {
+                state.status = 'idle';
+                state.exchangeRateHistory = action.payload;
+            })
+            .addCase(exchangeRateHistoryThunk.rejected, (state) => {
+                state.status = 'failed';
+            })
     },
 });
 
@@ -213,5 +259,6 @@ export const selectAvailableCurrencies = (state: RootState) => state.currencies.
 export const selectConvertedCurrency = (state: RootState) => state.currencies.convertedCurrency;
 export const selectCurrencyFluctuations = (state: RootState) => state.currencies.currencyFluctuations;
 export const selectLatestExchangeRates = (state: RootState) => state.currencies.latestExchangeRates;
+export const selectExchangeRateHistory = (state: RootState) => state.currencies.exchangeRateHistory;
 
 export default currenciesSlice.reducer;
