@@ -101,7 +101,7 @@ export interface IApiCurrencyFluctuations {
     success: boolean
 }
 
-interface IApiCurrencyFluctuationsRates {
+export interface IApiCurrencyFluctuationsRates {
 
     /** How much rate has changed */
     change: number,
