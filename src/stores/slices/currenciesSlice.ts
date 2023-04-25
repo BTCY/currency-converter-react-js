@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {
     getAllAvailableCurrencies, getConvertedCurrency, getCurrencyFluctuations,
-     getLatestExchangeRates
+    getLatestExchangeRates
 } from '../../api/exchange-rates-service';
 import { RootState } from '../store';
 import { putInIndexedDB, getFromIndexedDB, KEY_PATH } from '../../api/indexedDB-service';
@@ -9,7 +9,7 @@ import { diff } from '../../utils/dateTimeHelper';
 import { IStoreDataInIndexedDB, Stores } from '../../api/indexedDB-service.types';
 import {
     IConvertedCurrencyParams, ICurrencyFluctuationsParams, ILatestExchangeRatesParams,
-    IApiAllAvailableCurrencies, IExchangeRateHistoryParams
+    IApiAllAvailableCurrencies
 } from '../../api/exchange-rates-service.types';
 
 
@@ -20,7 +20,7 @@ export interface ICurrenciesState {
     availableCurrencies: IApiAllAvailableCurrencies | undefined;
     convertedCurrency: IStoreDataInIndexedDB<Stores.ConvertedCurrency> | undefined;
     currencyFluctuations: IStoreDataInIndexedDB<Stores.CurrencyFluctuations> | undefined;
-    latestExchangeRates: IStoreDataInIndexedDB<Stores.LatestExchangeRates> | undefined; 
+    latestExchangeRates: IStoreDataInIndexedDB<Stores.LatestExchangeRates> | undefined;
     status: 'idle' | 'loading' | 'failed';
 }
 
@@ -29,7 +29,7 @@ const initialState: ICurrenciesState = {
     availableCurrencies: undefined,
     convertedCurrency: undefined,
     currencyFluctuations: undefined,
-    latestExchangeRates: undefined, 
+    latestExchangeRates: undefined,
     status: 'idle',
 };
 
@@ -204,7 +204,7 @@ export const currenciesSlice = createSlice({
             })
             .addCase(latestExchangeRatesThunk.rejected, (state) => {
                 state.status = 'failed';
-            }) 
+            })
     },
 });
 
@@ -212,6 +212,6 @@ export const currenciesSlice = createSlice({
 export const selectAvailableCurrencies = (state: RootState) => state.currencies.availableCurrencies;
 export const selectConvertedCurrency = (state: RootState) => state.currencies.convertedCurrency;
 export const selectCurrencyFluctuations = (state: RootState) => state.currencies.currencyFluctuations;
-export const selectLatestExchangeRates = (state: RootState) => state.currencies.latestExchangeRates; 
+export const selectLatestExchangeRates = (state: RootState) => state.currencies.latestExchangeRates;
 
 export default currenciesSlice.reducer;
