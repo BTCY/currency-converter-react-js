@@ -10,11 +10,11 @@ interface ILatestExchangeRatesResult {
 const LatestExchangeRatesResult = ({
     result,
     availableCurrencies
-}: ILatestExchangeRatesResult) => {
-    console.log(result)
+}: ILatestExchangeRatesResult) => { 
+    
     return (
         <>
-            <h2>Base {result.base}</h2>
+            <h2>Base: {result.base}</h2>
             <Table striped bordered hover>
                 <thead>
                     <tr>
