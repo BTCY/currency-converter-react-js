@@ -161,3 +161,37 @@ export interface IApiAllAvailableCurrencies {
     }
 }
 
+
+/**
+ * Exchange rate history.
+ * 
+ * @interface IApiExchangeRateHistory 
+ */
+export interface IApiExchangeRateHistory {
+
+    /** Base currency */
+    base: string,
+
+    /** End of period */
+    end_date: string,
+
+    /** Exchange rate */
+    rates: {
+
+        /** Date */
+        [key: string]: {
+
+            /** Currency: value */
+            [key: string]: number
+        }
+    },
+
+    /** Start of period */
+    start_date: string,
+
+    /** Exchange rate history status */
+    success: boolean,
+
+    /** Date and time of update */
+    timeseries: boolean
+}
