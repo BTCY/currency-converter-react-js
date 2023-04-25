@@ -15,9 +15,10 @@ import SelectSkeleton from '../common/select-skeleton/SelectSkeleton';
 import DelayedSpinner from '../common/delayed-spinner/DelayedSpinner';
 import FluctuationsResult from './FluctuationsResult';
 import DatePicker from "react-datepicker";
-import MetaInfo from '../common/MetaInfo';
+import MetaInfo from '../common/meta-info/MetaInfo';
 import * as Yup from 'yup';
 import "react-datepicker/dist/react-datepicker.css";
+import ResultContainer from '../common/result-container/ResultContainer';
 
 /**
  *   CurrencyFluctuationsTab
@@ -130,10 +131,10 @@ const CurrencyFluctuationsTab = () => {
 
             {/* Result */}
             {!isSubmitting && currencyFluctuations?.data && currencyFluctuations?.data?.success === true &&
-                <div>
+                <ResultContainer>
                     <MetaInfo updateDateMS={Number(currencyFluctuations.update_timestamp)} />
                     <FluctuationsResult result={currencyFluctuations.data} />
-                </div>
+                </ResultContainer>
             }
 
             {/* Loader */}

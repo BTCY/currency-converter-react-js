@@ -13,9 +13,10 @@ import FormCustom from '../common/form-custom/FormCustom';
 import SelectSkeleton from '../common/select-skeleton/SelectSkeleton';
 import * as Yup from 'yup';
 import DelayedSpinner from '../common/delayed-spinner/DelayedSpinner';
-import ConversionResult from './ConversionResult'; 
+import ConversionResult from './ConversionResult';
 import { IConvertedCurrencyParams } from '../../api/exchange-rates-service.types';
-import MetaInfo from '../common/MetaInfo';
+import MetaInfo from '../common/meta-info/MetaInfo';
+import ResultContainer from '../common/result-container/ResultContainer';
 
 /**
  *   CurrencyConversionTab
@@ -164,10 +165,10 @@ const CurrencyConversionTab = () => {
 
             {/* Result */}
             {!isSubmitting && convertedCurrency?.data && convertedCurrency?.data?.success === true &&
-                <div>
+                <ResultContainer>
                     <MetaInfo updateDateMS={Number(convertedCurrency.update_timestamp)} />
                     <ConversionResult result={convertedCurrency?.data} />
-                </div>
+                </ResultContainer>
             }
 
             {/* Loader */}
