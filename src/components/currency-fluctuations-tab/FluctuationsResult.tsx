@@ -1,10 +1,11 @@
 import { ReactNode, memo } from "react";
-import { Table } from "react-bootstrap";
+import { Table, } from "react-bootstrap";
 import {
     IApiCurrencyFluctuations, IApiCurrencyFluctuationsRates,
     IApiAllAvailableCurrencies
 } from "../../api/exchange-rates-service.types";
 import { ArrowUp, ArrowDown } from 'react-bootstrap-icons';
+import CustomTooltip from "../common/custom-tooltip/CustomTooltip";
 
 interface IConversionResult {
     result: IApiCurrencyFluctuations;
@@ -12,7 +13,8 @@ interface IConversionResult {
 }
 
 interface IRow {
-    curr: string;
+    currCode: string;
+    curr?: string;
     rate: IApiCurrencyFluctuationsRates;
 }
 
@@ -51,10 +53,14 @@ const Title = () =>
     </tr>
 
 
-const Row = memo(({ curr, rate }: IRow) =>
+const Row = memo(({ currCode, curr, rate }: IRow) =>
     <tr >
         <td className="text-center">{getRateChangeIcon(rate.change)}</td>
-        <td>{curr}</td>
+        <td>
+            <CustomTooltip id={currCode} tooltipText={curr}>
+                <span>{currCode}</span>
+            </CustomTooltip>
+        </td>
         <td>{rate.start_rate}</td>
         <td>{rate.end_rate}</td>
         <td>
@@ -79,8 +85,13 @@ const FluctuationsResult = ({
                     <Title />
                 </thead>
                 <tbody>
-                    {Object.keys(result.rates).map(curr =>
-                        <Row key={curr} curr={curr} rate={result.rates[curr]} />
+                    {Object.keys(result.rates).map(currCode =>
+                        <Row
+                            key={currCode}
+                            currCode={currCode}
+                            curr={availableCurrencies?.symbols[currCode]}
+                            rate={result.rates[currCode]}
+                        />
                     )}
                 </tbody>
             </Table>
