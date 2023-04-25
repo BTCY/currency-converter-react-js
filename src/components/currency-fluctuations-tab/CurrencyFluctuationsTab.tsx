@@ -133,7 +133,10 @@ const CurrencyFluctuationsTab = () => {
             {!isSubmitting && currencyFluctuations?.data && currencyFluctuations?.data?.success === true &&
                 <ResultContainer>
                     <MetaInfo updateDateMS={Number(currencyFluctuations.update_timestamp)} />
-                    <FluctuationsResult result={currencyFluctuations.data} />
+                    <FluctuationsResult
+                        result={currencyFluctuations.data}
+                        availableCurrencies={availableCurrencies}
+                    />
                 </ResultContainer>
             }
 

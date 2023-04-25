@@ -1,10 +1,14 @@
 import { ReactNode, memo } from "react";
 import { Table } from "react-bootstrap";
-import { IApiCurrencyFluctuations, IApiCurrencyFluctuationsRates } from "../../api/exchange-rates-service.types";
+import {
+    IApiCurrencyFluctuations, IApiCurrencyFluctuationsRates,
+    IApiAllAvailableCurrencies
+} from "../../api/exchange-rates-service.types";
 import { ArrowUp, ArrowDown } from 'react-bootstrap-icons';
 
 interface IConversionResult {
     result: IApiCurrencyFluctuations;
+    availableCurrencies: IApiAllAvailableCurrencies | undefined;
 }
 
 interface IRow {
@@ -64,19 +68,23 @@ const Row = memo(({ curr, rate }: IRow) =>
 
 
 const FluctuationsResult = ({
-    result
+    result,
+    availableCurrencies
 }: IConversionResult) => {
     return (
-        <Table striped bordered hover>
-            <thead>
-                <Title />
-            </thead>
-            <tbody>
-                {Object.keys(result.rates).map(curr =>
-                    <Row key={curr} curr={curr} rate={result.rates[curr]} />
-                )}
-            </tbody>
-        </Table>
+        <>
+            <h2>Base: {result.base} (<small>{availableCurrencies?.symbols[result.base]}</small>)</h2>
+            <Table striped bordered hover>
+                <thead>
+                    <Title />
+                </thead>
+                <tbody>
+                    {Object.keys(result.rates).map(curr =>
+                        <Row key={curr} curr={curr} rate={result.rates[curr]} />
+                    )}
+                </tbody>
+            </Table>
+        </>
     )
 };
 
