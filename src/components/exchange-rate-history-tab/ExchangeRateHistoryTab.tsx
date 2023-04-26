@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../stores/hooks';
 import {
     selectAvailableCurrencies, availableCurrenciesThunk,
-    selectCurrencyFluctuations, exchangeRateHistoryThunk
+    selectExchangeRateHistory, exchangeRateHistoryThunk
 } from '../../stores/slices/currenciesSlice';
 import { Button, Col, Row } from 'react-bootstrap';
 import { useFormik } from 'formik';
@@ -29,7 +29,7 @@ const ExchangeRateHistoryTab = () => {
     const availableCurrencies = useAppSelector(selectAvailableCurrencies, shallowEqual);
     const [availableCurrenciesIsLoading, setAvailableCurrenciesIsLoading] = useState<boolean>(true);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-    const currencyFluctuations = useAppSelector(selectCurrencyFluctuations, shallowEqual);
+    const exchangeRateHistory = useAppSelector(selectExchangeRateHistory, shallowEqual);
     const dispatch = useAppDispatch();
 
     const [startDate, setStartDate] = useState(new Date());
@@ -81,7 +81,7 @@ const ExchangeRateHistoryTab = () => {
 
 
     return (
-        <TabTemplate title={'Currency fluctuations'}>
+        <TabTemplate title={'Exchange Rate History'}>
             <FormCustom>
                 <DatePicker
                     selected={startDate}
@@ -148,11 +148,11 @@ const ExchangeRateHistoryTab = () => {
             </FormCustom>
 
             {/* Result */}
-            {!isSubmitting && currencyFluctuations?.data && currencyFluctuations?.data?.success === true &&
+            {!isSubmitting && exchangeRateHistory?.data && exchangeRateHistory?.data?.success === true &&
                 <ResultContainer>
-                    <MetaInfo updateDateMS={Number(currencyFluctuations.update_timestamp)} />
+                    <MetaInfo updateDateMS={Number(exchangeRateHistory.update_timestamp)} />
                     <ExchangeRateHistoryResult
-                        result={currencyFluctuations.data}
+                        result={exchangeRateHistory.data}
                         availableCurrencies={availableCurrencies}
                     />
                 </ResultContainer>
