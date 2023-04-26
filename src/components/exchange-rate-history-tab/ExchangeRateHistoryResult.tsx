@@ -1,100 +1,62 @@
-import { ReactNode, memo } from "react";
-import { Table, } from "react-bootstrap";
 import {
-    IApiCurrencyFluctuations, IApiCurrencyFluctuationsRates,
-    IApiAllAvailableCurrencies
+    IApiExchangeRateHistory, IApiAllAvailableCurrencies
 } from "../../api/exchange-rates-service.types";
-import { ArrowUp, ArrowDown } from 'react-bootstrap-icons';
-import CustomTooltip from "../common/custom-tooltip/CustomTooltip";
+import { Line } from "react-chartjs-2";
+
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+} from 'chart.js' 
+
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend
+)
 
 interface IConversionResult {
-    result: IApiCurrencyFluctuations;
+    result: IApiExchangeRateHistory;
     availableCurrencies: IApiAllAvailableCurrencies | undefined;
 }
 
-interface IRow {
-    currCode: string;
-    curr?: string;
-    rate: IApiCurrencyFluctuationsRates;
-}
+const labels = ["January", "February", "March", "April", "May", "June"];
 
-const getRateChangeIcon = (change: number): ReactNode => {
-    if (change < 0) {
-        return <ArrowDown className="text-danger" />
-    }
-    else if (change > 0) {
-        return <ArrowUp className="text-success" />
-    }
-    else {
-        return '—'
-    }
-}
+const data = {
+    labels: labels,
+    datasets: [
+        {
+            label: "Currency",
+            backgroundColor: "rgb(255, 99, 132)",
+            borderColor: "rgb(255, 99, 132)",
+            data: [0, 10, 5, 2, 20, 30, 45],
+        },
+    ],
+};
 
-const getRateChangeColor = (change: number): string => {
-    if (change < 0) {
-        return 'text-danger'
-    }
-    else if (change > 0) {
-        return 'text-success'
-    }
-    else {
-        return 'text-secondary'
-    }
-}
-
-
-const Title = () =>
-    <tr>
-        <th style={{ width: '1%' }} className="text-center">Chart</th>
-        <th style={{ width: '10%' }} >Currency</th>
-        <th>Start rate</th>
-        <th>End rate</th>
-        <th>Change</th>
-    </tr>
-
-
-const Row = memo(({ currCode, curr, rate }: IRow) =>
-    <tr >
-        <td className="text-center">{getRateChangeIcon(rate.change)}</td>
-        <td>
-            <CustomTooltip id={currCode} tooltipText={curr}>
-                <span>{currCode}</span>
-            </CustomTooltip>
-        </td>
-        <td>{rate.start_rate}</td>
-        <td>{rate.end_rate}</td>
-        <td>
-            <span className={getRateChangeColor(rate.change)}>{rate.change}</span> ({rate.change_pct}%)
-        </td>
-    </tr>,
-    (prevProps, nextProps) => {
-        return JSON.stringify(prevProps.rate) === JSON.stringify(nextProps.rate);
-    }
-);
 
 
 const ExchangeRateHistoryResult = ({
     result,
     availableCurrencies
 }: IConversionResult) => {
+    console.log(result)
     return (
         <>
             <h2>Base: {result.base} (<small>{availableCurrencies?.symbols[result.base]}</small>)</h2>
-            <Table striped bordered hover>
-                <thead>
-                    <Title />
-                </thead>
-                <tbody>
-                    {Object.keys(result.rates).map(currCode =>
-                        <Row
-                            key={currCode}
-                            currCode={currCode}
-                            curr={availableCurrencies?.symbols[currCode]}
-                            rate={result.rates[currCode]}
-                        />
-                    )}
-                </tbody>
-            </Table>
+            <div>
+                <Line data={data} />
+            </div>
+
         </>
     )
 };
