@@ -56,7 +56,7 @@ const ExchangeRateHistoryTab = () => {
 
             const params: IExchangeRateHistoryParams = {
                 start_date: '2018-02-25',
-                end_date: "2018-02-26",
+                end_date: "2018-03-21",
                 base: "EUR",
                 symbols: undefined,
             }
@@ -148,7 +148,9 @@ const ExchangeRateHistoryTab = () => {
             </FormCustom>
 
             {/* Result */}
-            {!isSubmitting && exchangeRateHistory?.data && exchangeRateHistory?.data?.success === true &&
+            {!isSubmitting
+                && exchangeRateHistory?.data && exchangeRateHistory?.data?.success === true
+                && availableCurrencies?.success === true && availableCurrencies?.symbols &&
                 <ResultContainer>
                     <MetaInfo updateDateMS={Number(exchangeRateHistory.update_timestamp)} />
                     <ExchangeRateHistoryResult
@@ -156,7 +158,6 @@ const ExchangeRateHistoryTab = () => {
                         availableCurrencies={availableCurrencies}
                     />
                 </ResultContainer>
-
             }
 
             {/* Loader */}
