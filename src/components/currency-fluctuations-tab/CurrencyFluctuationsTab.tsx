@@ -25,7 +25,9 @@ import { format } from '../../utils/dateTimeHelper';
  *   CurrencyFluctuationsTab
  */
 
-const dateNow = new Date();
+const startDateInitValue = new Date('2018-02-20');
+const endDateInitValue = new Date('2018-02-25');
+
 const CurrencyFluctuationsTab = () => {
 
     const availableCurrencies = useAppSelector(selectAvailableCurrencies, shallowEqual);
@@ -38,8 +40,8 @@ const CurrencyFluctuationsTab = () => {
         validateOnChange: true,
         enableReinitialize: true,
         initialValues: {
-            startDate: dateNow,
-            endDate: dateNow,
+            startDate: startDateInitValue,
+            endDate: endDateInitValue,
             base: 'EUR',
             symbols: undefined,
         },
@@ -58,7 +60,6 @@ const CurrencyFluctuationsTab = () => {
                 symbols: symbols,
             }
 
-            console.log(params)
             dispatch(currencyFluctuationsThunk(params))
                 .finally(() => setIsSubmitting(false))
 
@@ -72,10 +73,9 @@ const CurrencyFluctuationsTab = () => {
     }, [dispatch]);
 
     const handleSubmit = () => {
-        //setIsSubmitting(true);
+        setIsSubmitting(true);
         formik.submitForm();
     };
-    console.log(values)
 
     return (
         <TabTemplate title={'Currency fluctuations'}>
