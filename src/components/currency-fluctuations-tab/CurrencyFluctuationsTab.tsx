@@ -5,7 +5,7 @@ import {
     selectCurrencyFluctuations, currencyFluctuationsThunk
 } from '../../stores/slices/currenciesSlice';
 import { Button, Col, Row } from 'react-bootstrap';
-import { useFormik } from 'formik';
+import { Formik, useFormik, useFormikContext } from 'formik';
 import { shallowEqual } from 'react-redux';
 import { ICurrencyFluctuationsParams } from '../../api/exchange-rates-service.types';
 import TabTemplate from '../common/tab-template/TabTemplate';
@@ -19,11 +19,13 @@ import MetaInfo from '../common/meta-info/MetaInfo';
 import * as Yup from 'yup';
 import "react-datepicker/dist/react-datepicker.css";
 import ResultContainer from '../common/result-container/ResultContainer';
+import { format } from '../../utils/dateTimeHelper';
 
 /**
  *   CurrencyFluctuationsTab
  */
 
+const dateNow = new Date();
 const CurrencyFluctuationsTab = () => {
 
     const availableCurrencies = useAppSelector(selectAvailableCurrencies, shallowEqual);
@@ -36,27 +38,27 @@ const CurrencyFluctuationsTab = () => {
         validateOnChange: true,
         enableReinitialize: true,
         initialValues: {
-            startDate: '2018-02-25',
-            endDate: '2018-02-26',
+            startDate: dateNow,
+            endDate: dateNow,
             base: 'EUR',
             symbols: undefined,
         },
         validationSchema: Yup.object({
-            startDate: Yup.string(),
-            endDate: Yup.string(),
+            startDate: Yup.date(),
+            endDate: Yup.date(),
             base: Yup.string(),
             symbols: Yup.string(),
         }),
 
         onSubmit: async ({ startDate, endDate, base, symbols }) => {
-
             const params: ICurrencyFluctuationsParams = {
-                start_date: startDate,
-                end_date: endDate,
+                start_date: format(startDate, 'YYYY-MM-DD') ?? '',
+                end_date: format(endDate, 'YYYY-MM-DD') ?? '',
                 base: base,
                 symbols: symbols,
             }
 
+            console.log(params)
             dispatch(currencyFluctuationsThunk(params))
                 .finally(() => setIsSubmitting(false))
 
@@ -70,10 +72,10 @@ const CurrencyFluctuationsTab = () => {
     }, [dispatch]);
 
     const handleSubmit = () => {
-        setIsSubmitting(true);
+        //setIsSubmitting(true);
         formik.submitForm();
     };
-
+    console.log(values)
 
     return (
         <TabTemplate title={'Currency fluctuations'}>
@@ -81,15 +83,20 @@ const CurrencyFluctuationsTab = () => {
                 <DatePicker
                     name='startDate'
                     aria-label='start date'
-                    //selected={values.startDate}
-                    onChange={formik.handleChange}
-                    value={values.startDate}
+                    showMonthDropdown
+                    showYearDropdown
+                    selected={(values.startDate && new Date(values.startDate)) || null}
+                    onChange={val => {
+                        formik.setFieldValue('startDate', val);
+                    }}
                 />
                 <DatePicker
                     name='endDate'
                     aria-label='end date'
-                    onChange={formik.handleChange}
-                    value={values.endDate}
+                    selected={(values.endDate && new Date(values.endDate)) || null}
+                    onChange={val => {
+                        formik.setFieldValue('endDate', val);
+                    }}
                 />
                 <Row className='mb-5 align-items-end'>
                     {/* Select: Currency from */}
