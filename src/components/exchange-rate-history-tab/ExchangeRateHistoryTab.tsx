@@ -19,10 +19,14 @@ import "react-datepicker/dist/react-datepicker.css";
 import { IExchangeRateHistoryParams } from '../../api/exchange-rates-service.types';
 import ResultContainer from '../common/result-container/ResultContainer';
 import MetaInfo from '../common/meta-info/MetaInfo';
+import { format } from '../../utils/dateTimeHelper';
 
 /**
  *   ExchangeRateHistoryTab
  */
+
+const startDateInitValue = new Date('2018-02-20');
+const endDateInitValue = new Date('2018-02-25');
 
 const ExchangeRateHistoryTab = () => {
 
@@ -32,33 +36,30 @@ const ExchangeRateHistoryTab = () => {
     const exchangeRateHistory = useAppSelector(selectExchangeRateHistory, shallowEqual);
     const dispatch = useAppDispatch();
 
-    const [startDate, setStartDate] = useState(new Date());
-
     const { values, touched, errors, ...formik } = useFormik({
         validateOnChange: true,
         validateOnBlur: true,
         enableReinitialize: true,
         initialValues: {
-            currencyFrom: 'USD',
-            currencyTo: 'EUR',
-            currencyAmount: 1,
+            startDate: startDateInitValue,
+            endDate: endDateInitValue,
+            base: 'EUR',
+            symbols: undefined,
         },
         validationSchema: Yup.object({
-            currencyFrom: Yup.string()
-                .required('1'),
-            currencyTo: Yup.string()
-                .required('1'),
-            currencyAmount: Yup.number()
-                .required('1'),
+            startDate: Yup.date(),
+            endDate: Yup.date(),
+            base: Yup.string(),
+            symbols: Yup.string(),
         }),
 
-        onSubmit: async (values: any) => {
+        onSubmit: async ({ startDate, endDate, base, symbols }) => {
 
             const params: IExchangeRateHistoryParams = {
-                start_date: '2018-02-25',
-                end_date: "2018-03-21",
-                base: "EUR",
-                symbols: undefined,
+                start_date: format(startDate, 'YYYY-MM-DD') ?? '',
+                end_date: format(endDate, 'YYYY-MM-DD') ?? '',
+                base: base,
+                symbols: symbols,
             }
 
             dispatch(exchangeRateHistoryThunk(params))
@@ -84,52 +85,45 @@ const ExchangeRateHistoryTab = () => {
         <TabTemplate title={'Exchange Rate History'}>
             <FormCustom>
                 <DatePicker
-                    selected={startDate}
-                    onChange={(date: any) => setStartDate(date)}
+                    name='startDate'
+                    aria-label='start date'
+                    showMonthDropdown
+                    showYearDropdown
+                    selected={(values.startDate && new Date(values.startDate)) || null}
+                    onChange={val => {
+                        formik.setFieldValue('startDate', val);
+                    }}
                 />
+                <DatePicker
+                    name='endDate'
+                    aria-label='end date'
+                    selected={(values.endDate && new Date(values.endDate)) || null}
+                    onChange={val => {
+                        formik.setFieldValue('endDate', val);
+                    }}
+                />
+
                 <Row className='mb-5 align-items-end'>
                     {/* Select: Currency from */}
                     <Col md={4} xs={12} className='mb-2'>
-                        <Form.Group controlId='currencyFrom'>
+                        <Form.Group controlId='base'>
                             <Form.Label>Currency from</Form.Label>
 
                             <SelectSkeleton isShow={availableCurrenciesIsLoading} />
 
                             {!availableCurrenciesIsLoading && availableCurrencies?.symbols &&
                                 <Form.Select
-                                    name='currencyTo'
-                                    aria-label='currency to'
+                                    name='base'
+                                    aria-label='base'
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
-                                    value={values.currencyTo}
+                                    value={values.base}
                                     required
                                 >
                                     {Object.keys(availableCurrencies.symbols).map(k =>
                                         <option key={k} value={k}>{k} - {availableCurrencies.symbols[k]}</option>
                                     )}
                                 </Form.Select>
-                            }
-                        </Form.Group>
-                    </Col>
-
-                    {/* Input: Amount */}
-                    <Col md={2} xs={12} className='mb-2'>
-                        <Form.Group controlId='currencyAmount'>
-                            <Form.Label>Amount</Form.Label>
-
-                            <SelectSkeleton isShow={availableCurrenciesIsLoading} />
-
-                            {!availableCurrenciesIsLoading && availableCurrencies?.symbols &&
-                                <Form.Control
-                                    name='currencyAmount'
-                                    type='number'
-                                    aria-label='currency amount'
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    value={values.currencyAmount}
-                                    required
-                                    min={1}
-                                />
                             }
                         </Form.Group>
                     </Col>
