@@ -1,22 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../stores/hooks';
 import {
-    selectAvailableCurrencies, availableCurrenciesThunk,
+    selectAvailableCurrencies,
     selectConvertedCurrency, convertedCurrencyThunk
 } from '../../stores/slices/currenciesSlice';
 import { Button, Col, Row } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { shallowEqual } from 'react-redux';
+import { IConvertedCurrencyParams } from '../../api/exchange-rates-service.types';
 import TabTemplate from '../common/tab-template/TabTemplate';
 import Form from 'react-bootstrap/Form';
 import FormCustom from '../common/form-custom/FormCustom';
 import SelectSkeleton from '../common/select-skeleton/SelectSkeleton';
-import * as Yup from 'yup';
 import DelayedSpinner from '../common/delayed-spinner/DelayedSpinner';
 import ConversionResult from './ConversionResult';
-import { IConvertedCurrencyParams } from '../../api/exchange-rates-service.types';
 import MetaInfo from '../common/meta-info/MetaInfo';
 import ResultContainer from '../common/result-container/ResultContainer';
+import * as Yup from 'yup';
 
 /**
  *   CurrencyConversionTab
@@ -25,7 +25,6 @@ import ResultContainer from '../common/result-container/ResultContainer';
 const CurrencyConversionTab = () => {
 
     const availableCurrencies = useAppSelector(selectAvailableCurrencies, shallowEqual);
-    const [availableCurrenciesIsLoading, setAvailableCurrenciesIsLoading] = useState<boolean>(true);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const convertedCurrency = useAppSelector(selectConvertedCurrency, shallowEqual);
     const dispatch = useAppDispatch();
@@ -64,12 +63,6 @@ const CurrencyConversionTab = () => {
     });
 
 
-    useEffect(() => {
-        setAvailableCurrenciesIsLoading(true);
-        dispatch(availableCurrenciesThunk())
-            .finally(() => setAvailableCurrenciesIsLoading(false));
-    }, [dispatch]);
-
     const handleSubmit = () => {
         setIsSubmitting(true);
         formik.submitForm();
@@ -85,9 +78,9 @@ const CurrencyConversionTab = () => {
                         <Form.Group controlId='currencyFrom'>
                             <Form.Label>Currency from</Form.Label>
 
-                            <SelectSkeleton isShow={availableCurrenciesIsLoading} />
+                            <SelectSkeleton isShow={!availableCurrencies?.symbols} />
 
-                            {!availableCurrenciesIsLoading && availableCurrencies?.symbols &&
+                            {availableCurrencies?.symbols &&
                                 <Form.Select
                                     name='currencyFrom'
                                     aria-label='currency from'
@@ -109,9 +102,9 @@ const CurrencyConversionTab = () => {
                         <Form.Group controlId='currencyTo'>
                             <Form.Label>Currency to</Form.Label>
 
-                            <SelectSkeleton isShow={availableCurrenciesIsLoading} />
+                            <SelectSkeleton isShow={!availableCurrencies?.symbols} />
 
-                            {!availableCurrenciesIsLoading && availableCurrencies?.symbols &&
+                            {availableCurrencies?.symbols &&
                                 <Form.Select
                                     name='currencyTo'
                                     aria-label='currency to'
@@ -133,9 +126,9 @@ const CurrencyConversionTab = () => {
                         <Form.Group controlId='currencyAmount'>
                             <Form.Label>Amount</Form.Label>
 
-                            <SelectSkeleton isShow={availableCurrenciesIsLoading} />
+                            <SelectSkeleton isShow={!availableCurrencies?.symbols} />
 
-                            {!availableCurrenciesIsLoading && availableCurrencies?.symbols &&
+                            {availableCurrencies?.symbols &&
                                 <Form.Control
                                     name='currencyAmount'
                                     type='number'

@@ -1,25 +1,25 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../stores/hooks';
 import {
-    selectAvailableCurrencies, availableCurrenciesThunk,
+    selectAvailableCurrencies,
     selectExchangeRateHistory, exchangeRateHistoryThunk
 } from '../../stores/slices/currenciesSlice';
 import { Button, Col, Row } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { shallowEqual } from 'react-redux';
+import { IExchangeRateHistoryParams } from '../../api/exchange-rates-service.types';
+import { format } from '../../utils/dateTimeHelper';
 import TabTemplate from '../common/tab-template/TabTemplate';
 import Form from 'react-bootstrap/Form';
 import FormCustom from '../common/form-custom/FormCustom';
 import SelectSkeleton from '../common/select-skeleton/SelectSkeleton';
-import * as Yup from 'yup';
 import DelayedSpinner from '../common/delayed-spinner/DelayedSpinner';
 import ExchangeRateHistoryResult from './ExchangeRateHistoryResult';
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { IExchangeRateHistoryParams } from '../../api/exchange-rates-service.types';
 import ResultContainer from '../common/result-container/ResultContainer';
 import MetaInfo from '../common/meta-info/MetaInfo';
-import { format } from '../../utils/dateTimeHelper';
+import * as Yup from 'yup';
+import "react-datepicker/dist/react-datepicker.css";
 
 /**
  *   ExchangeRateHistoryTab
@@ -31,7 +31,6 @@ const endDateInitValue = new Date('2018-02-25');
 const ExchangeRateHistoryTab = () => {
 
     const availableCurrencies = useAppSelector(selectAvailableCurrencies, shallowEqual);
-    const [availableCurrenciesIsLoading, setAvailableCurrenciesIsLoading] = useState<boolean>(true);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const exchangeRateHistory = useAppSelector(selectExchangeRateHistory, shallowEqual);
     const dispatch = useAppDispatch();
@@ -69,12 +68,6 @@ const ExchangeRateHistoryTab = () => {
     });
 
 
-    useEffect(() => {
-        setAvailableCurrenciesIsLoading(true);
-        dispatch(availableCurrenciesThunk())
-            .finally(() => setAvailableCurrenciesIsLoading(false));
-    }, [dispatch]);
-
     const handleSubmit = () => {
         setIsSubmitting(true);
         formik.submitForm();
@@ -109,9 +102,9 @@ const ExchangeRateHistoryTab = () => {
                         <Form.Group controlId='base'>
                             <Form.Label>Currency from</Form.Label>
 
-                            <SelectSkeleton isShow={availableCurrenciesIsLoading} />
+                            <SelectSkeleton isShow={!availableCurrencies?.symbols} />
 
-                            {!availableCurrenciesIsLoading && availableCurrencies?.symbols &&
+                            {availableCurrencies?.symbols &&
                                 <Form.Select
                                     name='base'
                                     aria-label='base'

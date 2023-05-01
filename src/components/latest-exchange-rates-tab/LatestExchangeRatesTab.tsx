@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../stores/hooks';
 import {
-    selectAvailableCurrencies, availableCurrenciesThunk,
+    selectAvailableCurrencies,
     latestExchangeRatesThunk, selectLatestExchangeRates
 } from '../../stores/slices/currenciesSlice';
 import { Button, Col, Row } from 'react-bootstrap';
@@ -15,9 +15,9 @@ import SelectSkeleton from '../common/select-skeleton/SelectSkeleton';
 import DelayedSpinner from '../common/delayed-spinner/DelayedSpinner';
 import LatestExchangeRatesResult from './LatestExchangeRatesResult';
 import MetaInfo from '../common/meta-info/MetaInfo';
+import ResultContainer from '../common/result-container/ResultContainer';
 import * as Yup from 'yup';
 import "react-datepicker/dist/react-datepicker.css";
-import ResultContainer from '../common/result-container/ResultContainer';
 
 /**
  *   CurrencyFluctuationsTab
@@ -26,7 +26,6 @@ import ResultContainer from '../common/result-container/ResultContainer';
 const LatestExchangeRatesTab = () => {
 
     const availableCurrencies = useAppSelector(selectAvailableCurrencies, shallowEqual);
-    const [availableCurrenciesIsLoading, setAvailableCurrenciesIsLoading] = useState<boolean>(true);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const latestExchangeRates = useAppSelector(selectLatestExchangeRates, shallowEqual);
     const dispatch = useAppDispatch();
@@ -58,12 +57,6 @@ const LatestExchangeRatesTab = () => {
     });
 
 
-    useEffect(() => {
-        setAvailableCurrenciesIsLoading(true);
-        dispatch(availableCurrenciesThunk())
-            .finally(() => setAvailableCurrenciesIsLoading(false));
-    }, [dispatch]);
-
     const handleSubmit = () => {
         setIsSubmitting(true);
         formik.submitForm();
@@ -79,9 +72,9 @@ const LatestExchangeRatesTab = () => {
                         <Form.Group controlId='base'>
                             <Form.Label>Base</Form.Label>
 
-                            <SelectSkeleton isShow={availableCurrenciesIsLoading} />
+                            <SelectSkeleton isShow={!availableCurrencies?.symbols} />
 
-                            {!availableCurrenciesIsLoading && availableCurrencies?.symbols &&
+                            {availableCurrencies?.symbols &&
                                 <Form.Select
                                     name='base'
                                     aria-label='base currency'
