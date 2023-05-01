@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../stores/hooks';
 import {
-    selectAvailableCurrencies, availableCurrenciesThunk,
+    selectAvailableCurrencies,
     selectCurrencyFluctuations, currencyFluctuationsThunk
 } from '../../stores/slices/currenciesSlice';
 import { Button, Col, Row } from 'react-bootstrap';
-import { Formik, useFormik, useFormikContext } from 'formik';
+import { useFormik, } from 'formik';
 import { shallowEqual } from 'react-redux';
 import { ICurrencyFluctuationsParams } from '../../api/exchange-rates-service.types';
 import TabTemplate from '../common/tab-template/TabTemplate';
@@ -31,7 +31,6 @@ const endDateInitValue = new Date('2018-02-25');
 const CurrencyFluctuationsTab = () => {
 
     const availableCurrencies = useAppSelector(selectAvailableCurrencies, shallowEqual);
-    const [availableCurrenciesIsLoading, setAvailableCurrenciesIsLoading] = useState<boolean>(true);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const currencyFluctuations = useAppSelector(selectCurrencyFluctuations, shallowEqual);
     const dispatch = useAppDispatch();
@@ -66,12 +65,6 @@ const CurrencyFluctuationsTab = () => {
         }
     });
 
-    useEffect(() => {
-        setAvailableCurrenciesIsLoading(true);
-        dispatch(availableCurrenciesThunk())
-            .finally(() => setAvailableCurrenciesIsLoading(false));
-    }, [dispatch]);
-
     const handleSubmit = () => {
         setIsSubmitting(true);
         formik.submitForm();
@@ -104,9 +97,9 @@ const CurrencyFluctuationsTab = () => {
                         <Form.Group controlId='base'>
                             <Form.Label>Currency from</Form.Label>
 
-                            <SelectSkeleton isShow={availableCurrenciesIsLoading} />
+                            <SelectSkeleton isShow={!availableCurrencies?.symbols} />
 
-                            {!availableCurrenciesIsLoading && availableCurrencies?.symbols &&
+                            {availableCurrencies?.symbols &&
                                 <Form.Select
                                     name='base'
                                     aria-label='base'
