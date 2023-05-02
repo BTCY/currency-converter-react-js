@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'; 
 import { MagnifyingGlass } from 'react-loader-spinner';
 
-const DelayedSpinner = () => {
+interface IDelayedSpinner {
+    text?: string;
+}
+
+const DelayedSpinner = ({ text }: IDelayedSpinner) => {
     const [showSpinner, setShowSpinner] = useState(false);
 
     useEffect(() => {
@@ -12,16 +16,19 @@ const DelayedSpinner = () => {
 
     return (
         showSpinner
-            ? <MagnifyingGlass
-                visible={showSpinner}
-                height="80"
-                width="80"
-                ariaLabel="MagnifyingGlass-loading"
-                wrapperStyle={{}}
-                wrapperClass="MagnifyingGlass-wrapper"
-                glassColor='#c0efff'
-                color='#e15b64'
-            />
+            ? <div className='row align-items-center justify-content-center'>
+                <MagnifyingGlass
+                    visible={showSpinner}
+                    height="80"
+                    width="80"
+                    ariaLabel="MagnifyingGlass-loading"
+                    wrapperStyle={{}}
+                    wrapperClass="MagnifyingGlass-wrapper"
+                    glassColor='#c0efff'
+                    color='#e15b64'
+                />
+                {text && text}
+            </div>
             : <></>
     )
 };
