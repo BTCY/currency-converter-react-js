@@ -15,8 +15,8 @@ import FormCustom from '../common/form-custom/FormCustom';
 import SelectSkeleton from '../common/select-skeleton/SelectSkeleton';
 import DelayedSpinner from '../common/delayed-spinner/DelayedSpinner';
 import ExchangeRateHistoryResult from './ExchangeRateHistoryResult';
-import DatePicker from "react-datepicker";
 import ResultContainer from '../common/result-container/ResultContainer';
+import DatePickerCustom from '../common/date-picker-custom/DatePickerCustom';
 import MetaInfo from '../common/meta-info/MetaInfo';
 import * as Yup from 'yup';
 import "react-datepicker/dist/react-datepicker.css";
@@ -77,26 +77,34 @@ const ExchangeRateHistoryTab = () => {
     return (
         <TabTemplate title={'Exchange Rate History'}>
             <FormCustom>
-                <DatePicker
-                    name='startDate'
-                    aria-label='start date'
-                    showMonthDropdown
-                    showYearDropdown
-                    selected={(values.startDate && new Date(values.startDate)) || null}
-                    onChange={val => {
-                        formik.setFieldValue('startDate', val);
-                    }}
-                />
-                <DatePicker
-                    name='endDate'
-                    aria-label='end date'
-                    selected={(values.endDate && new Date(values.endDate)) || null}
-                    onChange={val => {
-                        formik.setFieldValue('endDate', val);
-                    }}
-                />
-
                 <Row className='mb-5 align-items-end'>
+
+                    {/* DatePicker: start date */}
+                    <Col md={3} xs={12} className='mb-2'>
+                        <DatePickerCustom
+                            name='startDate'
+                            aria-label='start date'
+                            showMonthDropdown
+                            showYearDropdown
+                            selected={(values.startDate && new Date(values.startDate)) || null}
+                            onChange={val => {
+                                formik.setFieldValue('startDate', val);
+                            }}
+                        />
+                    </Col>
+
+                    {/* DatePicker: end date */}
+                    <Col md={3} xs={12} className='mb-2'>
+                        <DatePickerCustom
+                            name='endDate'
+                            aria-label='end date'
+                            selected={(values.endDate && new Date(values.endDate)) || null}
+                            onChange={val => {
+                                formik.setFieldValue('endDate', val);
+                            }}
+                        />
+                    </Col>
+
                     {/* Select: Currency from */}
                     <Col md={4} xs={12} className='mb-2'>
                         <Form.Group controlId='base'>
