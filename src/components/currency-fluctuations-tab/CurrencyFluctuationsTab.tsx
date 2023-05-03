@@ -4,6 +4,7 @@ import {
     selectAvailableCurrencies,
     selectCurrencyFluctuations, currencyFluctuationsThunk
 } from '../../stores/slices/currenciesSlice';
+import { format } from '../../utils/dateTimeHelper';
 import { Button, Col, Row } from 'react-bootstrap';
 import { useFormik, } from 'formik';
 import { shallowEqual } from 'react-redux';
@@ -13,13 +14,12 @@ import Form from 'react-bootstrap/Form';
 import FormCustom from '../common/form-custom/FormCustom';
 import SelectSkeleton from '../common/select-skeleton/SelectSkeleton';
 import DelayedSpinner from '../common/delayed-spinner/DelayedSpinner';
+import DatePickerCustom from '../common/date-picker-custom/DatePickerCustom';
+import ResultContainer from '../common/result-container/ResultContainer';
 import FluctuationsResult from './FluctuationsResult';
-import DatePicker from "react-datepicker";
 import MetaInfo from '../common/meta-info/MetaInfo';
 import * as Yup from 'yup';
 import "react-datepicker/dist/react-datepicker.css";
-import ResultContainer from '../common/result-container/ResultContainer';
-import { format } from '../../utils/dateTimeHelper';
 
 /**
  *   CurrencyFluctuationsTab
@@ -73,25 +73,35 @@ const CurrencyFluctuationsTab = () => {
     return (
         <TabTemplate title={'Currency fluctuations'}>
             <FormCustom>
-                <DatePicker
-                    name='startDate'
-                    aria-label='start date'
-                    showMonthDropdown
-                    showYearDropdown
-                    selected={(values.startDate && new Date(values.startDate)) || null}
-                    onChange={val => {
-                        formik.setFieldValue('startDate', val);
-                    }}
-                />
-                <DatePicker
-                    name='endDate'
-                    aria-label='end date'
-                    selected={(values.endDate && new Date(values.endDate)) || null}
-                    onChange={val => {
-                        formik.setFieldValue('endDate', val);
-                    }}
-                />
                 <Row className='mb-5 align-items-end'>
+
+                    {/* DatePicker: start date */}
+                    <Col md={3} xs={12} className='mb-2'>
+                        <DatePickerCustom
+                            placeholderText="Start date"
+                            name='startDate'
+                            aria-label='start date'
+                            showMonthDropdown
+                            showYearDropdown
+                            selected={(values.startDate && new Date(values.startDate)) || null}
+                            onChange={val => {
+                                formik.setFieldValue('startDate', val);
+                            }}
+                        />
+                    </Col>
+
+                    {/* DatePicker: end date */}
+                    <Col md={3} xs={12} className='mb-2'>
+                        <DatePickerCustom
+                            name='endDate'
+                            aria-label='end date'
+                            selected={(values.endDate && new Date(values.endDate)) || null}
+                            onChange={val => {
+                                formik.setFieldValue('endDate', val);
+                            }}
+                        />
+                    </Col>
+
                     {/* Select: Currency from */}
                     <Col md={4} xs={12} className='mb-2'>
                         <Form.Group controlId='base'>
@@ -116,21 +126,22 @@ const CurrencyFluctuationsTab = () => {
                         </Form.Group>
                     </Col>
 
-                    {/* Button: Convert */}
+                    {/* Button: submit */}
                     <Col md={2} xs={12} className='mb-2'>
                         <Button
                             variant='primary'
                             onClick={handleSubmit}
                             disabled={isSubmitting}
                         >
-                            Convert
+                            Submit
                         </Button>
                     </Col>
                 </Row>
             </FormCustom>
 
             {/* Result */}
-            {!isSubmitting && currencyFluctuations?.data && currencyFluctuations?.data?.success === true &&
+            {
+                !isSubmitting && currencyFluctuations?.data && currencyFluctuations?.data?.success === true &&
                 <ResultContainer>
                     <MetaInfo updateDateMS={Number(currencyFluctuations.update_timestamp)} />
                     <FluctuationsResult
@@ -142,7 +153,7 @@ const CurrencyFluctuationsTab = () => {
 
             {/* Loader */}
             {isSubmitting && <DelayedSpinner />}
-        </TabTemplate>
+        </TabTemplate >
 
     );
 }
