@@ -12,6 +12,7 @@ const CustomInput = forwardRef<HTMLInputElement, React.ComponentProps<'input'>>(
             className='form-control'
             value={props.value}
             onClick={props.onClick}
+            onChange={props.onChange}
             ref={ref}
         />
     ));
@@ -25,8 +26,6 @@ const DatePickerCustom = ({
     return (
         <DatePicker
             {...props}
-            showMonthDropdown
-            showYearDropdown
             customInput={<CustomInput />}
         />
     )

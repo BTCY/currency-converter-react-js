@@ -83,9 +83,7 @@ const ExchangeRateHistoryTab = () => {
                     <Col md={3} xs={12} className='mb-2'>
                         <DatePickerCustom
                             name='startDate'
-                            aria-label='start date'
-                            showMonthDropdown
-                            showYearDropdown
+                            aria-label='start date' 
                             selected={(values.startDate && new Date(values.startDate)) || null}
                             onChange={val => {
                                 formik.setFieldValue('startDate', val);
