@@ -34,9 +34,5 @@ ctx.addEventListener("message", (event) => {
         })
     );
 
-    setTimeout(function() {
-        postMessage(charts);
-      }, 10000);
-
-    
+    postMessage(charts);
 });
