@@ -6,6 +6,8 @@ import {
     Chart as ChartJS, CategoryScale, LinearScale,
     PointElement, LineElement, Title, Tooltip, Legend,
 } from 'chart.js'
+import { useEffect, useState } from "react";
+import { Placeholder } from "react-bootstrap";
 
 ChartJS.register(
     CategoryScale,
@@ -22,7 +24,7 @@ interface IConversionResult {
     availableCurrencies: IApiAllAvailableCurrencies;
 }
 
-interface IChart {
+export interface IExchangeRateHistoryChart {
     id: string;
     labels: string[];
     datasets: {
@@ -33,52 +35,61 @@ interface IChart {
     }[];
 }
 
-const getChartData = (
-    apiResult: IApiExchangeRateHistory,
-    availableCurrencies: IApiAllAvailableCurrencies,
-): IChart[] => {
-
-    const charts: IChart[] = [];
-    const labels = Object.keys(apiResult.rates).map(d => d);
-
-    Object.keys(availableCurrencies?.symbols).map(currCode =>
-        charts.push({
-            id: currCode,
-            labels: labels,
-            datasets: [
-                {
-                    label: `${currCode} (${availableCurrencies?.symbols[currCode]})`,
-                    backgroundColor: "rgb(255, 99, 132)",
-                    borderColor: "rgb(255, 99, 132)",
-                    data: Object.keys(apiResult.rates)?.map(d => apiResult.rates[d]?.[currCode]),
-                },
-            ],
-        })
-    );
-
-    return charts;
-}
-
 
 const ExchangeRateHistoryResult = ({
     result,
     availableCurrencies
 }: IConversionResult) => {
 
-    const charts = getChartData(result, availableCurrencies);
+    const [charts, setCharts] = useState<IExchangeRateHistoryChart[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
+
+    useEffect(() => {
+        setIsLoading(true);
+
+        setCharts([]);
+
+        const erhChartsConvertorWorker = new Worker(new URL('./ErhChartsConvertor.worker', import.meta.url));
+        erhChartsConvertorWorker
+            .postMessage({ result, availableCurrencies });
+        erhChartsConvertorWorker
+            .onmessage = event => {
+                setCharts(event.data);
+                erhChartsConvertorWorker.terminate();
+                setIsLoading(false);
+            };
+        erhChartsConvertorWorker
+            .onerror = event => {
+                setCharts([]);
+                erhChartsConvertorWorker.terminate();
+                setIsLoading(false);
+            };
+    }, [result, availableCurrencies]);
+
 
     return (
         <>
             <h2>Base: {result.base} (<small>{availableCurrencies?.symbols[result.base]}</small>)</h2>
             <div>
-                {charts.length > 0
-                    ? charts.map(c =>
+                {isLoading &&
+                    Array(12).fill(0).map((_, i) =>
+                        <div key={i} className="w-50 d-inline-block p-4">
+                            <Placeholder xs={12} as="div" animation="glow">
+                                <Placeholder xs={12} style={{ height: '244px', background: '#cecece' }} className="rounded" />
+                            </Placeholder>
+                        </div>
+                    )
+                }
+                {!isLoading && charts.length > 0 &&
+                    charts.map(c =>
                         <div key={c.id} className="w-50 d-inline-block p-4">
                             <Line data={c} />
                         </div>
                     )
-                    : <p>No data</p>
                 }
+
+                {!isLoading && charts.length === 0 && <p>No data</p>}
             </div>
         </>
     )
