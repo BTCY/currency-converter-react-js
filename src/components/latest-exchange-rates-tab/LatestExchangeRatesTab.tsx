@@ -7,6 +7,8 @@ import {
 import { Button, Col, Row } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { shallowEqual } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
+import { getSearchParams } from '../../utils/getSearchParams';
 import { ILatestExchangeRatesParams } from '../../api/exchange-rates-service.types';
 import TabTemplate from '../common/tab-template/TabTemplate';
 import Form from 'react-bootstrap/Form';
@@ -25,6 +27,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 const LatestExchangeRatesTab = () => {
 
+    const [searchParams, setSearchParams] = useSearchParams();
     const availableCurrencies = useAppSelector(selectAvailableCurrencies, shallowEqual);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const latestExchangeRates = useAppSelector(selectLatestExchangeRates, shallowEqual);
@@ -35,7 +38,7 @@ const LatestExchangeRatesTab = () => {
         validateOnBlur: true,
         enableReinitialize: true,
         initialValues: {
-            base: 'USD',
+            base: searchParams.get('base') ?? 'USD',
             symbols: undefined,
         },
         validationSchema: Yup.object({
@@ -47,12 +50,13 @@ const LatestExchangeRatesTab = () => {
 
             const params: ILatestExchangeRatesParams = {
                 base,
-                symbols
+                // symbols
             }
+
+            setSearchParams(getSearchParams(params));
 
             dispatch(latestExchangeRatesThunk(params))
                 .finally(() => setIsSubmitting(false))
-
         }
     });
 
