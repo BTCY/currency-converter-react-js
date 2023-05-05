@@ -18,6 +18,7 @@ import ConversionResult from './ConversionResult';
 import MetaInfo from '../common/meta-info/MetaInfo';
 import ResultContainer from '../common/result-container/ResultContainer';
 import * as Yup from 'yup';
+import { getSearchParams } from '../../utils/getSearchParams';
 
 /**
  *   CurrencyConversionTab
@@ -58,12 +59,7 @@ const CurrencyConversionTab = () => {
                 amount: currencyAmount,
             }
 
-            const searchParams = new URLSearchParams();
-            Object.entries(params).forEach(p => {
-                const [key, val] = p;
-                searchParams.append(key, val);
-            });
-            setSearchParams(searchParams);
+            setSearchParams(getSearchParams(params));
 
             dispatch(convertedCurrencyThunk(params))
                 .finally(() => setIsSubmitting(false))
