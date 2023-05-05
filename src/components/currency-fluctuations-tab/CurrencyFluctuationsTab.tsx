@@ -9,6 +9,7 @@ import { Button, Col, Row } from 'react-bootstrap';
 import { useFormik, } from 'formik';
 import { shallowEqual } from 'react-redux';
 import { ICurrencyFluctuationsParams } from '../../api/exchange-rates-service.types';
+import { useSearchParams } from 'react-router-dom';
 import TabTemplate from '../common/tab-template/TabTemplate';
 import Form from 'react-bootstrap/Form';
 import FormCustom from '../common/form-custom/FormCustom';
@@ -20,6 +21,7 @@ import FluctuationsResult from './FluctuationsResult';
 import MetaInfo from '../common/meta-info/MetaInfo';
 import * as Yup from 'yup';
 import "react-datepicker/dist/react-datepicker.css";
+import { getSearchParams } from '../../utils/getSearchParams';
 
 /**
  *   CurrencyFluctuationsTab
@@ -30,6 +32,7 @@ const endDateInitValue = new Date('2018-02-25');
 
 const CurrencyFluctuationsTab = () => {
 
+    const [searchParams, setSearchParams] = useSearchParams();
     const availableCurrencies = useAppSelector(selectAvailableCurrencies, shallowEqual);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const currencyFluctuations = useAppSelector(selectCurrencyFluctuations, shallowEqual);
@@ -39,9 +42,9 @@ const CurrencyFluctuationsTab = () => {
         validateOnChange: true,
         enableReinitialize: true,
         initialValues: {
-            startDate: startDateInitValue,
-            endDate: endDateInitValue,
-            base: 'EUR',
+            startDate: searchParams.get('start_date') ?? startDateInitValue,
+            endDate: searchParams.get('end_date') ?? endDateInitValue,
+            base: searchParams.get('base') ?? 'USD',
             symbols: undefined,
         },
         validationSchema: Yup.object({
@@ -52,12 +55,15 @@ const CurrencyFluctuationsTab = () => {
         }),
 
         onSubmit: async ({ startDate, endDate, base, symbols }) => {
+
             const params: ICurrencyFluctuationsParams = {
                 start_date: format(startDate, 'YYYY-MM-DD') ?? '',
                 end_date: format(endDate, 'YYYY-MM-DD') ?? '',
                 base: base,
-                symbols: symbols,
+                // symbols: symbols,
             }
+
+            setSearchParams(getSearchParams(params));
 
             dispatch(currencyFluctuationsThunk(params))
                 .finally(() => setIsSubmitting(false))
