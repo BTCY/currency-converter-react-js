@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../stores/hooks';
 import { availableCurrenciesThunk, selectAvailableCurrencies } from '../../stores/slices/currenciesSlice';
 import { shallowEqual } from 'react-redux';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styles from './Home.module.css';
 import CurrencyConversionTab from '../currency-conversion-tab/CurrencyConversionTab';
 import CurrencyFluctuationsTab from '../currency-fluctuations-tab/CurrencyFluctuationsTab';
@@ -16,9 +17,17 @@ import DelayedSpinner from '../common/delayed-spinner/DelayedSpinner';
 
 const Home = () => {
 
+    const { tabId = 'converter' } = useParams();
+    const navigate = useNavigate();
     const availableCurrencies = useAppSelector(selectAvailableCurrencies, shallowEqual);
-    const [availableCurrenciesIsLoading, setAvailableCurrenciesIsLoading] = useState<boolean>(true);
-    const dispatch = useAppDispatch();
+    const dispatch = useAppDispatch(); 
+    const [availableCurrenciesIsLoading, setAvailableCurrenciesIsLoading] = useState<boolean>(true); 
+
+    const handleSelectTab = (tabId: string | null): void => {
+        if (typeof tabId === 'string') {
+            navigate('/' + tabId);
+        }
+    }
 
     useEffect(() => {
         setAvailableCurrenciesIsLoading(true);
@@ -34,41 +43,40 @@ const Home = () => {
                 </div>
             }
             {!availableCurrenciesIsLoading && availableCurrencies?.symbols &&
-                <>
-                    <Tabs
-                        id="home-tab"
-                        defaultActiveKey="converter"
-                        justify
+                <Tabs
+                    id="home-tab"
+                    activeKey={tabId}
+                    onSelect={handleSelectTab}
+                    justify
+                >
+                    <Tab
+                        eventKey="converter"
+                        title="Converter"
                     >
-                        <Tab
-                            eventKey="converter"
-                            title="Converter"
-                        >
-                            <CurrencyConversionTab />
-                        </Tab>
+                        <CurrencyConversionTab />
+                    </Tab>
 
-                        <Tab
-                            eventKey="fluctuations"
-                            title="Fluctuations"
-                        >
-                            <CurrencyFluctuationsTab />
-                        </Tab>
+                    <Tab
+                        eventKey="fluctuations"
+                        title="Fluctuations"
+                    >
+                        <CurrencyFluctuationsTab />
+                    </Tab>
 
-                        <Tab
-                            eventKey="latestExchangeRates"
-                            title="Latest Exchange Rates"
-                        >
-                            <LatestExchangeRatesTab />
-                        </Tab>
+                    <Tab
+                        eventKey="latestExchangeRates"
+                        title="Latest Exchange Rates"
+                    >
+                        <LatestExchangeRatesTab />
+                    </Tab>
 
-                        <Tab
-                            eventKey="exchangeRateHistory"
-                            title="Exchange Rate History"
-                        >
-                            <ExchangeRateHistoryTab />
-                        </Tab>
-                    </Tabs>
-                </>
+                    <Tab
+                        eventKey="exchangeRateHistory"
+                        title="Exchange Rate History"
+                    >
+                        <ExchangeRateHistoryTab />
+                    </Tab>
+                </Tabs>
             }
         </div>
     );

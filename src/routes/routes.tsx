@@ -18,7 +18,7 @@ export interface IRouteData {
 export const RoutesData: IRouteData = {
     home: {
         component: <HomePage />,
-        link: '/',
+        link: '/:tabId?',
     },
     about: {
         component: <AboutPage />,
