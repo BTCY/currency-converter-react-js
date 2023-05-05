@@ -9,6 +9,7 @@ import { useFormik } from 'formik';
 import { shallowEqual } from 'react-redux';
 import { IExchangeRateHistoryParams } from '../../api/exchange-rates-service.types';
 import { format } from '../../utils/dateTimeHelper';
+import { useSearchParams } from 'react-router-dom';
 import TabTemplate from '../common/tab-template/TabTemplate';
 import Form from 'react-bootstrap/Form';
 import FormCustom from '../common/form-custom/FormCustom';
@@ -20,6 +21,7 @@ import DatePickerCustom from '../common/date-picker-custom/DatePickerCustom';
 import MetaInfo from '../common/meta-info/MetaInfo';
 import * as Yup from 'yup';
 import "react-datepicker/dist/react-datepicker.css";
+import { getSearchParams } from '../../utils/getSearchParams';
 
 /**
  *   ExchangeRateHistoryTab
@@ -30,6 +32,7 @@ const endDateInitValue = new Date('2018-02-25');
 
 const ExchangeRateHistoryTab = () => {
 
+    const [searchParams, setSearchParams] = useSearchParams();
     const availableCurrencies = useAppSelector(selectAvailableCurrencies, shallowEqual);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const exchangeRateHistory = useAppSelector(selectExchangeRateHistory, shallowEqual);
@@ -40,9 +43,9 @@ const ExchangeRateHistoryTab = () => {
         validateOnBlur: true,
         enableReinitialize: true,
         initialValues: {
-            startDate: startDateInitValue,
-            endDate: endDateInitValue,
-            base: 'EUR',
+            startDate: searchParams.get('start_date') ?? startDateInitValue,
+            endDate: searchParams.get('end_date') ?? endDateInitValue,
+            base: searchParams.get('base') ?? 'USD',
             symbols: undefined,
         },
         validationSchema: Yup.object({
@@ -58,8 +61,10 @@ const ExchangeRateHistoryTab = () => {
                 start_date: format(startDate, 'YYYY-MM-DD') ?? '',
                 end_date: format(endDate, 'YYYY-MM-DD') ?? '',
                 base: base,
-                symbols: symbols,
+                // symbols: symbols,
             }
+
+            setSearchParams(getSearchParams(params));
 
             dispatch(exchangeRateHistoryThunk(params))
                 .finally(() => setIsSubmitting(false))
@@ -83,7 +88,7 @@ const ExchangeRateHistoryTab = () => {
                     <Col md={3} xs={12} className='mb-2'>
                         <DatePickerCustom
                             name='startDate'
-                            aria-label='start date' 
+                            aria-label='start date'
                             selected={(values.startDate && new Date(values.startDate)) || null}
                             onChange={val => {
                                 formik.setFieldValue('startDate', val);
