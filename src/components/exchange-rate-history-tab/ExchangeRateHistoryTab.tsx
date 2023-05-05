@@ -10,6 +10,7 @@ import { shallowEqual } from 'react-redux';
 import { IExchangeRateHistoryParams } from '../../api/exchange-rates-service.types';
 import { format } from '../../utils/dateTimeHelper';
 import { useSearchParams } from 'react-router-dom';
+import { getSearchParams } from '../../utils/getSearchParams';
 import TabTemplate from '../common/tab-template/TabTemplate';
 import Form from 'react-bootstrap/Form';
 import FormCustom from '../common/form-custom/FormCustom';
@@ -21,7 +22,6 @@ import DatePickerCustom from '../common/date-picker-custom/DatePickerCustom';
 import MetaInfo from '../common/meta-info/MetaInfo';
 import * as Yup from 'yup';
 import "react-datepicker/dist/react-datepicker.css";
-import { getSearchParams } from '../../utils/getSearchParams';
 
 /**
  *   ExchangeRateHistoryTab
