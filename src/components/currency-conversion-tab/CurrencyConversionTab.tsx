@@ -8,6 +8,7 @@ import { Button, Col, Row } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { shallowEqual } from 'react-redux';
 import { IConvertedCurrencyParams } from '../../api/exchange-rates-service.types';
+import { useSearchParams } from 'react-router-dom';
 import TabTemplate from '../common/tab-template/TabTemplate';
 import Form from 'react-bootstrap/Form';
 import FormCustom from '../common/form-custom/FormCustom';
@@ -24,6 +25,7 @@ import * as Yup from 'yup';
 
 const CurrencyConversionTab = () => {
 
+    const [searchParams, setSearchParams] = useSearchParams();
     const availableCurrencies = useAppSelector(selectAvailableCurrencies, shallowEqual);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const convertedCurrency = useAppSelector(selectConvertedCurrency, shallowEqual);
@@ -35,9 +37,9 @@ const CurrencyConversionTab = () => {
         validateOnBlur: true,
         enableReinitialize: true,
         initialValues: {
-            currencyFrom: 'USD',
-            currencyTo: 'EUR',
-            currencyAmount: 1,
+            currencyFrom: searchParams.get('from') ?? 'USD',
+            currencyTo: searchParams.get('to') ?? 'EUR',
+            currencyAmount: searchParams.has('amount') ? Number(searchParams.get('amount')) : 1,
         },
         validationSchema: Yup.object({
             currencyFrom: Yup.string()
@@ -55,6 +57,13 @@ const CurrencyConversionTab = () => {
                 to: currencyTo,
                 amount: currencyAmount,
             }
+
+            const searchParams = new URLSearchParams();
+            Object.entries(params).forEach(p => {
+                const [key, val] = p;
+                searchParams.append(key, val);
+            });
+            setSearchParams(searchParams);
 
             dispatch(convertedCurrencyThunk(params))
                 .finally(() => setIsSubmitting(false))

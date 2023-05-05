@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../stores/hooks';
 import { availableCurrenciesThunk, selectAvailableCurrencies } from '../../stores/slices/currenciesSlice';
 import { shallowEqual } from 'react-redux';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styles from './Home.module.css';
 import CurrencyConversionTab from '../currency-conversion-tab/CurrencyConversionTab';
 import CurrencyFluctuationsTab from '../currency-fluctuations-tab/CurrencyFluctuationsTab';
@@ -20,8 +20,8 @@ const Home = () => {
     const { tabId = 'converter' } = useParams();
     const navigate = useNavigate();
     const availableCurrencies = useAppSelector(selectAvailableCurrencies, shallowEqual);
-    const dispatch = useAppDispatch(); 
-    const [availableCurrenciesIsLoading, setAvailableCurrenciesIsLoading] = useState<boolean>(true); 
+    const dispatch = useAppDispatch();
+    const [availableCurrenciesIsLoading, setAvailableCurrenciesIsLoading] = useState<boolean>(true);
 
     const handleSelectTab = (tabId: string | null): void => {
         if (typeof tabId === 'string') {
