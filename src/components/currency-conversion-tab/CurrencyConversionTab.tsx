@@ -2,13 +2,15 @@ import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../stores/hooks';
 import {
     selectAvailableCurrencies,
-    selectConvertedCurrency, convertedCurrencyThunk
-} from '../../stores/slices/currenciesSlice';
+    selectConvertedCurrency
+} from '../../stores/currencies-slice/currenciesSlice';
 import { Button, Col, Row } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { shallowEqual } from 'react-redux';
 import { IConvertedCurrencyParams } from '../../api/exchange-rates-service.types';
 import { useSearchParams } from 'react-router-dom';
+import { getSearchParams } from '../../utils/getSearchParams';
+import { convertedCurrencyThunk } from '../../stores/currencies-slice/convertedCurrencyThunk';
 import TabTemplate from '../common/tab-template/TabTemplate';
 import Form from 'react-bootstrap/Form';
 import FormCustom from '../common/form-custom/FormCustom';
@@ -18,7 +20,6 @@ import ConversionResult from './ConversionResult';
 import MetaInfo from '../common/meta-info/MetaInfo';
 import ResultContainer from '../common/result-container/ResultContainer';
 import * as Yup from 'yup';
-import { getSearchParams } from '../../utils/getSearchParams';
 
 /**
  *   CurrencyConversionTab

@@ -2,13 +2,14 @@ import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../stores/hooks';
 import {
     selectAvailableCurrencies,
-    selectCurrencyFluctuations, currencyFluctuationsThunk
-} from '../../stores/slices/currenciesSlice';
+    selectCurrencyFluctuations
+} from '../../stores/currencies-slice/currenciesSlice';
 import { format } from '../../utils/dateTimeHelper';
 import { Button, Col, Row } from 'react-bootstrap';
 import { useFormik, } from 'formik';
 import { shallowEqual } from 'react-redux';
 import { ICurrencyFluctuationsParams } from '../../api/exchange-rates-service.types';
+import { currencyFluctuationsThunk } from '../../stores/currencies-slice/currencyFluctuationsThunk';
 import { useSearchParams } from 'react-router-dom';
 import { getSearchParams } from '../../utils/getSearchParams';
 import TabTemplate from '../common/tab-template/TabTemplate';
