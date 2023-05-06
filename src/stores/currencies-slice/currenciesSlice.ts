@@ -8,13 +8,15 @@ import { currencyFluctuationsThunk } from './currencyFluctuationsThunk';
 import { latestExchangeRatesThunk } from './latestExchangeRatesThunk';
 import { exchangeRateHistoryThunk } from './exchangeRateHistoryThunk';
 
- 
+/**
+ *  Store slice for currency data
+ */
+
 export const CACHING_RESULT_IN_MINUTES = 60;
 export const AVAILABLE_CURR_CACHING_IN_MINUTES = 43800;
 
 
 export interface ICurrenciesState {
-    value: number;
     availableCurrencies: IApiAllAvailableCurrencies | undefined;
     convertedCurrency: IStoreDataInIndexedDB<Stores.ConvertedCurrency> | undefined;
     currencyFluctuations: IStoreDataInIndexedDB<Stores.CurrencyFluctuations> | undefined;
@@ -24,14 +26,13 @@ export interface ICurrenciesState {
 }
 
 const initialState: ICurrenciesState = {
-    value: 0,
     availableCurrencies: undefined,
     convertedCurrency: undefined,
     currencyFluctuations: undefined,
     latestExchangeRates: undefined,
     exchangeRateHistory: undefined,
     status: 'idle',
-}; 
+};
 
 export const currenciesSlice = createSlice({
     name: 'currencies',
