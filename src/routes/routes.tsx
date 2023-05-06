@@ -1,31 +1,30 @@
 import { ReactElement } from "react";
-import AboutPage from "../features/about/AboutPage";
-import HomePage from "../features/home/HomePage";
-import NotFoundPage from "../features/not-found-page/NotFoundPage";
+import AboutPage from "../pages/about/AboutPage";
+import HomePage from "../pages/home/HomePage";
+import NotFoundPage from "../pages/not-found-page/NotFoundPage";
 
 /**
- * App routes
+ *  App routes
  */
 
 export interface IRouteData {
     [key: string]: {
-        component: ReactElement;
-        link: string;
+        element: ReactElement;
+        path: string;
     }
 }
 
-
 export const RoutesData: IRouteData = {
     home: {
-        component: <HomePage />,
-        link: '/:tabId?',
+        element: <HomePage />,
+        path: '/:tabId?',
     },
     about: {
-        component: <AboutPage />,
-        link: '/about',
+        element: <AboutPage />,
+        path: '/about',
     },
     notFound: {
-        component: <NotFoundPage />,
-        link: '*',
+        element: <NotFoundPage />,
+        path: '*',
     },
 }

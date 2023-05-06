@@ -1,7 +1,7 @@
 import styles from './Layout.module.css';
 
 /**
- *   Layout: main layer
+ *  Layout: main layer
  */
 
 interface ILayout {
@@ -9,7 +9,7 @@ interface ILayout {
 }
 
 
-const Layout = ({ children }: ILayout) => {
+const Layout = ({ children }: ILayout): JSX.Element => {
 
     return (
         <div className={styles.layout}>
