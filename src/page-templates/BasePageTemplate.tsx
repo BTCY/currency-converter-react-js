@@ -14,7 +14,7 @@ interface IBasePageTemplate {
     children?: React.ReactNode;
 }
 
-const BasePageTemplate = ({ children }: IBasePageTemplate) => {
+const BasePageTemplate = ({ children }: IBasePageTemplate): JSX.Element => {
 
     return (
         <Layout>

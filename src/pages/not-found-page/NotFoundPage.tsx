@@ -5,8 +5,8 @@ import BasePageTemplate from '../../page-templates/BasePageTemplate';
  *  Not found page (404)
  */
 
-const NotFoundPage = () => (
-    <BasePageTemplate >
+const NotFoundPage = (): JSX.Element => (
+    <BasePageTemplate>
         <NfpContent />
     </BasePageTemplate>
 );
