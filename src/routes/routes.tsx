@@ -1,7 +1,7 @@
 import { ReactElement } from "react";
 import AboutPage from "../features/about/AboutPage";
 import HomePage from "../features/home/HomePage";
-import NotFoundPage from "../features/not-found/NotFoundPage";
+import NotFoundPage from "../features/not-found-page/NotFoundPage";
 
 /**
  * App routes
