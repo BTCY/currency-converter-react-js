@@ -1,9 +1,7 @@
  .tabTemplateWrap {
-     height: 100% !important;
-     flex-direction: column;
-     flex: 1;
-     min-height: calc(100vh - 146px);
-     justify-content: space-between;
+     display: block;
+     height: 100%;
+     width: 100%;
      background: #ffffff;
      padding: 30px 20px;
      border: 1px solid #dee2e6;

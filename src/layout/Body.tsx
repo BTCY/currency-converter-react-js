@@ -12,8 +12,10 @@ interface IBody {
 const Body = ({ children }: IBody) => {
 
     return (
-        <div className={styles.body}>
-            {children}
+        <div className={`${styles.body} row`}>
+            <div className={`${styles.bodyIn} p-0`}>
+                {children}
+            </div>
         </div>
 
     );
