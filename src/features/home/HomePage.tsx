@@ -8,28 +8,26 @@ import Header from '../../layout/Header';
 import Layout from '../../layout/Layout';
 
 /**
- * Home page
+ *  Home page
  */
 
-const HomePage = () => {
-    return (
-        <Layout>
+const HomePage = () => (
+    <Layout>
 
-            <Header>
-                <Logo />
-                <HeaderMenu />
-            </Header>
+        <Header>
+            <Logo />
+            <HeaderMenu />
+        </Header>
 
-            <Body>
-                <Home />
-            </Body>
+        <Body>
+            <Home />
+        </Body>
 
-            <Footer>
-                <Copyright />
-            </Footer>
+        <Footer>
+            <Copyright />
+        </Footer>
 
-        </Layout>
-    );
-}
+    </Layout>
+);
 
 export default HomePage;

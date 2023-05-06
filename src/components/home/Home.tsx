@@ -9,7 +9,7 @@ import CurrencyConversionTab from '../currency-conversion-tab/CurrencyConversion
 import CurrencyFluctuationsTab from '../currency-fluctuations-tab/CurrencyFluctuationsTab';
 import LatestExchangeRatesTab from '../latest-exchange-rates-tab/LatestExchangeRatesTab';
 import ExchangeRateHistoryTab from '../exchange-rate-history-tab/ExchangeRateHistoryTab';
-import DelayedSpinner from '../common/delayed-spinner/DelayedSpinner';
+import DelayedSpinner from '../common/delayed-spinner/DelayedSpinner'; 
 
 /**
  *   Home
@@ -48,10 +48,12 @@ const Home = () => {
                     activeKey={tabId}
                     onSelect={handleSelectTab}
                     justify
+                    className={styles.tabContentWrap}
                 >
                     <Tab
                         eventKey="converter"
                         title="Converter"
+                        className={styles.tabContent}
                     >
                         <CurrencyConversionTab />
                     </Tab>
