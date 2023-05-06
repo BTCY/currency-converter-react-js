@@ -1,15 +1,16 @@
 import { Tab, Tabs } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../stores/hooks';
-import { availableCurrenciesThunk, selectAvailableCurrencies } from '../../stores/slices/currenciesSlice';
+import { selectAvailableCurrencies } from '../../stores/currencies-slice/currenciesSlice';
 import { shallowEqual } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import { availableCurrenciesThunk } from '../../stores/currencies-slice/availableCurrenciesThunk';
 import styles from './Home.module.css';
 import CurrencyConversionTab from '../currency-conversion-tab/CurrencyConversionTab';
 import CurrencyFluctuationsTab from '../currency-fluctuations-tab/CurrencyFluctuationsTab';
 import LatestExchangeRatesTab from '../latest-exchange-rates-tab/LatestExchangeRatesTab';
 import ExchangeRateHistoryTab from '../exchange-rate-history-tab/ExchangeRateHistoryTab';
-import DelayedSpinner from '../common/delayed-spinner/DelayedSpinner'; 
+import DelayedSpinner from '../common/delayed-spinner/DelayedSpinner';
 
 /**
  *   Home

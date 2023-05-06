@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../stores/hooks';
 import {
     selectAvailableCurrencies,
-    latestExchangeRatesThunk, selectLatestExchangeRates
-} from '../../stores/slices/currenciesSlice';
+    selectLatestExchangeRates
+} from '../../stores/currencies-slice/currenciesSlice';
 import { Button, Col, Row } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { shallowEqual } from 'react-redux';
@@ -20,6 +20,7 @@ import MetaInfo from '../common/meta-info/MetaInfo';
 import ResultContainer from '../common/result-container/ResultContainer';
 import * as Yup from 'yup';
 import "react-datepicker/dist/react-datepicker.css";
+import { latestExchangeRatesThunk } from '../../stores/currencies-slice/latestExchangeRatesThunk';
 
 /**
  *   CurrencyFluctuationsTab
