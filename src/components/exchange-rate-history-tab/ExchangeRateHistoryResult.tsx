@@ -5,7 +5,7 @@ import { Line } from "react-chartjs-2";
 import {
     Chart as ChartJS, CategoryScale, LinearScale,
     PointElement, LineElement, Title, Tooltip, Legend,
-} from 'chart.js'
+} from "chart.js"
 import { useEffect, useState } from "react";
 import { Placeholder } from "react-bootstrap";
 
@@ -50,7 +50,7 @@ const ExchangeRateHistoryResult = ({
 
         setCharts([]);
 
-        const erhChartsConvertorWorker = new Worker(new URL('./ErhChartsConvertor.worker', import.meta.url));
+        const erhChartsConvertorWorker = new Worker(new URL("./ErhChartsConvertor.worker", import.meta.url));
         erhChartsConvertorWorker
             .postMessage({ result, availableCurrencies });
         erhChartsConvertorWorker
@@ -76,7 +76,7 @@ const ExchangeRateHistoryResult = ({
                     Array(12).fill(0).map((_, i) =>
                         <div key={i} className="w-50 d-inline-block p-4">
                             <Placeholder xs={12} as="div" animation="glow">
-                                <Placeholder xs={12} style={{ height: '244px', background: '#cecece' }} className="rounded" />
+                                <Placeholder xs={12} style={{ height: "244px", background: "#cecece" }} className="rounded" />
                             </Placeholder>
                         </div>
                     )

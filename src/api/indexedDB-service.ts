@@ -6,13 +6,13 @@ import { IStoreDataInIndexedDB, Stores } from "./indexedDB-service.types";
 
 
 /** DB name */
-export const iDB_NAME = 'CurrDashboardDB';
+export const iDB_NAME = "CurrDashboardDB";
 
 /** DB version */
 export const iDB_VERSION = 3;
 
 /** Primary key */
-export const KEY_PATH = 'key';
+export const KEY_PATH = "key";
 
 
 /**
@@ -21,7 +21,7 @@ export const KEY_PATH = 'key';
  * @return  {boolean}
  */
 const indexedDBSupport = (): boolean => {
-    return 'indexedDB' in window;
+    return "indexedDB" in window;
 };
 
 

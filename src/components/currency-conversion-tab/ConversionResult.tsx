@@ -1,6 +1,6 @@
 import { Col,  Row } from "react-bootstrap";
 import { IApiConvertedCurrency } from "../../api/exchange-rates-service.types";
-import styles from './ConversionResult.module.css';
+import styles from "./ConversionResult.module.css";
 
 
 interface IConversionResult {

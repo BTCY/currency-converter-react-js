@@ -1,4 +1,4 @@
-import { ReactNode, ReactElement } from 'react'; 
+import { ReactNode, ReactElement } from "react"; 
 
 /**
  *   TabTemplate
@@ -13,7 +13,7 @@ const ResultContainer = ({
 }: IResultContainer): ReactElement<any, any> => {
 
     return (
-        <div className='d-grid gap-3'> 
+        <div className="d-grid gap-3"> 
             {children && children}
         </div>
     );

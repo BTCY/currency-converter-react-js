@@ -1,7 +1,7 @@
-import styles from './HeaderMenu.module.css';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import { NavLink } from 'react-router-dom';
+import styles from "./HeaderMenu.module.css";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import { NavLink } from "react-router-dom";
 
 /**
  * Header menu

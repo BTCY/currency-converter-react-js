@@ -33,19 +33,19 @@ export type StoreData<T> =
 export const enum Stores {
 
     /** Store with converted currency */
-    ConvertedCurrency = 'convertedCurrency',
+    ConvertedCurrency = "convertedCurrency",
 
     /** Store with currency fluctuations */
-    CurrencyFluctuations = 'currencyFluctuations',
+    CurrencyFluctuations = "currencyFluctuations",
 
     /** Store with currency latest exchange rates */
-    LatestExchangeRates = 'latestExchangeRates',
+    LatestExchangeRates = "latestExchangeRates",
 
     /** Store with available currencies */
-    AvailableCurrencies = 'availableCurrencies',
+    AvailableCurrencies = "availableCurrencies",
 
     /** Store with exchange rate history */
-    ExchangeRateHistory = 'exchangeRateHistory',
+    ExchangeRateHistory = "exchangeRateHistory",
 };
 
 

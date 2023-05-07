@@ -17,14 +17,14 @@ export interface IRouteData {
 export const RoutesData: IRouteData = {
     home: {
         element: <HomePage />,
-        path: '/:tabId?',
+        path: "/:tabId?",
     },
     about: {
         element: <AboutPage />,
-        path: '/about',
+        path: "/about",
     },
     notFound: {
         element: <NotFoundPage />,
-        path: '*',
+        path: "*",
     },
 }

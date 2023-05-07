@@ -1,9 +1,9 @@
-import axios from 'axios';
-import { getServerError } from './error-service';
+import axios from "axios";
+import { getServerError } from "./error-service";
 import {
     IApiConvertedCurrency, IApiCurrencyFluctuations,
     IApiLatestExchangeRates, IApiAllAvailableCurrencies, IApiExchangeRateHistory
-} from './exchange-rates-service.types';
+} from "./exchange-rates-service.types";
 
 /**
  * @file API: exchange-rates.
@@ -12,9 +12,9 @@ import {
  */
 
 
-const apikey = 'q11PIF3wrH0X1U9blJ2uYK8lr3mu9DwX';
+const apikey = "q11PIF3wrH0X1U9blJ2uYK8lr3mu9DwX";
 const headers = {
-    'apikey': apikey
+    "apikey": apikey
 }
 
 
@@ -34,7 +34,7 @@ export const getConvertedCurrency = (
     date: string | undefined = undefined
 ): Promise<IApiConvertedCurrency> =>
     axios.get<IApiConvertedCurrency>(
-        'https://api.apilayer.com/exchangerates_data/convert', {
+        "https://api.apilayer.com/exchangerates_data/convert", {
         headers,
         params: { from, to, amount, date }
     })
@@ -60,7 +60,7 @@ export const getCurrencyFluctuations = (
     symbols: string | undefined = undefined
 ): Promise<IApiCurrencyFluctuations> =>
     axios.get<IApiCurrencyFluctuations>(
-        'https://api.apilayer.com/exchangerates_data/fluctuation', {
+        "https://api.apilayer.com/exchangerates_data/fluctuation", {
         headers,
         params: { start_date, end_date, base, symbols }
     })
@@ -82,7 +82,7 @@ export const getLatestExchangeRates = (
     symbols: string | undefined = undefined
 ): Promise<IApiLatestExchangeRates> =>
     axios.get<IApiLatestExchangeRates>(
-        'https://api.apilayer.com/exchangerates_data/latest', {
+        "https://api.apilayer.com/exchangerates_data/latest", {
         headers,
         params: { base, symbols }
     })
@@ -99,7 +99,7 @@ export const getLatestExchangeRates = (
  */
 export const getAllAvailableCurrencies = (): Promise<IApiAllAvailableCurrencies> =>
     axios.get<IApiAllAvailableCurrencies>(
-        'https://api.apilayer.com/exchangerates_data/symbols', {
+        "https://api.apilayer.com/exchangerates_data/symbols", {
         headers
     })
         .then(res => res.data)
@@ -124,7 +124,7 @@ export const getExchangeRateHistory = (
     symbols: string | undefined = undefined
 ): Promise<IApiExchangeRateHistory> =>
     axios.get<IApiExchangeRateHistory>(
-        'https://api.apilayer.com/exchangerates_data/timeseries', {
+        "https://api.apilayer.com/exchangerates_data/timeseries", {
         headers,
         params: { start_date, end_date, base, symbols }
     })

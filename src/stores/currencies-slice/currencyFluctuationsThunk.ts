@@ -11,11 +11,11 @@ import { getCurrencyFluctuations } from "../../api/exchange-rates-service";
  */
 
 export const currencyFluctuationsThunk = createAsyncThunk(
-    'currencies/currencyFluctuations',
+    "currencies/currencyFluctuations",
     async (
         params: ICurrencyFluctuationsParams
     ): Promise<IStoreDataInIndexedDB<Stores.CurrencyFluctuations> | undefined> => {
-        const key = params.start_date + '_' + params.end_date + '_' + (params?.base || '') + '_' + (params?.symbols || '');
+        const key = params.start_date + "_" + params.end_date + "_" + (params?.base || "") + "_" + (params?.symbols || "");
         let currencyFluctuations = await getFromIndexedDB(Stores.CurrencyFluctuations, key);
         const diffInMinutes = diff(new Date(), currencyFluctuations?.update_timestamp);
 
