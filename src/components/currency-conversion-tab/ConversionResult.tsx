@@ -1,43 +1,47 @@
-import { Col,  Row } from "react-bootstrap";
+import { ReactElement } from "react";
+import { Col, Row } from "react-bootstrap";
 import { IApiConvertedCurrency } from "../../api/exchange-rates-service.types";
-import styles from "./ConversionResult.module.css";
 
+/**
+ *  Conversion result
+ */
 
 interface IConversionResult {
     result: IApiConvertedCurrency
 }
 
+
 const ConversionResult = ({
     result
-}: IConversionResult) => {
-    return (
-        <Row>
-            <Col md="auto">
-                <div className={styles.resultValue}>
-                    {result.query.amount}
-                </div>
-                {result.query.from}
-            </Col>
+}: IConversionResult): ReactElement => (
 
-            <Col className={styles.resultValue} md="auto">x</Col>
+    <Row>
+        <Col md="auto">
+            <div className="display-4 fw-normal">
+                {result.query.amount}
+            </div>
+            {result.query.from}
+        </Col>
 
-            <Col md="auto">
-                <div className={styles.resultValue}>
-                    {result.info.rate}
-                </div>
-                RATE
-            </Col>
+        <Col className="display-4 fw-normal" md="auto">x</Col>
 
-            <Col className={styles.resultValue} md="auto">=</Col>
+        <Col md="auto">
+            <div className="display-4 fw-normal">
+                {result.info.rate}
+            </div>
+            RATE
+        </Col>
 
-            <Col md="auto">
-                <div className={styles.resultValue}>
-                    {result.result}
-                </div>
-                {result.query.to}
-            </Col>
-        </Row>
-    )
-};
+        <Col className="display-4 fw-normal" md="auto">=</Col>
+
+        <Col md="auto">
+            <div className="display-4 fw-normal">
+                {result.result}
+            </div>
+            {result.query.to}
+        </Col>
+    </Row>
+);
+
 
 export default ConversionResult;

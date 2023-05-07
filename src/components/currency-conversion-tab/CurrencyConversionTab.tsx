@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ReactElement, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../stores/hooks";
 import {
     selectAvailableCurrencies,
@@ -22,17 +22,16 @@ import ResultContainer from "../common/result-container/ResultContainer";
 import * as Yup from "yup";
 
 /**
- *   CurrencyConversionTab
+ *  Currency Conversion Tab
  */
 
-const CurrencyConversionTab = () => {
+const CurrencyConversionTab = (): ReactElement => {
 
     const [searchParams, setSearchParams] = useSearchParams();
     const availableCurrencies = useAppSelector(selectAvailableCurrencies, shallowEqual);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const convertedCurrency = useAppSelector(selectConvertedCurrency, shallowEqual);
     const dispatch = useAppDispatch();
-
 
     const { values, touched, errors, ...formik } = useFormik({
         validateOnChange: true,
@@ -68,12 +67,10 @@ const CurrencyConversionTab = () => {
         }
     });
 
-
     const handleSubmit = () => {
         setIsSubmitting(true);
         formik.submitForm();
     };
-
 
     return (
         <TabTemplate title={"Currency conversion"}>
@@ -176,5 +173,6 @@ const CurrencyConversionTab = () => {
 
     );
 }
+
 
 export default CurrencyConversionTab;

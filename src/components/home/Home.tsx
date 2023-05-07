@@ -1,5 +1,5 @@
 import { Tab, Tabs } from "react-bootstrap";
-import { useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../stores/hooks";
 import { selectAvailableCurrencies } from "../../stores/currencies-slice/currenciesSlice";
 import { shallowEqual } from "react-redux";
@@ -13,10 +13,10 @@ import ExchangeRateHistoryTab from "../exchange-rate-history-tab/ExchangeRateHis
 import DelayedSpinner from "../common/delayed-spinner/DelayedSpinner";
 
 /**
- *   Home
+ *  Home content
  */
 
-const Home = () => {
+const Home = (): ReactElement => {
 
     const { tabId = "converter" } = useParams();
     const navigate = useNavigate();
@@ -84,5 +84,6 @@ const Home = () => {
         </div>
     );
 }
+
 
 export default Home;

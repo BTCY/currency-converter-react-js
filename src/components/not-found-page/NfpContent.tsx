@@ -1,8 +1,10 @@
+import { ReactElement } from "react";
+
 /**
- * Not found page content (404)
+ *  Not found page content (404)
  */
 
-const NfpContent = () => (
+const NfpContent = (): ReactElement => (
     <div className="d-flex w-100 align-items-center justify-content-center">
         <div className="text-center">
             <h1 className="display-1 fw-bold">404</h1>
@@ -14,5 +16,6 @@ const NfpContent = () => (
         </div>
     </div>
 );
+
 
 export default NfpContent;
