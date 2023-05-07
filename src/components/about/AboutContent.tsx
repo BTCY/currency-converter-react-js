@@ -1,8 +1,10 @@
+import { ReactElement } from "react";
+
 /**
  *  About content
  */
 
-const AboutContent = () => (
+const AboutContent = (): ReactElement => (
     <>
         <div className="mb-3 text-uppercase">
             <h3>About</h3>
@@ -37,5 +39,6 @@ const AboutContent = () => (
         </ul>
     </>
 );
+
 
 export default AboutContent;
