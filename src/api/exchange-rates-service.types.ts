@@ -5,31 +5,83 @@
  */
 
 
+/**
+ * Input params for Converted currency API.
+ * 
+ * @interface IConvertedCurrencyParams 
+ */
 export interface IConvertedCurrencyParams {
-    from: string,
-    to: string,
-    amount: number,
-    date?: string,
+
+    /** The three-letter currency code of the currency you would like to convert from. */
+    from: string;
+
+    /** The three-letter currency code of the currency you would like to convert to. */
+    to: string;
+
+    /** The amount to be converted. */
+    amount: number;
+
+    /** Specify a date (format YYYY-MM-DD) to use historical rates for this conversion. */
+    date?: string;
 }
 
+
+/**
+ * Input params for Currency fluctuations API.
+ * 
+ * @interface ICurrencyFluctuationsParams 
+ */
 export interface ICurrencyFluctuationsParams {
-    start_date: string,
-    end_date: string,
-    base?: string,
-    symbols?: string
+
+    /** The start date of your preferred timeframe. */
+    start_date: string;
+
+    /** The end date of your preferred timeframe. */
+    end_date: string;
+
+    /** Enter the three-letter currency code of your preferred base currency. */
+    base?: string;
+
+    /** Enter a list of comma-separated currency codes to limit output currencies. */
+    symbols?: string;
 }
 
+
+/**
+ * Input params for Real-time exchange rate API.
+ * 
+ * @interface ILatestExchangeRatesParams 
+ */
 export interface ILatestExchangeRatesParams {
-    base?: string,
+
+    /** Enter the three-letter currency code of your preferred base currency. */
+    base?: string;
+
+    /** Enter a list of comma-separated currency codes to limit output currencies. */
     symbols?: string
 }
 
+
+/**
+ * Input params for Exchange rate history API.
+ * 
+ * @interface IExchangeRateHistoryParams 
+ */
 export interface IExchangeRateHistoryParams {
-    start_date: string,
-    end_date: string,
-    base?: string,
+
+    /** The start date of your preferred timeframe. */
+    start_date: string;
+
+    /** The end date of your preferred timeframe. */
+    end_date: string;
+
+    /** Enter the three-letter currency code of your preferred base currency. */
+    base?: string;
+
+    /** Enter a list of comma-separated currency codes to limit output currencies. */
     symbols?: string
 }
+
 
 /**
  * Converted currency.
@@ -100,6 +152,7 @@ export interface IApiCurrencyFluctuations {
     /** Currency fluctuations status */
     success: boolean
 }
+
 
 export interface IApiCurrencyFluctuationsRates {
 

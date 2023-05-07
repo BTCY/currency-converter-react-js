@@ -36,10 +36,11 @@ export const getConvertedCurrency = (
     axios.get<IApiConvertedCurrency>(
         'https://api.apilayer.com/exchangerates_data/convert', {
         headers,
-        params: { from, to, amount, date }
+        params: {   to, amount, date }
     })
         .then(res => res.data)
         .catch(e => {
+            //throw new Error(e)
             throw getServerError(e);
         });
 
