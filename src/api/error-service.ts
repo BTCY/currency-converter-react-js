@@ -1,42 +1,20 @@
 import errorMessages from './error-service.messages';
 
-export interface ValidationError {
-    field: string;
-    errorMessage: string;
-    displayMessage: string;
-}
+/**
+ * Custom Error handling class from the server
+ */
 
 export class ServerError extends Error {
-    public isValidationError: boolean;
-    public validationErrors: ValidationError[] = [];
     constructor(
         public originalError: any,
         public reason: string,
         public displayMessage: string
     ) {
         super(displayMessage);
-        this.isValidationError = (reason === 'validation_error');
-        if (this.isValidationError) {
-            const errors = originalError?.response?.data?.errors;
-            const validationMessages = errorMessages.validationErrors;
-            (errors.body || []).forEach((errorMessage: string) => {
-                const parts = errorMessage.split('"');
-                const field = parts[1];
-                const displayMessage = validationMessages[field] || validationMessages.default;
-
-                this.validationErrors.push({ field, errorMessage, displayMessage });
-            });
-        }
     }
 
     processServerError = (setServerError: (error: ServerError) => any) => {
         return setServerError(this);
-    }
-
-    processValidationError = (setFieldError: (field: string, value: string | undefined) => void) => {
-        this.validationErrors.forEach((validationError) => {
-            setFieldError(validationError.field, validationError.displayMessage);
-        });
     }
 }
 
