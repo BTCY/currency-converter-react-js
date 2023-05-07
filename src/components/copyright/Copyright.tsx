@@ -1,27 +1,25 @@
-import styles from "./Copyright.module.css";
+import { ReactElement } from "react";
 import { Link } from "react-router-dom";
+import styles from "./Copyright.module.css";
 
 /**
- * Copyright
+ *  Copyright
  */
 
-const Copyright = () => {
+const Copyright = (): ReactElement => (
+    <>
+        <span className={styles.text}>
+            Demo project. Developed by
+        </span>
+        <Link
+            to="https://github.com/BTCY"
+            target={"_blank"}
+            className={styles.link}
+        >
+            https://github.com/BTCY
+        </Link>
+    </>
+);
 
-    return (
-        <>
-            <span className={styles.text}>
-                Demo project. Developed by
-            </span>
-            <Link
-                to="https://github.com/BTCY"
-                target={"_blank"}
-                className={styles.link}
-            >
-                https://github.com/BTCY
-            </Link>
-        </>
-    );
-
-}
 
 export default Copyright;

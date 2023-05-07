@@ -1,9 +1,14 @@
-import React from "react";
+import { FormEventHandler, ReactElement } from "react";
 
+/**
+ *  Custom Form 
+ */
 
-export default function FormCustom(props: any) {
+const FormCustom = (
+    props: any
+): ReactElement => {
 
-    const handleSubmit: React.FormEventHandler = (e) => {
+    const handleSubmit: FormEventHandler = (e) => {
         e.preventDefault();
         props.onSubmit && props.onSubmit();
     };
@@ -14,3 +19,5 @@ export default function FormCustom(props: any) {
         </form>
     );
 }
+
+export default FormCustom;

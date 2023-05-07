@@ -1,16 +1,25 @@
-import React, { useEffect, useState } from "react"; 
+import { ReactElement, useEffect, useState } from "react";
 import { MagnifyingGlass } from "react-loader-spinner";
 
+/**
+ *  Delayed spinner 
+ */
+
 interface IDelayedSpinner {
+
+    /** Text under the spinner */
     text?: string;
 }
 
-const DelayedSpinner = ({ text }: IDelayedSpinner) => {
+
+const DelayedSpinner = ({
+    text
+}: IDelayedSpinner): ReactElement => {
+
     const [showSpinner, setShowSpinner] = useState(false);
 
     useEffect(() => {
         const timer = setTimeout(() => setShowSpinner(true), 750);
-
         return () => clearTimeout(timer);
     });
 
@@ -32,5 +41,6 @@ const DelayedSpinner = ({ text }: IDelayedSpinner) => {
             : <></>
     )
 };
+
 
 export default DelayedSpinner;

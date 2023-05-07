@@ -1,7 +1,9 @@
+import { ReactElement } from "react";
 import { Route, Routes } from "react-router-dom";
 import { RoutesData } from "./routes/routes";
 
-const App = (): JSX.Element => (
+const App = (): ReactElement => (
+
     <Routes>
         {/* data from ./routes/routes.tsx */}
         {RoutesData && Object.keys(RoutesData).map((key: string) =>
@@ -13,5 +15,6 @@ const App = (): JSX.Element => (
         )}
     </Routes>
 );
+
 
 export default App;

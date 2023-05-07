@@ -1,22 +1,24 @@
-import { ReactNode, ReactElement } from "react"; 
+import { ReactElement, ReactNode } from "react";
 
 /**
- *   TabTemplate
+ *  Container for displaying results
  */
 
 interface IResultContainer {
+
+    /** Content */
     children?: ReactNode;
 }
 
+
 const ResultContainer = ({
     children = undefined,
-}: IResultContainer): ReactElement<any, any> => {
+}: IResultContainer): ReactElement => (
 
-    return (
-        <div className="d-grid gap-3"> 
-            {children && children}
-        </div>
-    );
-}
+    <div className="d-grid gap-3">
+        {children && children}
+    </div>
+);
+
 
 export default ResultContainer;
