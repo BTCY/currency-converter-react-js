@@ -1,10 +1,10 @@
+import MainLayout from "../layout/main-layout/MainLayout";
+import Header from "../layout/header/Header";
+import Body from "../layout/body/Body";
+import Footer from "../layout/footer/Footer";
 import Copyright from "../components/copyright/Copyright";
 import HeaderMenu from "../components/header-menu/HeaderMenu";
 import Logo from "../components/logo/Logo";
-import Body from "../layout/Body";
-import Footer from "../layout/Footer";
-import Header from "../layout/Header";
-import Layout from "../layout/Layout";
 
 /**
  *   Base page template
@@ -14,26 +14,25 @@ interface IBasePageTemplate {
     children?: React.ReactNode;
 }
 
-const BasePageTemplate = ({ children }: IBasePageTemplate): JSX.Element => {
+const BasePageTemplate = ({
+    children
+}: IBasePageTemplate): JSX.Element => (
+    <MainLayout>
 
-    return (
-        <Layout>
+        <Header>
+            <Logo />
+            <HeaderMenu />
+        </Header>
 
-            <Header>
-                <Logo />
-                <HeaderMenu />
-            </Header>
+        <Body>
+            {children && children}
+        </Body>
 
-            <Body>
-                {children && children}
-            </Body>
+        <Footer>
+            <Copyright />
+        </Footer>
 
-            <Footer>
-                <Copyright />
-            </Footer>
-
-        </Layout>
-    );
-}
+    </MainLayout>
+);
 
 export default BasePageTemplate;
