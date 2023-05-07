@@ -1,9 +1,11 @@
-import { forwardRef } from "react";
+import { ReactElement, forwardRef } from "react";
 import DatePicker, { ReactDatePickerProps } from "react-datepicker";
 
-interface IDatePickerCustom extends ReactDatePickerProps {
+/**
+ *  Custom DatePicker 
+ */
 
-}
+interface IDatePickerCustom extends ReactDatePickerProps { }
 
 
 const CustomInput = forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
@@ -18,17 +20,15 @@ const CustomInput = forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
     ));
 
 
-
-
 const DatePickerCustom = ({
     ...props
-}: IDatePickerCustom) => {
-    return (
-        <DatePicker
-            {...props}
-            customInput={<CustomInput />}
-        />
-    )
-};
+}: IDatePickerCustom): ReactElement => (
+
+    <DatePicker
+        {...props}
+        customInput={<CustomInput />}
+    />
+);
+
 
 export default DatePickerCustom;

@@ -2,26 +2,29 @@ import { ReactNode, ReactElement } from "react";
 import styles from "./TabTemplate.module.css";
 
 /**
- *   TabTemplate
+ *  Template for tab
  */
 
 interface ITabTemplate {
-    title?: string;
-    children?: ReactNode;
 
+    /** Tab title */
+    title?: string;
+
+    /** Tab content */
+    children?: ReactNode;
 }
+
 
 const TabTemplate = ({
     title = undefined,
     children = undefined,
-}: ITabTemplate): ReactElement<any, any> => {
+}: ITabTemplate): ReactElement => (
 
-    return (
-        <div className={styles.tabTemplateWrap}>
-            {title && <h2 className={styles.h2}>{title}</h2>}
-            {children && children}
-        </div>
-    );
-}
+    <div className={styles.tabTemplateWrap}>
+        {title && <h2 className={styles.h2}>{title}</h2>}
+        {children && children}
+    </div>
+);
+
 
 export default TabTemplate;

@@ -5,7 +5,7 @@ import {
     IApiAllAvailableCurrencies
 } from "../../api/exchange-rates-service.types";
 import { ArrowUp, ArrowDown } from "react-bootstrap-icons";
-import CustomTooltip from "../common/custom-tooltip/CustomTooltip";
+import TooltipCustom from "../common/tooltip-custom/TooltipCustom";
 
 interface IConversionResult {
     result: IApiCurrencyFluctuations;
@@ -57,9 +57,9 @@ const Row = memo(({ currCode, curr, rate }: IRow) =>
     <tr >
         <td className="text-center">{getRateChangeIcon(rate.change)}</td>
         <td>
-            <CustomTooltip id={currCode} tooltipText={curr}>
+            <TooltipCustom id={currCode} tooltipText={curr}>
                 <span>{currCode}</span>
-            </CustomTooltip>
+            </TooltipCustom>
         </td>
         <td>{rate.start_rate}</td>
         <td>{rate.end_rate}</td>
