@@ -11,11 +11,11 @@ import { getConvertedCurrency } from "../../api/exchange-rates-service";
  */
 
 export const convertedCurrencyThunk = createAsyncThunk(
-    'currencies/convertedCurrency',
+    "currencies/convertedCurrency",
     async (
         params: IConvertedCurrencyParams
     ): Promise<IStoreDataInIndexedDB<Stores.ConvertedCurrency>> => {
-        const key = params.from + '_' + params.to + '_' + params.amount;
+        const key = params.from + "_" + params.to + "_" + params.amount;
         let convertedCurrency = await getFromIndexedDB(Stores.ConvertedCurrency, key);
         const diffInMinutes = diff(new Date(), convertedCurrency?.update_timestamp);
 

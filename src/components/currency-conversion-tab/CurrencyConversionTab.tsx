@@ -1,25 +1,25 @@
-import { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../stores/hooks';
+import { useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../stores/hooks";
 import {
     selectAvailableCurrencies,
     selectConvertedCurrency
-} from '../../stores/currencies-slice/currenciesSlice';
-import { Button, Col, Row } from 'react-bootstrap';
-import { useFormik } from 'formik';
-import { shallowEqual } from 'react-redux';
-import { IConvertedCurrencyParams } from '../../api/exchange-rates-service.types';
-import { useSearchParams } from 'react-router-dom';
-import { getSearchParams } from '../../utils/getSearchParams';
-import { convertedCurrencyThunk } from '../../stores/currencies-slice/convertedCurrencyThunk';
-import TabTemplate from '../common/tab-template/TabTemplate';
-import Form from 'react-bootstrap/Form';
-import FormCustom from '../common/form-custom/FormCustom';
-import SelectSkeleton from '../common/select-skeleton/SelectSkeleton';
-import DelayedSpinner from '../common/delayed-spinner/DelayedSpinner';
-import ConversionResult from './ConversionResult';
-import MetaInfo from '../common/meta-info/MetaInfo';
-import ResultContainer from '../common/result-container/ResultContainer';
-import * as Yup from 'yup';
+} from "../../stores/currencies-slice/currenciesSlice";
+import { Button, Col, Row } from "react-bootstrap";
+import { useFormik } from "formik";
+import { shallowEqual } from "react-redux";
+import { IConvertedCurrencyParams } from "../../api/exchange-rates-service.types";
+import { useSearchParams } from "react-router-dom";
+import { getSearchParams } from "../../utils/getSearchParams";
+import { convertedCurrencyThunk } from "../../stores/currencies-slice/convertedCurrencyThunk";
+import TabTemplate from "../common/tab-template/TabTemplate";
+import Form from "react-bootstrap/Form";
+import FormCustom from "../common/form-custom/FormCustom";
+import SelectSkeleton from "../common/select-skeleton/SelectSkeleton";
+import DelayedSpinner from "../common/delayed-spinner/DelayedSpinner";
+import ConversionResult from "./ConversionResult";
+import MetaInfo from "../common/meta-info/MetaInfo";
+import ResultContainer from "../common/result-container/ResultContainer";
+import * as Yup from "yup";
 
 /**
  *   CurrencyConversionTab
@@ -39,17 +39,17 @@ const CurrencyConversionTab = () => {
         validateOnBlur: true,
         enableReinitialize: true,
         initialValues: {
-            currencyFrom: searchParams.get('from') ?? 'USD',
-            currencyTo: searchParams.get('to') ?? 'EUR',
-            currencyAmount: searchParams.has('amount') ? Number(searchParams.get('amount')) : 1,
+            currencyFrom: searchParams.get("from") ?? "USD",
+            currencyTo: searchParams.get("to") ?? "EUR",
+            currencyAmount: searchParams.has("amount") ? Number(searchParams.get("amount")) : 1,
         },
         validationSchema: Yup.object({
             currencyFrom: Yup.string()
-                .required('1'),
+                .required("1"),
             currencyTo: Yup.string()
-                .required('1'),
+                .required("1"),
             currencyAmount: Yup.number()
-                .required('1'),
+                .required("1"),
         }),
 
         onSubmit: async ({ currencyFrom, currencyTo, currencyAmount }) => {
@@ -76,20 +76,20 @@ const CurrencyConversionTab = () => {
 
 
     return (
-        <TabTemplate title={'Currency conversion'}>
+        <TabTemplate title={"Currency conversion"}>
             <FormCustom>
-                <Row className='mb-5 align-items-end'>
+                <Row className="mb-5 align-items-end">
                     {/* Select: Currency from */}
-                    <Col md={4} xs={12} className='mb-2'>
-                        <Form.Group controlId='currencyFrom'>
+                    <Col md={4} xs={12} className="mb-2">
+                        <Form.Group controlId="currencyFrom">
                             <Form.Label>Currency from</Form.Label>
 
                             <SelectSkeleton isShow={!availableCurrencies?.symbols} />
 
                             {availableCurrencies?.symbols &&
                                 <Form.Select
-                                    name='currencyFrom'
-                                    aria-label='currency from'
+                                    name="currencyFrom"
+                                    aria-label="currency from"
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     value={values.currencyFrom}
@@ -104,16 +104,16 @@ const CurrencyConversionTab = () => {
                     </Col>
 
                     {/* Select: Currency to */}
-                    <Col md={4} xs={12} className='mb-2'>
-                        <Form.Group controlId='currencyTo'>
+                    <Col md={4} xs={12} className="mb-2">
+                        <Form.Group controlId="currencyTo">
                             <Form.Label>Currency to</Form.Label>
 
                             <SelectSkeleton isShow={!availableCurrencies?.symbols} />
 
                             {availableCurrencies?.symbols &&
                                 <Form.Select
-                                    name='currencyTo'
-                                    aria-label='currency to'
+                                    name="currencyTo"
+                                    aria-label="currency to"
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     value={values.currencyTo}
@@ -128,17 +128,17 @@ const CurrencyConversionTab = () => {
                     </Col>
 
                     {/* Input: Amount */}
-                    <Col md={2} xs={12} className='mb-2'>
-                        <Form.Group controlId='currencyAmount'>
+                    <Col md={2} xs={12} className="mb-2">
+                        <Form.Group controlId="currencyAmount">
                             <Form.Label>Amount</Form.Label>
 
                             <SelectSkeleton isShow={!availableCurrencies?.symbols} />
 
                             {availableCurrencies?.symbols &&
                                 <Form.Control
-                                    name='currencyAmount'
-                                    type='number'
-                                    aria-label='currency amount'
+                                    name="currencyAmount"
+                                    type="number"
+                                    aria-label="currency amount"
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
                                     value={values.currencyAmount}
@@ -150,9 +150,9 @@ const CurrencyConversionTab = () => {
                     </Col>
 
                     {/* Button: Convert */}
-                    <Col md={2} xs={12} className='mb-2'>
+                    <Col md={2} xs={12} className="mb-2">
                         <Button
-                            variant='primary'
+                            variant="primary"
                             onClick={handleSubmit}
                             disabled={isSubmitting}
                         >

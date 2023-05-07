@@ -1,6 +1,6 @@
-import { ReactNode, ReactElement, JSXElementConstructor } from 'react';
-import { Tooltip } from 'react-bootstrap';
-import OverlayTrigger, { OverlayTriggerRenderProps } from 'react-bootstrap/OverlayTrigger';
+import { ReactNode, ReactElement, JSXElementConstructor } from "react";
+import { Tooltip } from "react-bootstrap";
+import OverlayTrigger, { OverlayTriggerRenderProps } from "react-bootstrap/OverlayTrigger";
 
 /**
  *   CustomTooltip
@@ -13,8 +13,8 @@ interface ICustomTooltip {
 }
 
 const CustomTooltip = ({
-    id = '',
-    tooltipText = '',
+    id = "",
+    tooltipText = "",
     children,
 }: ICustomTooltip): ReactElement<any, any> => {
 

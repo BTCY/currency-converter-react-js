@@ -1,5 +1,5 @@
-import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import currenciesReducer from './currencies-slice/currenciesSlice';
+import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
+import currenciesReducer from "./currencies-slice/currenciesSlice";
 
 export const store = configureStore({
     reducer: {

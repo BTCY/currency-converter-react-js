@@ -1,5 +1,5 @@
-import { ReactNode, ReactElement } from 'react';
-import styles from './TabTemplate.module.css';
+import { ReactNode, ReactElement } from "react";
+import styles from "./TabTemplate.module.css";
 
 /**
  *   TabTemplate

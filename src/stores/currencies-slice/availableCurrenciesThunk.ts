@@ -11,9 +11,9 @@ import { diff } from "../../utils/dateTimeHelper";
  */
 
 export const availableCurrenciesThunk = createAsyncThunk(
-    'currencies/availableCurrencies',
+    "currencies/availableCurrencies",
     async (): Promise<IApiAllAvailableCurrencies | undefined> => {
-        let allAvailableCurrencies = await getFromIndexedDB(Stores.AvailableCurrencies, 'all');
+        let allAvailableCurrencies = await getFromIndexedDB(Stores.AvailableCurrencies, "all");
         const diffInMinutes = diff(new Date(), allAvailableCurrencies?.update_timestamp);
 
         if (diffInMinutes === undefined || diffInMinutes > AVAILABLE_CURR_CACHING_IN_MINUTES) {
@@ -21,7 +21,7 @@ export const availableCurrenciesThunk = createAsyncThunk(
                 const result = await getAllAvailableCurrencies();
                 if (result) {
                     allAvailableCurrencies = {
-                        [KEY_PATH]: 'all',
+                        [KEY_PATH]: "all",
                         store: Stores.AvailableCurrencies,
                         update_timestamp: Number(new Date()),
                         data: result

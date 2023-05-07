@@ -1,6 +1,6 @@
-import { ReactElement } from 'react';
-import { Placeholder } from 'react-bootstrap';
-import styles from './SelectSkeleton.module.css';
+import { ReactElement } from "react";
+import { Placeholder } from "react-bootstrap";
+import styles from "./SelectSkeleton.module.css";
 
 /**
  *   SelectSkeleton

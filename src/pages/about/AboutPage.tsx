@@ -1,5 +1,5 @@
-import AboutContent from '../../components/about/AboutContent';
-import BasePageTemplate from '../../page-templates/BasePageTemplate';
+import AboutContent from "../../components/about/AboutContent";
+import BasePageTemplate from "../../page-templates/BasePageTemplate";
 
 /**
  *  About page

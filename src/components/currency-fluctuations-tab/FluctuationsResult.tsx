@@ -4,7 +4,7 @@ import {
     IApiCurrencyFluctuations, IApiCurrencyFluctuationsRates,
     IApiAllAvailableCurrencies
 } from "../../api/exchange-rates-service.types";
-import { ArrowUp, ArrowDown } from 'react-bootstrap-icons';
+import { ArrowUp, ArrowDown } from "react-bootstrap-icons";
 import CustomTooltip from "../common/custom-tooltip/CustomTooltip";
 
 interface IConversionResult {
@@ -26,27 +26,27 @@ const getRateChangeIcon = (change: number): ReactNode => {
         return <ArrowUp className="text-success" />
     }
     else {
-        return '—'
+        return "—"
     }
 }
 
 const getRateChangeColor = (change: number): string => {
     if (change < 0) {
-        return 'text-danger'
+        return "text-danger"
     }
     else if (change > 0) {
-        return 'text-success'
+        return "text-success"
     }
     else {
-        return 'text-secondary'
+        return "text-secondary"
     }
 }
 
 
 const Title = () =>
     <tr>
-        <th style={{ width: '1%' }} className="text-center">Chart</th>
-        <th style={{ width: '10%' }} >Currency</th>
+        <th style={{ width: "1%" }} className="text-center">Chart</th>
+        <th style={{ width: "10%" }} >Currency</th>
         <th>Start rate</th>
         <th>End rate</th>
         <th>Change</th>

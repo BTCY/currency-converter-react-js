@@ -1,4 +1,4 @@
-import errorMessages from './error-service.messages';
+import errorMessages from "./error-service.messages";
 
 /**
  * Custom Error handling class from the server
@@ -18,8 +18,8 @@ export class ServerError extends Error {
     }
 }
 
-export const getServerError = (originalError: any, errorGroupKey: string = 'common'): ServerError => {
-    const reason = originalError?.response?.data?.reason || 'unknown';
+export const getServerError = (originalError: any, errorGroupKey: string = "common"): ServerError => {
+    const reason = originalError?.response?.data?.reason || "unknown";
     const commonMessages = errorMessages.serverErrors.common;
     const errorGroup: any = errorMessages.serverErrors[errorGroupKey] || commonMessages;
     const displayMessage = errorGroup[reason] || commonMessages[reason] || commonMessages.unknown;

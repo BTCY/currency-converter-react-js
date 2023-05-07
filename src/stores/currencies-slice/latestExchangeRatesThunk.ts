@@ -11,11 +11,11 @@ import { getLatestExchangeRates } from "../../api/exchange-rates-service";
  */
 
 export const latestExchangeRatesThunk = createAsyncThunk(
-    'currencies/latestExchangeRates',
+    "currencies/latestExchangeRates",
     async (
         params: ILatestExchangeRatesParams
     ): Promise<IStoreDataInIndexedDB<Stores.LatestExchangeRates> | undefined> => {
-        const key = (params?.base || 'base') + '_' + (params?.symbols || 'symbols');
+        const key = (params?.base || "base") + "_" + (params?.symbols || "symbols");
         let latestExchangeRates = await getFromIndexedDB(Stores.LatestExchangeRates, key);
         const diffInMinutes = diff(new Date(), latestExchangeRates?.update_timestamp);
 

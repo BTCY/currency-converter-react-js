@@ -19,7 +19,7 @@ export const format = (
     format: string
 ): string | undefined => {
 
-    if (!(typeof date === 'number' || typeof date === 'string' || date instanceof Date))
+    if (!(typeof date === "number" || typeof date === "string" || date instanceof Date))
         return undefined;
 
     const dateMoment = moment(date, true);
@@ -44,11 +44,11 @@ export const format = (
 export const diff = (
     firstDate: number | string | Date | undefined,
     secondDate: number | string | Date | undefined,
-    units: moment.unitOfTime.Diff = 'minutes'
+    units: moment.unitOfTime.Diff = "minutes"
 ): number | undefined => {
 
     // First date  
-    if (!(typeof firstDate === 'number' || typeof firstDate === 'string' || firstDate instanceof Date))
+    if (!(typeof firstDate === "number" || typeof firstDate === "string" || firstDate instanceof Date))
         return undefined;
 
     const firstDateMoment = moment(firstDate, true);
@@ -57,7 +57,7 @@ export const diff = (
         return undefined;
 
     // Second date  
-    if (!(typeof secondDate === 'number' || typeof secondDate === 'string' || secondDate instanceof Date))
+    if (!(typeof secondDate === "number" || typeof secondDate === "string" || secondDate instanceof Date))
         return undefined;
 
     const secondDateMoment = moment(secondDate, true);
