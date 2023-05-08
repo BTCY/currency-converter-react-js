@@ -11,12 +11,13 @@ import CurrencyFluctuationsTab from "./currency-fluctuations-tab/CurrencyFluctua
 import LatestExchangeRatesTab from "./latest-exchange-rates-tab/LatestExchangeRatesTab";
 import ExchangeRateHistoryTab from "./exchange-rate-history-tab/ExchangeRateHistoryTab";
 import DelayedSpinner from "../common/delayed-spinner/DelayedSpinner";
+import StubNoData from "../common/stub-no-data/StubNoData";
 
 /**
  *  Home content
  */
 
-const Home = (): ReactElement => {
+const HomeTabs = (): ReactElement => {
 
     const { tabId = "converter" } = useParams();
     const navigate = useNavigate();
@@ -38,12 +39,17 @@ const Home = (): ReactElement => {
     return (
         <div className={styles.tabsWrap}>
 
+            {/* Loading data */}
             {availableCurrenciesIsLoading &&
                 <div className="d-flex h-100 align-items-center justify-content-center">
                     <DelayedSpinner text={"Loading the list of currencies..."} />
                 </div>
             }
 
+            {/* Data not loaded */}
+            {!availableCurrenciesIsLoading && !availableCurrencies?.symbols && <StubNoData />}
+
+            {/* Tabs */}
             {!availableCurrenciesIsLoading && availableCurrencies?.symbols &&
                 <Tabs
                     id="home-tab"
@@ -88,4 +94,4 @@ const Home = (): ReactElement => {
 }
 
 
-export default Home;
+export default HomeTabs;
