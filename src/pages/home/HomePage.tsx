@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import Home from "../../components/home/Home";
+import HomeTabs from "../../components/home/HomeTabs";
 import BasePageTemplate from "../../page-templates/BasePageTemplate";
 
 /**
@@ -9,7 +9,7 @@ import BasePageTemplate from "../../page-templates/BasePageTemplate";
 const HomePage = (): ReactElement => (
 
     <BasePageTemplate>
-        <Home />
+        <HomeTabs />
     </BasePageTemplate>
 );
 

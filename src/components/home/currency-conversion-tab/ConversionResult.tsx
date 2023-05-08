@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { Col, Row } from "react-bootstrap";
-import { IApiConvertedCurrency } from "../../api/exchange-rates-service.types";
+import { IApiConvertedCurrency } from "../../../api/exchange-rates-service.types";
 
 /**
  *  Conversion result

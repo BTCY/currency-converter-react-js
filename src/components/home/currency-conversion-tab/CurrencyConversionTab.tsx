@@ -1,24 +1,24 @@
 import { ReactElement, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../stores/hooks";
+import { useAppDispatch, useAppSelector } from "../../../stores/hooks";
 import {
     selectAvailableCurrencies,
     selectConvertedCurrency
-} from "../../stores/currencies-slice/currenciesSlice";
+} from "../../../stores/currencies-slice/currenciesSlice";
 import { Button, Col, Row } from "react-bootstrap";
 import { useFormik } from "formik";
 import { shallowEqual } from "react-redux";
-import { IConvertedCurrencyParams } from "../../api/exchange-rates-service.types";
+import { IConvertedCurrencyParams } from "../../../api/exchange-rates-service.types";
 import { useSearchParams } from "react-router-dom";
-import { getSearchParams } from "../../utils/getSearchParams";
-import { convertedCurrencyThunk } from "../../stores/currencies-slice/convertedCurrencyThunk";
-import TabTemplate from "../common/tab-template/TabTemplate";
+import { getSearchParams } from "../../../utils/getSearchParams";
+import { convertedCurrencyThunk } from "../../../stores/currencies-slice/convertedCurrencyThunk";
+import TabTemplate from "../../common/tab-template/TabTemplate";
 import Form from "react-bootstrap/Form";
-import FormCustom from "../common/form-custom/FormCustom";
-import SelectSkeleton from "../common/select-skeleton/SelectSkeleton";
-import DelayedSpinner from "../common/delayed-spinner/DelayedSpinner";
+import FormCustom from "../../common/form-custom/FormCustom";
+import SelectSkeleton from "../../common/select-skeleton/SelectSkeleton";
+import DelayedSpinner from "../../common/delayed-spinner/DelayedSpinner";
 import ConversionResult from "./ConversionResult";
-import MetaInfo from "../common/meta-info/MetaInfo";
-import ResultContainer from "../common/result-container/ResultContainer";
+import MetaInfo from "../../common/meta-info/MetaInfo";
+import ResultContainer from "../../common/result-container/ResultContainer";
 import * as Yup from "yup";
 
 /**

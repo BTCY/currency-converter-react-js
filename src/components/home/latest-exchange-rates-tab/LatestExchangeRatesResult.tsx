@@ -1,5 +1,5 @@
 import { Table } from "react-bootstrap";
-import { IApiLatestExchangeRates, IApiAllAvailableCurrencies } from "../../api/exchange-rates-service.types";
+import { IApiLatestExchangeRates, IApiAllAvailableCurrencies } from "../../../api/exchange-rates-service.types";
 
 
 interface ILatestExchangeRatesResult {

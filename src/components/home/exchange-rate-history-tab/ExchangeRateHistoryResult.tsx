@@ -1,6 +1,6 @@
 import {
     IApiExchangeRateHistory, IApiAllAvailableCurrencies
-} from "../../api/exchange-rates-service.types";
+} from "../../../api/exchange-rates-service.types";
 import { Line } from "react-chartjs-2";
 import {
     Chart as ChartJS, CategoryScale, LinearScale,
