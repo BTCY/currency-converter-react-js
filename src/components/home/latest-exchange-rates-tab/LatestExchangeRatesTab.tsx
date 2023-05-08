@@ -1,26 +1,26 @@
 import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../stores/hooks";
+import { useAppDispatch, useAppSelector } from "../../../stores/hooks";
 import {
     selectAvailableCurrencies,
     selectLatestExchangeRates
-} from "../../stores/currencies-slice/currenciesSlice";
+} from "../../../stores/currencies-slice/currenciesSlice";
 import { Button, Col, Row } from "react-bootstrap";
 import { useFormik } from "formik";
 import { shallowEqual } from "react-redux";
 import { useSearchParams } from "react-router-dom";
-import { getSearchParams } from "../../utils/getSearchParams";
-import { ILatestExchangeRatesParams } from "../../api/exchange-rates-service.types";
-import TabTemplate from "../common/tab-template/TabTemplate";
+import { getSearchParams } from "../../../utils/getSearchParams";
+import { ILatestExchangeRatesParams } from "../../../api/exchange-rates-service.types";
+import TabTemplate from "../../common/tab-template/TabTemplate";
 import Form from "react-bootstrap/Form";
-import FormCustom from "../common/form-custom/FormCustom";
-import SelectSkeleton from "../common/select-skeleton/SelectSkeleton";
-import DelayedSpinner from "../common/delayed-spinner/DelayedSpinner";
+import FormCustom from "../../common/form-custom/FormCustom";
+import SelectSkeleton from "../../common/select-skeleton/SelectSkeleton";
+import DelayedSpinner from "../../common/delayed-spinner/DelayedSpinner";
 import LatestExchangeRatesResult from "./LatestExchangeRatesResult";
-import MetaInfo from "../common/meta-info/MetaInfo";
-import ResultContainer from "../common/result-container/ResultContainer";
+import MetaInfo from "../../common/meta-info/MetaInfo";
+import ResultContainer from "../../common/result-container/ResultContainer";
 import * as Yup from "yup";
 import "react-datepicker/dist/react-datepicker.css";
-import { latestExchangeRatesThunk } from "../../stores/currencies-slice/latestExchangeRatesThunk";
+import { latestExchangeRatesThunk } from "../../../stores/currencies-slice/latestExchangeRatesThunk";
 
 /**
  *   CurrencyFluctuationsTab

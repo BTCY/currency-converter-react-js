@@ -1,4 +1,4 @@
-import { IApiAllAvailableCurrencies, IApiExchangeRateHistory } from "../../api/exchange-rates-service.types";
+import { IApiAllAvailableCurrencies, IApiExchangeRateHistory } from "../../../api/exchange-rates-service.types";
 import { IExchangeRateHistoryChart } from "./ExchangeRateHistoryResult";
 
 /*

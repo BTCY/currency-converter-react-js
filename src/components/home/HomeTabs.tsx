@@ -5,11 +5,11 @@ import { selectAvailableCurrencies } from "../../stores/currencies-slice/currenc
 import { shallowEqual } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { availableCurrenciesThunk } from "../../stores/currencies-slice/availableCurrenciesThunk";
-import styles from "./Home.module.css";
-import CurrencyConversionTab from "../currency-conversion-tab/CurrencyConversionTab";
-import CurrencyFluctuationsTab from "../currency-fluctuations-tab/CurrencyFluctuationsTab";
-import LatestExchangeRatesTab from "../latest-exchange-rates-tab/LatestExchangeRatesTab";
-import ExchangeRateHistoryTab from "../exchange-rate-history-tab/ExchangeRateHistoryTab";
+import styles from "./HomeTabs.module.css";
+import CurrencyConversionTab from "./currency-conversion-tab/CurrencyConversionTab";
+import CurrencyFluctuationsTab from "./currency-fluctuations-tab/CurrencyFluctuationsTab";
+import LatestExchangeRatesTab from "./latest-exchange-rates-tab/LatestExchangeRatesTab";
+import ExchangeRateHistoryTab from "./exchange-rate-history-tab/ExchangeRateHistoryTab";
 import DelayedSpinner from "../common/delayed-spinner/DelayedSpinner";
 
 /**
@@ -25,9 +25,8 @@ const Home = (): ReactElement => {
     const [availableCurrenciesIsLoading, setAvailableCurrenciesIsLoading] = useState<boolean>(true);
 
     const handleSelectTab = (tabId: string | null): void => {
-        if (typeof tabId === "string") {
-            navigate("/" + tabId);
-        }
+        if (typeof tabId === "string") navigate("/" + tabId)
+        else navigate("/converter");
     }
 
     useEffect(() => {
@@ -38,11 +37,13 @@ const Home = (): ReactElement => {
 
     return (
         <div className={styles.tabsWrap}>
+
             {availableCurrenciesIsLoading &&
                 <div className="d-flex h-100 align-items-center justify-content-center">
                     <DelayedSpinner text={"Loading the list of currencies..."} />
                 </div>
             }
+
             {!availableCurrenciesIsLoading && availableCurrencies?.symbols &&
                 <Tabs
                     id="home-tab"
@@ -81,6 +82,7 @@ const Home = (): ReactElement => {
                     </Tab>
                 </Tabs>
             }
+
         </div>
     );
 }

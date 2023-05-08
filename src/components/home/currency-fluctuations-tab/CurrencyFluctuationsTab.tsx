@@ -1,47 +1,46 @@
 import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../stores/hooks";
+import { useAppDispatch, useAppSelector } from "../../../stores/hooks";
 import {
     selectAvailableCurrencies,
-    selectExchangeRateHistory
-} from "../../stores/currencies-slice/currenciesSlice";
+    selectCurrencyFluctuations
+} from "../../../stores/currencies-slice/currenciesSlice";
+import { format } from "../../../utils/dateTimeHelper";
 import { Button, Col, Row } from "react-bootstrap";
-import { useFormik } from "formik";
+import { useFormik, } from "formik";
 import { shallowEqual } from "react-redux";
-import { IExchangeRateHistoryParams } from "../../api/exchange-rates-service.types";
-import { format } from "../../utils/dateTimeHelper";
+import { ICurrencyFluctuationsParams } from "../../../api/exchange-rates-service.types";
+import { currencyFluctuationsThunk } from "../../../stores/currencies-slice/currencyFluctuationsThunk";
 import { useSearchParams } from "react-router-dom";
-import { getSearchParams } from "../../utils/getSearchParams";
-import TabTemplate from "../common/tab-template/TabTemplate";
+import { getSearchParams } from "../../../utils/getSearchParams";
+import TabTemplate from "../../common/tab-template/TabTemplate";
 import Form from "react-bootstrap/Form";
-import FormCustom from "../common/form-custom/FormCustom";
-import SelectSkeleton from "../common/select-skeleton/SelectSkeleton";
-import DelayedSpinner from "../common/delayed-spinner/DelayedSpinner";
-import ExchangeRateHistoryResult from "./ExchangeRateHistoryResult";
-import ResultContainer from "../common/result-container/ResultContainer";
-import DatePickerCustom from "../common/date-picker-custom/DatePickerCustom";
-import MetaInfo from "../common/meta-info/MetaInfo";
+import FormCustom from "../../common/form-custom/FormCustom";
+import SelectSkeleton from "../../common/select-skeleton/SelectSkeleton";
+import DelayedSpinner from "../../common/delayed-spinner/DelayedSpinner";
+import DatePickerCustom from "../../common/date-picker-custom/DatePickerCustom";
+import ResultContainer from "../../common/result-container/ResultContainer";
+import FluctuationsResult from "./FluctuationsResult";
+import MetaInfo from "../../common/meta-info/MetaInfo";
 import * as Yup from "yup";
 import "react-datepicker/dist/react-datepicker.css";
-import { exchangeRateHistoryThunk } from "../../stores/currencies-slice/exchangeRateHistoryThunk";
 
 /**
- *   ExchangeRateHistoryTab
+ *   CurrencyFluctuationsTab
  */
 
 const startDateInitValue = new Date("2018-02-20");
 const endDateInitValue = new Date("2018-02-25");
 
-const ExchangeRateHistoryTab = () => {
+const CurrencyFluctuationsTab = () => {
 
     const [searchParams, setSearchParams] = useSearchParams();
     const availableCurrencies = useAppSelector(selectAvailableCurrencies, shallowEqual);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-    const exchangeRateHistory = useAppSelector(selectExchangeRateHistory, shallowEqual);
+    const currencyFluctuations = useAppSelector(selectCurrencyFluctuations, shallowEqual);
     const dispatch = useAppDispatch();
 
     const { values, touched, errors, ...formik } = useFormik({
         validateOnChange: true,
-        validateOnBlur: true,
         enableReinitialize: true,
         initialValues: {
             startDate: searchParams.get("start_date") ?? startDateInitValue,
@@ -58,7 +57,7 @@ const ExchangeRateHistoryTab = () => {
 
         onSubmit: async ({ startDate, endDate, base, symbols }) => {
 
-            const params: IExchangeRateHistoryParams = {
+            const params: ICurrencyFluctuationsParams = {
                 start_date: format(startDate, "YYYY-MM-DD") ?? "",
                 end_date: format(endDate, "YYYY-MM-DD") ?? "",
                 base: base,
@@ -67,29 +66,30 @@ const ExchangeRateHistoryTab = () => {
 
             setSearchParams(getSearchParams(params));
 
-            dispatch(exchangeRateHistoryThunk(params))
+            dispatch(currencyFluctuationsThunk(params))
                 .finally(() => setIsSubmitting(false))
 
         }
     });
-
 
     const handleSubmit = () => {
         setIsSubmitting(true);
         formik.submitForm();
     };
 
-
     return (
-        <TabTemplate title={"Exchange Rate History"}>
+        <TabTemplate title={"Currency fluctuations"}>
             <FormCustom>
                 <Row className="mb-5 align-items-end">
 
                     {/* DatePicker: start date */}
                     <Col md={3} xs={12} className="mb-2">
                         <DatePickerCustom
+                            placeholderText="Start date"
                             name="startDate"
                             aria-label="start date"
+                            showMonthDropdown
+                            showYearDropdown
                             selected={(values.startDate && new Date(values.startDate)) || null}
                             onChange={val => {
                                 formik.setFieldValue("startDate", val);
@@ -133,27 +133,26 @@ const ExchangeRateHistoryTab = () => {
                         </Form.Group>
                     </Col>
 
-                    {/* Button: Convert */}
+                    {/* Button: submit */}
                     <Col md={2} xs={12} className="mb-2">
                         <Button
                             variant="primary"
                             onClick={handleSubmit}
                             disabled={isSubmitting}
                         >
-                            Convert
+                            Submit
                         </Button>
                     </Col>
                 </Row>
             </FormCustom>
 
             {/* Result */}
-            {!isSubmitting
-                && exchangeRateHistory?.data && exchangeRateHistory?.data?.success === true
-                && availableCurrencies?.success === true && availableCurrencies?.symbols &&
+            {
+                !isSubmitting && currencyFluctuations?.data && currencyFluctuations?.data?.success === true &&
                 <ResultContainer>
-                    <MetaInfo updateDateMS={Number(exchangeRateHistory.update_timestamp)} />
-                    <ExchangeRateHistoryResult
-                        result={exchangeRateHistory.data}
+                    <MetaInfo updateDateMS={Number(currencyFluctuations.update_timestamp)} />
+                    <FluctuationsResult
+                        result={currencyFluctuations.data}
                         availableCurrencies={availableCurrencies}
                     />
                 </ResultContainer>
@@ -161,9 +160,9 @@ const ExchangeRateHistoryTab = () => {
 
             {/* Loader */}
             {isSubmitting && <DelayedSpinner />}
-        </TabTemplate>
+        </TabTemplate >
 
     );
 }
 
-export default ExchangeRateHistoryTab;
+export default CurrencyFluctuationsTab;

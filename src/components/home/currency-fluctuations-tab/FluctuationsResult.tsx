@@ -3,9 +3,9 @@ import { Table, } from "react-bootstrap";
 import {
     IApiCurrencyFluctuations, IApiCurrencyFluctuationsRates,
     IApiAllAvailableCurrencies
-} from "../../api/exchange-rates-service.types";
+} from "../../../api/exchange-rates-service.types";
 import { ArrowUp, ArrowDown } from "react-bootstrap-icons";
-import TooltipCustom from "../common/tooltip-custom/TooltipCustom";
+import TooltipCustom from "../../common/tooltip-custom/TooltipCustom";
 
 interface IConversionResult {
     result: IApiCurrencyFluctuations;
