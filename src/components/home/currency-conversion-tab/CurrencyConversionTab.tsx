@@ -4,7 +4,6 @@ import {
     selectAvailableCurrencies,
     selectConvertedCurrency
 } from "../../../stores/currencies-slice/currenciesSlice";
-import { Button, Col, Row } from "react-bootstrap";
 import { useFormik } from "formik";
 import { shallowEqual } from "react-redux";
 import { IConvertedCurrencyParams } from "../../../api/exchange-rates-service.types";
@@ -12,13 +11,12 @@ import { useSearchParams } from "react-router-dom";
 import { getSearchParams } from "../../../utils/getSearchParams";
 import { convertedCurrencyThunk } from "../../../stores/currencies-slice/convertedCurrencyThunk";
 import TabTemplate from "../../common/tab-template/TabTemplate";
-import Form from "react-bootstrap/Form";
 import FormCustom from "../../common/form-custom/FormCustom";
-import SelectSkeleton from "../../common/select-skeleton/SelectSkeleton";
 import DelayedSpinner from "../../common/delayed-spinner/DelayedSpinner";
 import ConversionResult from "./ConversionResult";
 import MetaInfo from "../../common/meta-info/MetaInfo";
 import ResultContainer from "../../common/result-container/ResultContainer";
+import ConversionParams from "./ConversionParams";
 import * as Yup from "yup";
 
 /**
@@ -28,12 +26,12 @@ import * as Yup from "yup";
 const CurrencyConversionTab = (): ReactElement => {
 
     const [searchParams, setSearchParams] = useSearchParams();
-    const availableCurrencies = useAppSelector(selectAvailableCurrencies, shallowEqual);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const availableCurrencies = useAppSelector(selectAvailableCurrencies, shallowEqual);
     const convertedCurrency = useAppSelector(selectConvertedCurrency, shallowEqual);
     const dispatch = useAppDispatch();
 
-    const { values, touched, errors, ...formik } = useFormik({
+    const formik = useFormik({
         validateOnChange: true,
         validateOnBlur: true,
         enableReinitialize: true,
@@ -75,88 +73,12 @@ const CurrencyConversionTab = (): ReactElement => {
     return (
         <TabTemplate title={"Currency conversion"}>
             <FormCustom>
-                <Row className="mb-5 align-items-end">
-                    {/* Select: Currency from */}
-                    <Col md={4} xs={12} className="mb-2">
-                        <Form.Group controlId="currencyFrom">
-                            <Form.Label>Currency from</Form.Label>
-
-                            <SelectSkeleton isShow={!availableCurrencies?.symbols} />
-
-                            {availableCurrencies?.symbols &&
-                                <Form.Select
-                                    name="currencyFrom"
-                                    aria-label="currency from"
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    value={values.currencyFrom}
-                                    required
-                                >
-                                    {Object.keys(availableCurrencies.symbols).map(k =>
-                                        <option key={k} value={k}>{k} - {availableCurrencies.symbols[k]}</option>
-                                    )}
-                                </Form.Select>
-                            }
-                        </Form.Group>
-                    </Col>
-
-                    {/* Select: Currency to */}
-                    <Col md={4} xs={12} className="mb-2">
-                        <Form.Group controlId="currencyTo">
-                            <Form.Label>Currency to</Form.Label>
-
-                            <SelectSkeleton isShow={!availableCurrencies?.symbols} />
-
-                            {availableCurrencies?.symbols &&
-                                <Form.Select
-                                    name="currencyTo"
-                                    aria-label="currency to"
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    value={values.currencyTo}
-                                    required
-                                >
-                                    {Object.keys(availableCurrencies.symbols).map(k =>
-                                        <option key={k} value={k}>{k} - {availableCurrencies.symbols[k]}</option>
-                                    )}
-                                </Form.Select>
-                            }
-                        </Form.Group>
-                    </Col>
-
-                    {/* Input: Amount */}
-                    <Col md={2} xs={12} className="mb-2">
-                        <Form.Group controlId="currencyAmount">
-                            <Form.Label>Amount</Form.Label>
-
-                            <SelectSkeleton isShow={!availableCurrencies?.symbols} />
-
-                            {availableCurrencies?.symbols &&
-                                <Form.Control
-                                    name="currencyAmount"
-                                    type="number"
-                                    aria-label="currency amount"
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                    value={values.currencyAmount}
-                                    required
-                                    min={1}
-                                />
-                            }
-                        </Form.Group>
-                    </Col>
-
-                    {/* Button: Convert */}
-                    <Col md={2} xs={12} className="mb-2">
-                        <Button
-                            variant="primary"
-                            onClick={handleSubmit}
-                            disabled={isSubmitting}
-                        >
-                            Convert
-                        </Button>
-                    </Col>
-                </Row>
+                <ConversionParams
+                    formik={formik}
+                    handleSubmit={handleSubmit}
+                    isSubmitting={isSubmitting}
+                    availableCurrencies={availableCurrencies}
+                />
             </FormCustom>
 
             {/* Result */}

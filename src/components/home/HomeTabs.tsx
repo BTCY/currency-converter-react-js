@@ -39,7 +39,7 @@ const HomeTabs = (): ReactElement => {
     return (
         <div className={styles.tabsWrap}>
 
-            {/* Loading data */}
+            {/* Loader */}
             {availableCurrenciesIsLoading &&
                 <div className="d-flex h-100 align-items-center justify-content-center">
                     <DelayedSpinner text={"Loading the list of currencies..."} />
