@@ -1,8 +1,8 @@
 import { ReactElement } from "react";
-import { Button, Col, Form, Row } from "react-bootstrap";
+import { Button, Col, Form, } from "react-bootstrap";
 import { IApiAllAvailableCurrencies, } from "../../../api/exchange-rates-service.types";
-import SelectSkeleton from "../../common/select-skeleton/SelectSkeleton";
 import { FormikProps } from "formik";
+import SelectSkeleton from "../../common/select-skeleton/SelectSkeleton";
 
 /**
  *  Conversion params panel
@@ -27,8 +27,7 @@ const ConversionParams = ({
     availableCurrencies
 }: IConversionParams): ReactElement => (
 
-    <Row className="mb-5 align-items-end">
-
+    <>
         {/* Select: Currency from */}
         <Col md={4} xs={12} className="mb-2">
             <Form.Group controlId="currencyFrom">
@@ -110,7 +109,7 @@ const ConversionParams = ({
                 Convert
             </Button>
         </Col>
-    </Row>
+    </>
 );
 
 

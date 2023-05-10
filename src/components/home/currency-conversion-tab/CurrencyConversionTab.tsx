@@ -11,12 +11,12 @@ import { useSearchParams } from "react-router-dom";
 import { getSearchParams } from "../../../utils/getSearchParams";
 import { convertedCurrencyThunk } from "../../../stores/currencies-slice/convertedCurrencyThunk";
 import TabTemplate from "../../common/tab-template/TabTemplate";
-import FormCustom from "../../common/form-custom/FormCustom";
 import DelayedSpinner from "../../common/delayed-spinner/DelayedSpinner";
 import ConversionResult from "./ConversionResult";
 import MetaInfo from "../../common/meta-info/MetaInfo";
 import ResultContainer from "../../common/result-container/ResultContainer";
 import ConversionParams from "./ConversionParams";
+import ParamsContainer from "../../common/params-container/ParamsContainer";
 import * as Yup from "yup";
 
 /**
@@ -72,14 +72,14 @@ const CurrencyConversionTab = (): ReactElement => {
 
     return (
         <TabTemplate title={"Currency conversion"}>
-            <FormCustom>
+            <ParamsContainer>
                 <ConversionParams
                     formik={formik}
                     handleSubmit={handleSubmit}
                     isSubmitting={isSubmitting}
                     availableCurrencies={availableCurrencies}
                 />
-            </FormCustom>
+            </ParamsContainer>
 
             {/* Result */}
             {!isSubmitting && convertedCurrency?.data && convertedCurrency?.data?.success === true &&
