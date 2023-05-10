@@ -6,8 +6,12 @@ import {
     Chart as ChartJS, CategoryScale, LinearScale,
     PointElement, LineElement, Title, Tooltip, Legend,
 } from "chart.js"
-import { useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { Placeholder } from "react-bootstrap";
+
+/**
+ *  Exchange rate history result
+ */
 
 ChartJS.register(
     CategoryScale,
@@ -18,6 +22,7 @@ ChartJS.register(
     Tooltip,
     Legend
 )
+
 
 interface IConversionResult {
     result: IApiExchangeRateHistory;
@@ -39,18 +44,17 @@ export interface IExchangeRateHistoryChart {
 const ExchangeRateHistoryResult = ({
     result,
     availableCurrencies
-}: IConversionResult) => {
+}: IConversionResult): ReactElement => {
 
     const [charts, setCharts] = useState<IExchangeRateHistoryChart[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
-
 
     useEffect(() => {
         setIsLoading(true);
 
         setCharts([]);
 
-        const erhChartsConvertorWorker = new Worker(new URL("./ErhChartsConvertor.worker", import.meta.url));
+        const erhChartsConvertorWorker = new Worker(new URL("./ExchangeRateHistoryChartsConvertor.worker", import.meta.url));
         erhChartsConvertorWorker
             .postMessage({ result, availableCurrencies });
         erhChartsConvertorWorker
@@ -67,11 +71,11 @@ const ExchangeRateHistoryResult = ({
             };
     }, [result, availableCurrencies]);
 
-
     return (
         <>
             <h2>Base: {result.base} (<small>{availableCurrencies?.symbols[result.base]}</small>)</h2>
             <div>
+                {/* Skeletons */}
                 {isLoading &&
                     Array(12).fill(0).map((_, i) =>
                         <div key={i} className="w-50 d-inline-block p-4">
@@ -81,6 +85,8 @@ const ExchangeRateHistoryResult = ({
                         </div>
                     )
                 }
+
+                {/* Charts */}
                 {!isLoading && charts.length > 0 &&
                     charts.map(c =>
                         <div key={c.id} className="w-50 d-inline-block p-4">
@@ -89,10 +95,12 @@ const ExchangeRateHistoryResult = ({
                     )
                 }
 
+                {/* No data */}
                 {!isLoading && charts.length === 0 && <p>No data</p>}
             </div>
         </>
     )
 };
+
 
 export default ExchangeRateHistoryResult;

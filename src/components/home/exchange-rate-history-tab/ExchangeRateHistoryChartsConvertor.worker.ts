@@ -2,9 +2,8 @@ import { IApiAllAvailableCurrencies, IApiExchangeRateHistory } from "../../../ap
 import { IExchangeRateHistoryChart } from "./ExchangeRateHistoryResult";
 
 /*
-*   Worker
+*   Worker: converts data for charts
 */
-
 
 // eslint-disable-next-line no-restricted-globals 
 const ctx: Worker = self as any;
