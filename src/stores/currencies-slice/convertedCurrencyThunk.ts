@@ -33,10 +33,11 @@ export const convertedCurrencyThunk = createAsyncThunk(
                     await putInIndexedDB(Stores.ConvertedCurrency, convertedCurrency);
                 }
             } catch (e) {
-                console.log(e)
+                throw e;
             }
         }
-
         return convertedCurrency as IStoreDataInIndexedDB<Stores.ConvertedCurrency>;
     }
 );
+
+

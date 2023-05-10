@@ -14,9 +14,9 @@ interface IConversionParams {
         currencyTo: string;
         currencyAmount: number;
     }>;
-    handleSubmit: any
-    isSubmitting: any
-    availableCurrencies: IApiAllAvailableCurrencies | undefined
+    handleSubmit: () => void;
+    isSubmitting: boolean;
+    availableCurrencies: IApiAllAvailableCurrencies | undefined;
 }
 
 
@@ -104,7 +104,7 @@ const ConversionParams = ({
             <Button
                 variant="primary"
                 onClick={handleSubmit}
-                disabled={isSubmitting || formik.errors.currencyAmount}
+                disabled={isSubmitting || !!Object.keys(formik.errors).length}
             >
                 Convert
             </Button>
