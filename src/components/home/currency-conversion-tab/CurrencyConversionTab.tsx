@@ -17,16 +17,18 @@ import MetaInfo from "../../common/meta-info/MetaInfo";
 import ResultContainer from "../../common/result-container/ResultContainer";
 import ConversionParams from "./ConversionParams";
 import ParamsContainer from "../../common/params-container/ParamsContainer";
+import StubNoData from "../../common/stub-no-data/StubNoData";
 import * as Yup from "yup";
 
 /**
- *  Currency Conversion Tab
+ *  Currency conversion tab
  */
 
 const CurrencyConversionTab = (): ReactElement => {
 
     const [searchParams, setSearchParams] = useSearchParams();
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const [error, setError] = useState<string | undefined>(undefined);
     const availableCurrencies = useAppSelector(selectAvailableCurrencies, shallowEqual);
     const convertedCurrency = useAppSelector(selectConvertedCurrency, shallowEqual);
     const dispatch = useAppDispatch();
@@ -35,11 +37,13 @@ const CurrencyConversionTab = (): ReactElement => {
         validateOnChange: true,
         validateOnBlur: true,
         enableReinitialize: true,
+
         initialValues: {
             currencyFrom: searchParams.get("from") ?? "USD",
             currencyTo: searchParams.get("to") ?? "EUR",
             currencyAmount: searchParams.has("amount") ? Number(searchParams.get("amount")) : 1,
         },
+
         validationSchema: Yup.object({
             currencyFrom: Yup.string()
                 .required(),
@@ -49,7 +53,7 @@ const CurrencyConversionTab = (): ReactElement => {
                 .required(),
         }),
 
-        onSubmit: async ({ currencyFrom, currencyTo, currencyAmount }) => {
+        onSubmit: ({ currencyFrom, currencyTo, currencyAmount }) => {
 
             const params: IConvertedCurrencyParams = {
                 from: currencyFrom,
@@ -60,12 +64,14 @@ const CurrencyConversionTab = (): ReactElement => {
             setSearchParams(getSearchParams(params));
 
             dispatch(convertedCurrencyThunk(params))
+                .catch(e => setError(e))
                 .finally(() => setIsSubmitting(false))
 
         }
     });
 
-    const handleSubmit = () => {
+    const handleSubmit = (): void => {
+        setError(undefined);
         setIsSubmitting(true);
         formik.submitForm();
     };
@@ -84,7 +90,7 @@ const CurrencyConversionTab = (): ReactElement => {
             </ParamsContainer>
 
             {/* Result */}
-            {!isSubmitting && convertedCurrency?.data && convertedCurrency?.data?.success === true &&
+            {!isSubmitting && !error && convertedCurrency?.data?.success === true &&
                 <ResultContainer>
                     <MetaInfo updateDateMS={Number(convertedCurrency.update_timestamp)} />
                     <ConversionResult result={convertedCurrency?.data} />
@@ -94,8 +100,10 @@ const CurrencyConversionTab = (): ReactElement => {
             {/* Loader */}
             {isSubmitting && <DelayedSpinner />}
 
-        </TabTemplate>
+            {/* Data not loaded */}
+            {!isSubmitting && error && <StubNoData text={error} />}
 
+        </TabTemplate>
     );
 }
 

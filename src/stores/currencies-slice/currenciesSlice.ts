@@ -12,8 +12,10 @@ import { exchangeRateHistoryThunk } from "./exchangeRateHistoryThunk";
  *  Store slice for currency data
  */
 
-export const CACHING_RESULT_IN_MINUTES = 60;
+//export const CACHING_RESULT_IN_MINUTES = 60;
+export const CACHING_RESULT_IN_MINUTES = 43800;
 export const AVAILABLE_CURR_CACHING_IN_MINUTES = 43800;
+export const DEFAULT_ERROR_TEXT = "Error on the server side";
 
 
 export interface ICurrenciesState {
@@ -48,8 +50,10 @@ export const currenciesSlice = createSlice({
                 state.status = "idle";
                 state.availableCurrencies = action.payload;
             })
-            .addCase(availableCurrenciesThunk.rejected, (state) => {
+            .addCase(availableCurrenciesThunk.rejected, (state, action) => {
                 state.status = "failed";
+                state.availableCurrencies = undefined;
+                throw action?.error?.message || DEFAULT_ERROR_TEXT;
             })
             // Converted Currency
             .addCase(convertedCurrencyThunk.pending, (state) => {
@@ -59,8 +63,10 @@ export const currenciesSlice = createSlice({
                 state.status = "idle";
                 state.convertedCurrency = action.payload;
             })
-            .addCase(convertedCurrencyThunk.rejected, (state) => {
+            .addCase(convertedCurrencyThunk.rejected, (state, action) => {
                 state.status = "failed";
+                state.convertedCurrency = undefined;
+                throw action?.error?.message || DEFAULT_ERROR_TEXT;
             })
             // Currency Fluctuations
             .addCase(currencyFluctuationsThunk.pending, (state) => {
@@ -70,8 +76,10 @@ export const currenciesSlice = createSlice({
                 state.status = "idle";
                 state.currencyFluctuations = action.payload;
             })
-            .addCase(currencyFluctuationsThunk.rejected, (state) => {
+            .addCase(currencyFluctuationsThunk.rejected, (state, action) => {
                 state.status = "failed";
+                state.currencyFluctuations = undefined;
+                throw action?.error?.message || DEFAULT_ERROR_TEXT;
             })
             // Latest Exchange Rates
             .addCase(latestExchangeRatesThunk.pending, (state) => {
@@ -81,8 +89,10 @@ export const currenciesSlice = createSlice({
                 state.status = "idle";
                 state.latestExchangeRates = action.payload;
             })
-            .addCase(latestExchangeRatesThunk.rejected, (state) => {
+            .addCase(latestExchangeRatesThunk.rejected, (state, action) => {
                 state.status = "failed";
+                state.latestExchangeRates = undefined;
+                throw action?.error?.message || DEFAULT_ERROR_TEXT;
             })
             // Exchange Rate History
             .addCase(exchangeRateHistoryThunk.pending, (state) => {
@@ -92,8 +102,10 @@ export const currenciesSlice = createSlice({
                 state.status = "idle";
                 state.exchangeRateHistory = action.payload;
             })
-            .addCase(exchangeRateHistoryThunk.rejected, (state) => {
+            .addCase(exchangeRateHistoryThunk.rejected, (state, action) => {
                 state.status = "failed";
+                state.exchangeRateHistory = undefined;
+                throw action?.error?.message || DEFAULT_ERROR_TEXT;
             })
     },
 });
