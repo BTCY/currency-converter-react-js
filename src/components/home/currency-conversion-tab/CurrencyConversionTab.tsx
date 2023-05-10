@@ -54,7 +54,6 @@ const CurrencyConversionTab = (): ReactElement => {
         }),
 
         onSubmit: ({ currencyFrom, currencyTo, currencyAmount }) => {
-
             const params: IConvertedCurrencyParams = {
                 from: currencyFrom,
                 to: currencyTo,
@@ -66,7 +65,6 @@ const CurrencyConversionTab = (): ReactElement => {
             dispatch(convertedCurrencyThunk(params))
                 .catch(e => setError(e))
                 .finally(() => setIsSubmitting(false))
-
         }
     });
 
