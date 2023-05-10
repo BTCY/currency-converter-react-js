@@ -6,10 +6,10 @@ import SelectSkeleton from "../../common/select-skeleton/SelectSkeleton";
 import DatePickerCustom from "../../common/date-picker-custom/DatePickerCustom";
 
 /**
- *  Fluctuations params panel
+ *  Exchange rate history params panel
  */
 
-interface IFluctuationsParams {
+interface IExchangeRateHistoryParams {
     formik: FormikProps<{
         startDate: string | null | undefined | any;
         endDate: string | null | undefined | any;
@@ -21,48 +21,42 @@ interface IFluctuationsParams {
 }
 
 
-const FluctuationsParams = ({
+const ExchangeRateHistoryParams = ({
     formik,
     handleSubmit,
     isSubmitting,
     availableCurrencies
-}: IFluctuationsParams): ReactElement => (
+}: IExchangeRateHistoryParams): ReactElement => (
 
     <>
         {/* DatePicker: start date */}
         <Col md={3} xs={12} className="mb-2">
-            <Form.Group controlId="endDate">
-                <Form.Label>Start date</Form.Label>
-                <DatePickerCustom
-                    dateFormat="dd.MM.yyyy"
-                    placeholderText="Start date"
-                    name="startDate"
-                    aria-label="start date"
-                    selected={formik?.values?.startDate ? new Date(formik.values.startDate) : null}
-                    onChange={val => {
-                        formik.setFieldValue("startDate", val);
-                    }}
-                    required
-                />
-            </Form.Group>
+            <DatePickerCustom
+                dateFormat="dd.MM.yyyy"
+                placeholderText="Start date"
+                name="startDate"
+                aria-label="start date"
+                selected={formik?.values?.startDate ? new Date(formik.values.startDate) : null}
+                onChange={val => {
+                    formik.setFieldValue("startDate", val);
+                }}
+                required
+            />
         </Col>
 
         {/* DatePicker: end date */}
         <Col md={3} xs={12} className="mb-2">
-            <Form.Group controlId="endDate">
-                <Form.Label>End date</Form.Label>
-                <DatePickerCustom
-                    dateFormat="dd.MM.yyyy"
-                    placeholderText="End date"
-                    name="endDate"
-                    aria-label="end date"
-                    selected={formik?.values?.endDate ? new Date(formik.values.endDate) : null}
-                    onChange={val => {
-                        formik.setFieldValue("endDate", val);
-                    }}
-                    required
-                />
-            </Form.Group>
+            <DatePickerCustom
+                dateFormat="dd.MM.yyyy"
+                placeholderText="End date"
+                name="endDate"
+                aria-label="end date"
+                selected={formik?.values?.endDate ? new Date(formik.values.endDate) : null}
+                onChange={val => {
+                    formik.setFieldValue("endDate", val);
+                }}
+                required
+            />
         </Col>
 
         {/* Select: currency from */}
@@ -89,18 +83,18 @@ const FluctuationsParams = ({
             </Form.Group>
         </Col>
 
-        {/* Button: submit */}
+        {/* Button: Convert */}
         <Col md={2} xs={12} className="mb-2">
             <Button
                 variant="primary"
                 onClick={handleSubmit}
                 disabled={isSubmitting || !!Object.keys(formik.errors).length}
             >
-                Submit
+                Convert
             </Button>
         </Col>
     </>
 );
 
 
-export default FluctuationsParams;
+export default ExchangeRateHistoryParams;

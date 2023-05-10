@@ -28,7 +28,7 @@ const ConversionParams = ({
 }: IConversionParams): ReactElement => (
 
     <>
-        {/* Select: Currency from */}
+        {/* Select: currency from */}
         <Col md={4} xs={12} className="mb-2">
             <Form.Group controlId="currencyFrom">
                 <Form.Label>Currency from</Form.Label>
@@ -52,7 +52,7 @@ const ConversionParams = ({
             </Form.Group>
         </Col>
 
-        {/* Select: Currency to */}
+        {/* Select: currency to */}
         <Col md={4} xs={12} className="mb-2">
             <Form.Group controlId="currencyTo">
                 <Form.Label>Currency to</Form.Label>
@@ -76,7 +76,7 @@ const ConversionParams = ({
             </Form.Group>
         </Col>
 
-        {/* Input: Amount */}
+        {/* Input: amount */}
         <Col md={2} xs={12} className="mb-2">
             <Form.Group controlId="currencyAmount">
                 <Form.Label>Amount</Form.Label>
@@ -99,7 +99,7 @@ const ConversionParams = ({
             </Form.Group>
         </Col>
 
-        {/* Button: Convert */}
+        {/* Button: convert */}
         <Col md={2} xs={12} className="mb-2">
             <Button
                 variant="primary"
