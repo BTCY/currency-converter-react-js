@@ -23,13 +23,14 @@ import MetaInfo from "../../common/meta-info/MetaInfo";
 import * as Yup from "yup";
 import "react-datepicker/dist/react-datepicker.css";
 import { exchangeRateHistoryThunk } from "../../../stores/currencies-slice/exchangeRateHistoryThunk";
+import moment from "moment";
 
 /**
  *   ExchangeRateHistoryTab
  */
 
-const startDateInitValue = new Date("2018-02-20");
-const endDateInitValue = new Date("2018-02-25");
+const startDateInitValue = format(moment().subtract(7, "days").toDate(), "YYYY-MM-DD");
+const endDateInitValue = format(moment().toDate(), "YYYY-MM-DD");
 
 const ExchangeRateHistoryTab = () => {
 
@@ -44,8 +45,12 @@ const ExchangeRateHistoryTab = () => {
         validateOnBlur: true,
         enableReinitialize: true,
         initialValues: {
-            startDate: searchParams.get("start_date") ?? startDateInitValue,
-            endDate: searchParams.get("end_date") ?? endDateInitValue,
+            startDate: searchParams.has("start_date") && new Date(searchParams.get("start_date") as string)?.getTime()
+                ? searchParams.get("start_date")
+                : startDateInitValue,
+            endDate: searchParams.has("end_date") && new Date(searchParams.get("end_date") as string)?.getTime()
+                ? searchParams.get("end_date")
+                : endDateInitValue,
             base: searchParams.get("base") ?? "USD",
             symbols: undefined,
         },
@@ -62,7 +67,6 @@ const ExchangeRateHistoryTab = () => {
                 start_date: format(startDate, "YYYY-MM-DD") ?? "",
                 end_date: format(endDate, "YYYY-MM-DD") ?? "",
                 base: base,
-                // symbols: symbols,
             }
 
             setSearchParams(getSearchParams(params));

@@ -1,9 +1,9 @@
 const errorMessages = {
-    serverErrors: {
-        common: {
-            default: "Error on the server. Try again.",
-            unknown: "Error on the server. Try again.",
-        },
+    code: {
+        default: "unknown",
+    },
+    message: {
+        default: "Error on the server. Try again.",
     },
 } as any;
 

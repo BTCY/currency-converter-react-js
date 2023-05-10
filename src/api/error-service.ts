@@ -1,16 +1,16 @@
 import errorMessages from "./error-service.messages";
 
 /**
- * Custom Error handling class from the server
+ *  Custom Error handling class from the server
  */
 
 export class ServerError extends Error {
     constructor(
+        public code: string,
+        public message: string,
         public originalError: any,
-        public reason: string,
-        public displayMessage: string
     ) {
-        super(displayMessage);
+        super(originalError);
     }
 
     processServerError = (setServerError: (error: ServerError) => any) => {
@@ -18,11 +18,9 @@ export class ServerError extends Error {
     }
 }
 
-export const getServerError = (originalError: any, errorGroupKey: string = "common"): ServerError => {
-    const reason = originalError?.response?.data?.reason || "unknown";
-    const commonMessages = errorMessages.serverErrors.common;
-    const errorGroup: any = errorMessages.serverErrors[errorGroupKey] || commonMessages;
-    const displayMessage = errorGroup[reason] || commonMessages[reason] || commonMessages.unknown;
+export const getServerError = (originalError: any): ServerError => {
+    const code = originalError?.response?.data?.error?.code || errorMessages.message.code;
+    const message = originalError?.response?.data?.error?.message || errorMessages.message.default;
 
-    return new ServerError(originalError, reason, displayMessage);
+    return new ServerError(code, message, originalError);
 };

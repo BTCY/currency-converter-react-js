@@ -1,4 +1,4 @@
-import { ReactNode, memo } from "react";
+import { ReactElement, ReactNode, memo } from "react";
 import { Table, } from "react-bootstrap";
 import {
     IApiCurrencyFluctuations, IApiCurrencyFluctuationsRates,
@@ -6,6 +6,10 @@ import {
 } from "../../../api/exchange-rates-service.types";
 import { ArrowUp, ArrowDown } from "react-bootstrap-icons";
 import TooltipCustom from "../../common/tooltip-custom/TooltipCustom";
+
+/**
+ *  Fluctuations result
+ */
 
 interface IConversionResult {
     result: IApiCurrencyFluctuations;
@@ -18,6 +22,7 @@ interface IRow {
     rate: IApiCurrencyFluctuationsRates;
 }
 
+
 const getRateChangeIcon = (change: number): ReactNode => {
     if (change < 0) {
         return <ArrowDown className="text-danger" />
@@ -29,6 +34,7 @@ const getRateChangeIcon = (change: number): ReactNode => {
         return "—"
     }
 }
+
 
 const getRateChangeColor = (change: number): string => {
     if (change < 0) {
@@ -43,7 +49,7 @@ const getRateChangeColor = (change: number): string => {
 }
 
 
-const Title = () =>
+const Title = (): ReactElement =>
     <tr>
         <th style={{ width: "1%" }} className="text-center">Chart</th>
         <th style={{ width: "10%" }} >Currency</th>
@@ -53,7 +59,7 @@ const Title = () =>
     </tr>
 
 
-const Row = memo(({ currCode, curr, rate }: IRow) =>
+const Row = memo(({ currCode, curr, rate }: IRow): ReactElement =>
     <tr >
         <td className="text-center">{getRateChangeIcon(rate.change)}</td>
         <td>
@@ -76,27 +82,26 @@ const Row = memo(({ currCode, curr, rate }: IRow) =>
 const FluctuationsResult = ({
     result,
     availableCurrencies
-}: IConversionResult) => {
-    return (
-        <>
-            <h2>Base: {result.base} (<small>{availableCurrencies?.symbols[result.base]}</small>)</h2>
-            <Table striped bordered hover>
-                <thead>
-                    <Title />
-                </thead>
-                <tbody>
-                    {Object.keys(result.rates).map(currCode =>
-                        <Row
-                            key={currCode}
-                            currCode={currCode}
-                            curr={availableCurrencies?.symbols[currCode]}
-                            rate={result.rates[currCode]}
-                        />
-                    )}
-                </tbody>
-            </Table>
-        </>
-    )
-};
+}: IConversionResult): ReactElement => (
+    <>
+        <h2>Base: {result.base} (<small>{availableCurrencies?.symbols[result.base]}</small>)</h2>
+        <Table striped bordered hover>
+            <thead>
+                <Title />
+            </thead>
+            <tbody>
+                {Object.keys(result.rates).map(currCode =>
+                    <Row
+                        key={currCode}
+                        currCode={currCode}
+                        curr={availableCurrencies?.symbols[currCode]}
+                        rate={result.rates[currCode]}
+                    />
+                )}
+            </tbody>
+        </Table>
+    </>
+);
+
 
 export default FluctuationsResult;

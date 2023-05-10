@@ -10,12 +10,12 @@ import moment from "moment";
  * 
  * {@link https://momentjs.com/docs/#/displaying/ Allowed formats}  
  * 
- * @param   {number | string | Date | undefined}    date    Date and time
+ * @param   {number | string | Date | undefined | null}    date    Date and time
  * @param   {string}    format      Template
  * @returns {string | undefined}    Formatting result
  */
 export const format = (
-    date: number | string | Date | undefined,
+    date: number | string | Date | undefined | null,
     format: string
 ): string | undefined => {
 
