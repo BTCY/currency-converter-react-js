@@ -42,11 +42,11 @@ const CurrencyConversionTab = (): ReactElement => {
         },
         validationSchema: Yup.object({
             currencyFrom: Yup.string()
-                .required("1"),
+                .required(),
             currencyTo: Yup.string()
-                .required("1"),
+                .required(),
             currencyAmount: Yup.number()
-                .required("1"),
+                .required(),
         }),
 
         onSubmit: async ({ currencyFrom, currencyTo, currencyAmount }) => {
@@ -72,6 +72,8 @@ const CurrencyConversionTab = (): ReactElement => {
 
     return (
         <TabTemplate title={"Currency conversion"}>
+
+            {/* Conversion params */}
             <ParamsContainer>
                 <ConversionParams
                     formik={formik}
@@ -91,6 +93,7 @@ const CurrencyConversionTab = (): ReactElement => {
 
             {/* Loader */}
             {isSubmitting && <DelayedSpinner />}
+
         </TabTemplate>
 
     );

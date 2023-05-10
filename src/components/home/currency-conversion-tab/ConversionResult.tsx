@@ -16,6 +16,8 @@ const ConversionResult = ({
 }: IConversionResult): ReactElement => (
 
     <Row>
+
+        {/* From */}
         <Col md="auto">
             <div className="display-4 fw-normal">
                 {result.query.amount}
@@ -25,6 +27,7 @@ const ConversionResult = ({
 
         <Col className="display-4 fw-normal" md="auto">x</Col>
 
+        {/* Rate */}
         <Col md="auto">
             <div className="display-4 fw-normal">
                 {result.info.rate}
@@ -34,12 +37,14 @@ const ConversionResult = ({
 
         <Col className="display-4 fw-normal" md="auto">=</Col>
 
+        {/* Result */}
         <Col md="auto">
             <div className="display-4 fw-normal">
                 {result.result}
             </div>
             {result.query.to}
         </Col>
+
     </Row>
 );
 
