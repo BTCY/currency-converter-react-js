@@ -33,7 +33,7 @@ export const latestExchangeRatesThunk = createAsyncThunk(
                     await putInIndexedDB(Stores.LatestExchangeRates, latestExchangeRates);
                 }
             } catch (e) {
-                console.log(e)
+                throw e;
             }
         }
 
