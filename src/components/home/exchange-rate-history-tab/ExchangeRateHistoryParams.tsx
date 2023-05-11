@@ -31,38 +31,44 @@ const ExchangeRateHistoryParams = ({
     <>
         {/* DatePicker: start date */}
         <Col md={3} xs={12} className="mb-2">
-            <DatePickerCustom
-                dateFormat="dd.MM.yyyy"
-                placeholderText="Start date"
-                name="startDate"
-                aria-label="start date"
-                selected={formik?.values?.startDate ? new Date(formik.values.startDate) : null}
-                onChange={val => {
-                    formik.setFieldValue("startDate", val);
-                }}
-                required
-            />
+            <Form.Group controlId="startDate">
+                <Form.Label>Start date</Form.Label>
+                <DatePickerCustom
+                    dateFormat="dd.MM.yyyy"
+                    placeholderText="Start date"
+                    name="startDate"
+                    aria-label="start date"
+                    selected={formik?.values?.startDate ? new Date(formik.values.startDate) : null}
+                    onChange={val => {
+                        formik.setFieldValue("startDate", val);
+                    }}
+                    required
+                />
+            </Form.Group>
         </Col>
 
         {/* DatePicker: end date */}
         <Col md={3} xs={12} className="mb-2">
-            <DatePickerCustom
-                dateFormat="dd.MM.yyyy"
-                placeholderText="End date"
-                name="endDate"
-                aria-label="end date"
-                selected={formik?.values?.endDate ? new Date(formik.values.endDate) : null}
-                onChange={val => {
-                    formik.setFieldValue("endDate", val);
-                }}
-                required
-            />
+            <Form.Group controlId="endDate">
+                <Form.Label>End date</Form.Label>
+                <DatePickerCustom
+                    dateFormat="dd.MM.yyyy"
+                    placeholderText="End date"
+                    name="endDate"
+                    aria-label="end date"
+                    selected={formik?.values?.endDate ? new Date(formik.values.endDate) : null}
+                    onChange={val => {
+                        formik.setFieldValue("endDate", val);
+                    }}
+                    required
+                />
+            </Form.Group>
         </Col>
 
-        {/* Select: currency from */}
+        {/* Select: base */}
         <Col md={4} xs={12} className="mb-2">
             <Form.Group controlId="base">
-                <Form.Label>Currency from</Form.Label>
+                <Form.Label>Base</Form.Label>
 
                 <SelectSkeleton isShow={!availableCurrencies?.symbols} />
 
@@ -86,6 +92,7 @@ const ExchangeRateHistoryParams = ({
         {/* Button: submit */}
         <Col md={2} xs={12} className="mb-2">
             <Button
+                className="w-100 mt-3"
                 variant="primary"
                 onClick={handleSubmit}
                 disabled={isSubmitting || !!Object.keys(formik.errors).length}

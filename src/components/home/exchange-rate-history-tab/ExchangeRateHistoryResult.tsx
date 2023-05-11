@@ -7,7 +7,7 @@ import {
     PointElement, LineElement, Title, Tooltip, Legend,
 } from "chart.js"
 import { ReactElement, memo, useEffect, useState } from "react";
-import { Placeholder } from "react-bootstrap";
+import { Col, Placeholder, Row } from "react-bootstrap";
 
 /**
  *  Exchange rate history result
@@ -47,18 +47,18 @@ interface IChart {
 
 
 const Skeleton = memo((): ReactElement =>
-    <div className="w-50 d-inline-block p-4">
+    <Col md={6} xs={12} className="mb-2 p-4">
         <Placeholder xs={12} as="div" animation="glow">
             <Placeholder xs={12} style={{ height: "244px", background: "#cecece" }} className="rounded" />
         </Placeholder>
-    </div>
+    </Col>,
 );
 
 
 const Chart = memo(({ chart }: IChart): ReactElement =>
-    <div className="w-50 d-inline-block p-4">
+    <Col md={6} xs={12} className="mb-2 p-4">
         <Line data={chart} />
-    </div>,
+    </Col>,
     (prevProps, nextProps) => {
         return JSON.stringify(prevProps.chart) === JSON.stringify(nextProps.chart);
     }
@@ -98,7 +98,7 @@ const ExchangeRateHistoryResult = ({
     return (
         <>
             <h2>Base: {result.base} (<small>{availableCurrencies?.symbols[result.base]}</small>)</h2>
-            <div>
+            <Row>
                 {/* Skeletons */}
                 {isLoading &&
                     Array(12).fill(0).map((_, i) => <Skeleton key={i} />)
@@ -111,7 +111,7 @@ const ExchangeRateHistoryResult = ({
 
                 {/* No data */}
                 {!isLoading && charts.length === 0 && <p>No data</p>}
-            </div>
+            </Row>
         </>
     )
 };
