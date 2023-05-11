@@ -120,6 +120,34 @@ export const getFromIndexedDB = <T extends Stores>(
             };
         }
     );
-};
+}; 
 
+
+/**
+ * Delete DB in IndexedDB.
+ *  
+ * @return  {Promise<unknown>}
+ */
+export const deleteIndexedDB = (): Promise<unknown> => {
+    return new Promise(
+        (resolve, reject) => {
+            if (!indexedDBSupport())
+                reject(new Error("ERROR_browser_not_supported"));
+
+            // open DB
+            const openDB = indexedDB.open(iDB_NAME, iDB_VERSION);
+            openDB.onerror = () => reject(new Error("ERROR_deleteIndexedDB()_connect_db")); 
+
+            openDB.onsuccess = (event: any) => {
+                // delete DB
+                const deleteResult = indexedDB.deleteDatabase(iDB_NAME);
+
+                deleteResult.onerror = () => reject(new Error("ERROR_deleteIndexedDB()_delete"));
+                deleteResult.onsuccess = (e: any) => {
+                    resolve(e.target.result);
+                };
+            };
+        }
+    );
+};
 
