@@ -53,6 +53,7 @@ const LatestExchangeRatesParams = ({
         {/* Button: submit */}
         <Col md={2} xs={12} className="mb-2">
             <Button
+                className="w-100 mt-3"
                 variant="primary"
                 onClick={handleSubmit}
                 disabled={isSubmitting || !!Object.keys(formik.errors).length}
