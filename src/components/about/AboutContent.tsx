@@ -1,99 +1,54 @@
-import { ReactElement, useState } from "react";
-import { Alert, Button } from "react-bootstrap";
-import { deleteIndexedDB } from "../../api/indexedDB-service";
+import { ReactElement } from "react";
+import AboutContentList, { IAboutContentListItem } from "./AboutContentList";
+import AboutContentDeleteCache from "./AboutContentDeleteCache";
 
 /**
  *  About content
  */
 
-enum Result { Ok = 'OK', Error = 'ERROR' };
+const CASHE_INFO: IAboutContentListItem[] = [
+    { boldText: "List of currencies", text: " - 30 days." },
+    { boldText: "Results of operations with currencies", text: " - 1 hour." },
+
+]
+
+const TABS_INFO: IAboutContentListItem[] = [
+    { boldText: "Converter", text: " - currency conversion, which can be used to convert any amount from one currency to another." },
+    { boldText: "Fluctuations", text: " - fluctuation currencies. Hou will be able to retrieve information about how currencies fluctuate on a day-to-day basis.  Please note that the maximum allowed timeframe is 365 days." },
+    { boldText: "Latest Exchange Rates", text: " - real-time exchange rate." },
+    { boldText: "Exchange Rate History", text: " - historical rates are available for most currencies all the way back to the year of 1999." },
+]
 
 
-const AboutContent = (): ReactElement => {
+const AboutContent = (): ReactElement => (
+    <>
+        <div className="mb-4 text-uppercase">
+            <h3>About</h3>
+        </div>
 
-    const [isDeletion, setIsDeletion] = useState<boolean>(false);
-    const [deletionResult, setDeletionResult] = useState<Result | undefined>(undefined);
+        <AboutContentList
+            title="The data is cached in IndexedDB"
+            list={CASHE_INFO}
+        />
 
-    const handleDataCache = (): void => {
-        setIsDeletion(true);
-        setDeletionResult(undefined);
-        deleteIndexedDB()
-            .then(() => setDeletionResult(Result.Ok))
-            .catch(e => {
-                setDeletionResult(Result.Error);
-                console.log(e);
-            })
-            .finally(() => setIsDeletion(false));
-    }
+        <AboutContentDeleteCache />
 
-    return (
-        <>
-            <div className="mb-3 text-uppercase">
-                <h3>About</h3>
-            </div>
+        <p>
+            Web applications for working with currencies. Data provided by API: <a
+                target="_blank"
+                href="https://apilayer.com/marketplace/exchangerates_data-api"
+                rel="noreferrer"
+            >
+                Exchange Rates Data API
+            </a>
+        </p>
 
-            <p>The data is cached in IndexedDB</p>
-
-            <ul>
-                <li className="mb-2">
-                    <span className="fw-bold">List of currencies</span> - 30 days.
-                </li>
-                <li className="mb-2">
-                    <span className="fw-bold">Results of operations with currencies</span> - 1 hour.
-                </li>
-            </ul>
-
-            <div className="d-flex mb-5 align-items-center">
-                <Button
-                    disabled={isDeletion}
-                    onClick={() => handleDataCache()}
-                    className="me-3"
-                >
-                    Delete all cached data
-                </Button>
-
-                {deletionResult &&
-                    <Alert
-                        variant={deletionResult === Result.Ok ? "success" : "danger"} className="d-flex pt-1 pb-1 m-0"
-                    >
-                        {deletionResult === Result.Ok
-                            ? "Data deleted successfully"
-                            : "An error occurred while deleting data"
-                        }
-                    </Alert>
-                }
-            </div>
-
-            <p>
-                Web applications for working with currencies. Data provided by API: <a
-                    target="_blank"
-                    href="https://apilayer.com/marketplace/exchangerates_data-api"
-                    rel="noreferrer"
-                >
-                    Exchange Rates Data API
-                </a>
-            </p>
-
-            <p>
-                Description of tabs:
-            </p>
-            <ul>
-                <li className="mb-2">
-                    <span className="fw-bold">Converter</span> - currency conversion, which can be used to convert any amount from one currency to another.
-                </li>
-                <li className="mb-2">
-                    <span className="fw-bold">Fluctuations</span> - fluctuation currencies. Hou will be able to retrieve information about how currencies fluctuate on a day-to-day basis.  Please note that the maximum allowed timeframe is 365 days.
-                </li>
-                <li className="mb-2">
-                    <span className="fw-bold">Latest Exchange Rates</span> - real-time exchange rate.
-                </li>
-                <li className="mb-2">
-                    <span className="fw-bold">Exchange Rate History</span> - historical rates are available for most currencies all the way back to the year of 1999.
-                </li>
-            </ul>
-        </>
-    );
-}
+        <AboutContentList
+            title="Description of tabs:"
+            list={TABS_INFO}
+        />
+    </>
+);
 
 
 export default AboutContent;
