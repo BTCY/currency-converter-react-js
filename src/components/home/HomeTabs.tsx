@@ -12,14 +12,23 @@ import LatestExchangeRatesTab from "./latest-exchange-rates-tab/LatestExchangeRa
 import ExchangeRateHistoryTab from "./exchange-rate-history-tab/ExchangeRateHistoryTab";
 import DelayedSpinner from "../common/delayed-spinner/DelayedSpinner";
 import StubNoData from "../common/stub-no-data/StubNoData";
+import { RoutesData } from "../../routes/routes";
 
 /**
  *  Home content
  */
 
+
+enum TABS_ID {
+    Converter = "converter",
+    Fluctuations = "fluctuations",
+    LatestExchangeRates = "latest-exchange-rates",
+    ExchangeRateHistory = "exchange-rate-history",
+}
+
 const HomeTabs = (): ReactElement => {
 
-    const { tabId = "converter" } = useParams();
+    const { tabId = TABS_ID.Converter } = useParams();
     const navigate = useNavigate();
     const availableCurrencies = useAppSelector(selectAvailableCurrencies, shallowEqual);
     const dispatch = useAppDispatch();
@@ -27,7 +36,7 @@ const HomeTabs = (): ReactElement => {
 
     const handleSelectTab = (tabId: string | null): void => {
         if (typeof tabId === "string") navigate("/" + tabId)
-        else navigate("/converter");
+        else navigate("/" + TABS_ID.Converter);
     }
 
     useEffect(() => {
@@ -35,6 +44,12 @@ const HomeTabs = (): ReactElement => {
         dispatch(availableCurrenciesThunk())
             .finally(() => setAvailableCurrenciesIsLoading(false));
     }, [dispatch]);
+
+    useEffect(() => {
+        if (!(Object.values(TABS_ID).includes(tabId as TABS_ID))) {
+            navigate(RoutesData.notFoundPage.path)
+        }
+    }, [navigate, tabId]);
 
     return (
         <div className={styles.tabsWrap}>
@@ -57,9 +72,10 @@ const HomeTabs = (): ReactElement => {
                     onSelect={handleSelectTab}
                     justify
                     className={styles.tabContentWrap}
+                    defaultActiveKey={TABS_ID.Converter}
                 >
                     <Tab
-                        eventKey="converter"
+                        eventKey={TABS_ID.Converter}
                         title="Converter"
                         className={styles.tabContent}
                     >
@@ -67,21 +83,21 @@ const HomeTabs = (): ReactElement => {
                     </Tab>
 
                     <Tab
-                        eventKey="fluctuations"
+                        eventKey={TABS_ID.Fluctuations}
                         title="Fluctuations"
                     >
                         <CurrencyFluctuationsTab />
                     </Tab>
 
                     <Tab
-                        eventKey="latest-exchange-rates"
+                        eventKey={TABS_ID.LatestExchangeRates}
                         title="Latest Exchange Rates"
                     >
                         <LatestExchangeRatesTab />
                     </Tab>
 
                     <Tab
-                        eventKey="exchange-rate-history"
+                        eventKey={TABS_ID.ExchangeRateHistory}
                         title="Exchange Rate History"
                     >
                         <ExchangeRateHistoryTab />

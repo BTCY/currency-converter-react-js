@@ -5,7 +5,7 @@ import { ReactElement } from "react";
  */
 
 const NotFoundContent = (): ReactElement => (
-    <div className="d-flex w-100 align-items-center justify-content-center">
+    <div className="d-flex h-100 w-100 align-items-center justify-content-center">
         <div className="text-center">
             <h1 className="display-1 fw-bold">404</h1>
             <p className="fs-3">Page not found.</p>

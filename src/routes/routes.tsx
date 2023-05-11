@@ -23,7 +23,11 @@ export const RoutesData: IRouteData = {
         element: <AboutPage />,
         path: "/about",
     },
-    notFound: {
+    notFoundPage: {
+        element: <NotFoundPage />,
+        path: "/not-found-page",
+    },
+    default: {
         element: <NotFoundPage />,
         path: "*",
     },
