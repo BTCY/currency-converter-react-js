@@ -83,14 +83,14 @@ const ExchangeRateHistoryParams = ({
             </Form.Group>
         </Col>
 
-        {/* Button: Convert */}
+        {/* Button: submit */}
         <Col md={2} xs={12} className="mb-2">
             <Button
                 variant="primary"
                 onClick={handleSubmit}
                 disabled={isSubmitting || !!Object.keys(formik.errors).length}
             >
-                Convert
+                submit
             </Button>
         </Col>
     </>

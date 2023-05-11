@@ -110,7 +110,7 @@ const CurrencyFluctuationsTab = (): ReactElement => {
             }
 
             {/* Loader */}
-            {isSubmitting && <DelayedSpinner />}
+            {isSubmitting && <DelayedSpinner text={"Getting currency fluctuations..."} />}
 
             {/* Data not loaded */}
             {!isSubmitting && error && <StubNoData text={error} />}

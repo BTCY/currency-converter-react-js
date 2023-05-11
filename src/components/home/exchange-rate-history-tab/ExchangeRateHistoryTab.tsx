@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ReactElement, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../stores/hooks";
 import {
     selectAvailableCurrencies,
@@ -30,7 +30,7 @@ import "react-datepicker/dist/react-datepicker.css";
 const startDateInitValue = format(moment().subtract(7, "days").toDate(), "YYYY-MM-DD");
 const endDateInitValue = format(moment().toDate(), "YYYY-MM-DD");
 
-const ExchangeRateHistoryTab = () => {
+const ExchangeRateHistoryTab = (): ReactElement => {
 
     const [searchParams, setSearchParams] = useSearchParams();
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -111,7 +111,7 @@ const ExchangeRateHistoryTab = () => {
             }
 
             {/* Loader */}
-            {isSubmitting && <DelayedSpinner />}
+            {isSubmitting && <DelayedSpinner text={"Getting the history of rates..."} />}
 
             {/* Data not loaded */}
             {!isSubmitting && error && <StubNoData text={error} />}

@@ -74,14 +74,14 @@ const HomeTabs = (): ReactElement => {
                     </Tab>
 
                     <Tab
-                        eventKey="latestExchangeRates"
+                        eventKey="latest-exchange-rates"
                         title="Latest Exchange Rates"
                     >
                         <LatestExchangeRatesTab />
                     </Tab>
 
                     <Tab
-                        eventKey="exchangeRateHistory"
+                        eventKey="exchange-rate-history"
                         title="Exchange Rate History"
                     >
                         <ExchangeRateHistoryTab />

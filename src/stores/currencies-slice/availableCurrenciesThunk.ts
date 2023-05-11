@@ -30,7 +30,7 @@ export const availableCurrenciesThunk = createAsyncThunk(
                     await putInIndexedDB(Stores.AvailableCurrencies, allAvailableCurrencies);
                 }
             } catch (e) {
-                console.log(e)
+                throw e;
             }
         }
 
