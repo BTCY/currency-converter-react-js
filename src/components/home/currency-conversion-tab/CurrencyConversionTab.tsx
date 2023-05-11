@@ -96,7 +96,7 @@ const CurrencyConversionTab = (): ReactElement => {
             }
 
             {/* Loader */}
-            {isSubmitting && <DelayedSpinner />}
+            {isSubmitting && <DelayedSpinner text={"Currency conversion in progress..."} />}
 
             {/* Data not loaded */}
             {!isSubmitting && error && <StubNoData text={error} />}
