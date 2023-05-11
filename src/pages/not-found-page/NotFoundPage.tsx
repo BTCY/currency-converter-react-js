@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import NfpContent from "../../components/not-found-page/NfpContent";
+import NotFoundContent from "../../components/not-found/NotFoundContent";
 import BasePageTemplate from "../../page-templates/BasePageTemplate";
 
 /**
@@ -9,7 +9,7 @@ import BasePageTemplate from "../../page-templates/BasePageTemplate";
 const NotFoundPage = (): ReactElement => (
 
     <BasePageTemplate>
-        <NfpContent />
+        <NotFoundContent />
     </BasePageTemplate>
 );
 
