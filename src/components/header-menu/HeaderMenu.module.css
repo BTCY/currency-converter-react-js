@@ -1,10 +1,31 @@
- .headerMenu {
-     line-height: 1.4;
+ .linkWrap {
+
+     transition: all 0.3s ease-out;
+
+     [class*="active"] {
+         background-color: white;
+     }
+
+     [class*="active"]:hover {
+         background-color: white;
+     }
  }
 
  .link {
      color: white;
+     padding: 0px;
+     margin: 5px;
+     height: 26px;
+     border-radius: 5px;
+     text-transform: uppercase;
+     padding: 0px 4px;
  }
+
+ .link:hover {
+     color: white;
+     background-color: #195fc7;
+ }
+
 
  .toggleButton {
      color: white;

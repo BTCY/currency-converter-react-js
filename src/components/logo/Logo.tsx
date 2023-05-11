@@ -1,5 +1,4 @@
 import { ReactElement } from "react";
-import { Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import styles from "./Logo.module.css";
 
@@ -8,9 +7,9 @@ import styles from "./Logo.module.css";
  */
 
 const Logo = (): ReactElement => (
-    <Navbar.Brand to="/" className={styles.logo} as={Link}>
+    <Link to="/" className={styles.logo}>
         <span className={styles.bold}>Curr ::</span> dashboard
-    </Navbar.Brand>
+    </Link>
 );
 
 
