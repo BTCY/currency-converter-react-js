@@ -90,7 +90,7 @@ const ExchangeRateHistoryParams = ({
                 onClick={handleSubmit}
                 disabled={isSubmitting || !!Object.keys(formik.errors).length}
             >
-                submit
+                Submit
             </Button>
         </Col>
     </>

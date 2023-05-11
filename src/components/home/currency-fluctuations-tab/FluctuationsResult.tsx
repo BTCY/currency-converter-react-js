@@ -49,18 +49,20 @@ const getRateChangeColor = (change: number): string => {
 }
 
 
-const Title = (): ReactElement =>
-    <tr>
-        <th style={{ width: "1%" }} className="text-center">Chart</th>
-        <th style={{ width: "10%" }} >Currency</th>
-        <th>Start rate</th>
-        <th>End rate</th>
-        <th>Change</th>
-    </tr>
+const TableHeader = (): ReactElement =>
+    <thead>
+        <tr>
+            <th style={{ width: "1%" }} className="text-center">Chart</th>
+            <th style={{ width: "10%" }} >Currency</th>
+            <th>Start rate</th>
+            <th>End rate</th>
+            <th>Change</th>
+        </tr>
+    </thead>
 
 
 const Row = memo(({ currCode, curr, rate }: IRow): ReactElement =>
-    <tr >
+    <tr>
         <td className="text-center">{getRateChangeIcon(rate.change)}</td>
         <td>
             <TooltipCustom id={currCode} tooltipText={curr}>
@@ -85,10 +87,11 @@ const FluctuationsResult = ({
 }: IConversionResult): ReactElement => (
     <>
         <h2>Base: {result.base} (<small>{availableCurrencies?.symbols[result.base]}</small>)</h2>
+        
         <Table striped bordered hover>
-            <thead>
-                <Title />
-            </thead>
+
+            <TableHeader />
+
             <tbody>
                 {Object.keys(result.rates).map(currCode =>
                     <Row
@@ -99,6 +102,7 @@ const FluctuationsResult = ({
                     />
                 )}
             </tbody>
+
         </Table>
     </>
 );

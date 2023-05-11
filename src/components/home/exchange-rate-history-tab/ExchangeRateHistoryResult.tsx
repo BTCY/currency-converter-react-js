@@ -6,7 +6,7 @@ import {
     Chart as ChartJS, CategoryScale, LinearScale,
     PointElement, LineElement, Title, Tooltip, Legend,
 } from "chart.js"
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, memo, useEffect, useState } from "react";
 import { Placeholder } from "react-bootstrap";
 
 /**
@@ -39,6 +39,30 @@ export interface IExchangeRateHistoryChart {
         data: number[];
     }[];
 }
+
+
+interface IChart {
+    chart: IExchangeRateHistoryChart;
+}
+
+
+const Skeleton = memo((): ReactElement =>
+    <div className="w-50 d-inline-block p-4">
+        <Placeholder xs={12} as="div" animation="glow">
+            <Placeholder xs={12} style={{ height: "244px", background: "#cecece" }} className="rounded" />
+        </Placeholder>
+    </div>
+);
+
+
+const Chart = memo(({ chart }: IChart): ReactElement =>
+    <div className="w-50 d-inline-block p-4">
+        <Line data={chart} />
+    </div>,
+    (prevProps, nextProps) => {
+        return JSON.stringify(prevProps.chart) === JSON.stringify(nextProps.chart);
+    }
+);
 
 
 const ExchangeRateHistoryResult = ({
@@ -77,22 +101,12 @@ const ExchangeRateHistoryResult = ({
             <div>
                 {/* Skeletons */}
                 {isLoading &&
-                    Array(12).fill(0).map((_, i) =>
-                        <div key={i} className="w-50 d-inline-block p-4">
-                            <Placeholder xs={12} as="div" animation="glow">
-                                <Placeholder xs={12} style={{ height: "244px", background: "#cecece" }} className="rounded" />
-                            </Placeholder>
-                        </div>
-                    )
+                    Array(12).fill(0).map((_, i) => <Skeleton key={i} />)
                 }
 
                 {/* Charts */}
                 {!isLoading && charts.length > 0 &&
-                    charts.map(c =>
-                        <div key={c.id} className="w-50 d-inline-block p-4">
-                            <Line data={c} />
-                        </div>
-                    )
+                    charts.map(c => <Chart key={c.id} chart={c} />)
                 }
 
                 {/* No data */}

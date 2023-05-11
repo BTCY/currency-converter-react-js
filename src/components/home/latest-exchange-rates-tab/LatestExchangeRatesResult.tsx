@@ -1,6 +1,6 @@
 import { Table } from "react-bootstrap";
 import { IApiLatestExchangeRates, IApiAllAvailableCurrencies } from "../../../api/exchange-rates-service.types";
-import { ReactElement } from "react";
+import { ReactElement, memo } from "react";
 
 /**
  *  Latest exchange rates result
@@ -11,6 +11,34 @@ interface ILatestExchangeRatesResult {
     availableCurrencies: IApiAllAvailableCurrencies | undefined;
 }
 
+interface IRow {
+    currCode: string;
+    curr?: string;
+    rate: number;
+}
+
+
+const TableHeader = (): ReactElement =>
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Rate</th>
+            <th>Currency</th>
+        </tr>
+    </thead>
+
+
+const Row = memo(({ currCode, curr, rate }: IRow): ReactElement =>
+    <tr key={currCode}>
+        <td>{currCode}</td>
+        <td>{rate}</td>
+        <td>{curr}</td>
+    </tr>,
+    (prevProps, nextProps) => {
+        return prevProps.rate === nextProps.rate;
+    }
+);
+
 
 const LatestExchangeRatesResult = ({
     result,
@@ -19,21 +47,19 @@ const LatestExchangeRatesResult = ({
 
     <>
         <h2>Base: {result.base}</h2>
+
         <Table striped bordered hover>
-            <thead>
-                <tr>
-                    <th>Code</th>
-                    <th>Rate</th>
-                    <th>Currency</th>
-                </tr>
-            </thead>
+
+            <TableHeader />
+
             <tbody>
-                {Object.keys(result.rates).map(c =>
-                    <tr key={c}>
-                        <td>{c}</td>
-                        <td>{result.rates[c]}</td>
-                        <td>{availableCurrencies?.symbols[c]}</td>
-                    </tr>
+                {Object.keys(result.rates).map(currCode =>
+                    <Row
+                        key={currCode}
+                        currCode={currCode}
+                        curr={availableCurrencies?.symbols[currCode]}
+                        rate={result.rates[currCode]}
+                    />
                 )}
             </tbody>
         </Table>
