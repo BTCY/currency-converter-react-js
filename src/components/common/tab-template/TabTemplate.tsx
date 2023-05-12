@@ -15,7 +15,7 @@ interface ITabTemplate {
     /** Tab content */
     children?: ReactNode;
 
-    /** Hendle reset button */
+    /** Handle for reset button */
     handleResetButton?: () => void;
 
     /** Disabled reset button */

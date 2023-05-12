@@ -39,6 +39,7 @@ export const convertedCurrencyThunk = createAsyncThunk(
                 throw e;
             }
         }
+        
         return convertedCurrency as IStoreDataInIndexedDB<Stores.ConvertedCurrency>;
     }
 );

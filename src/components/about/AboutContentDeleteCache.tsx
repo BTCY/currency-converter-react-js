@@ -38,7 +38,8 @@ const AboutContentDeleteCache = (): ReactElement => {
 
             {deletionResult &&
                 <Alert
-                    variant={deletionResult === Result.Ok ? "success" : "danger"} className="d-flex pt-1 pb-1 m-0"
+                    variant={deletionResult === Result.Ok ? "success" : "danger"} 
+                    className="d-flex pt-1 pb-1 m-0"
                 >
                     {deletionResult === Result.Ok
                         ? "Data deleted successfully"
