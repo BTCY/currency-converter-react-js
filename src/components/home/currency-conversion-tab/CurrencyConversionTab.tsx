@@ -75,7 +75,11 @@ const CurrencyConversionTab = (): ReactElement => {
     };
 
     return (
-        <TabTemplate title={"Currency conversion"}>
+        <TabTemplate
+            title={"Currency conversion"}
+            isDisabledResetButton={Array.from(searchParams).length === 0}
+            handleResetButton={() => setSearchParams()}
+        >
 
             {/* Conversion params */}
             <ParamsContainer>
@@ -83,7 +87,7 @@ const CurrencyConversionTab = (): ReactElement => {
                     formik={formik}
                     handleSubmit={handleSubmit}
                     isSubmitting={isSubmitting}
-                    availableCurrencies={availableCurrencies}
+                    availableCurrencies={availableCurrencies?.data}
                 />
             </ParamsContainer>
 

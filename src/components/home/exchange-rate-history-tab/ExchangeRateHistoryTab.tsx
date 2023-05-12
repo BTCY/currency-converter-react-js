@@ -85,7 +85,10 @@ const ExchangeRateHistoryTab = (): ReactElement => {
     };
 
     return (
-        <TabTemplate title={"Exchange Rate History"}>
+        <TabTemplate title={"Exchange Rate History"}
+            isDisabledResetButton={Array.from(searchParams).length === 0}
+            handleResetButton={() => setSearchParams()}
+        >
 
             {/* Exchange rate history params */}
             <ParamsContainer>
@@ -93,19 +96,19 @@ const ExchangeRateHistoryTab = (): ReactElement => {
                     formik={formik}
                     handleSubmit={handleSubmit}
                     isSubmitting={isSubmitting}
-                    availableCurrencies={availableCurrencies}
+                    availableCurrencies={availableCurrencies?.data}
                 />
             </ParamsContainer>
 
             {/* Result */}
             {!isSubmitting
                 && !error && exchangeRateHistory?.data?.success === true
-                && availableCurrencies?.symbols &&
+                && availableCurrencies?.data?.symbols &&
                 <ResultContainer>
                     <MetaInfo updateDateMS={Number(exchangeRateHistory.update_timestamp)} />
                     <ExchangeRateHistoryResult
                         result={exchangeRateHistory.data}
-                        availableCurrencies={availableCurrencies}
+                        availableCurrencies={availableCurrencies.data}
                     />
                 </ResultContainer>
             }
