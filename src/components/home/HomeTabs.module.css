@@ -5,13 +5,14 @@
      flex: 1;
      justify-content: flex-start;
      align-items: stretch;
+ }
 
-     [class*="tab-content"] {
-         display: flex;
-         flex: 1;
-     }
+ div[class~="tab-content"] {
+     display: flex;
+     flex: 1;
+     width: 100%;
+ }
 
-     [role="tabpanel"] {
-         width: 100%;
-     }
+ div[role="tabpanel"] {
+     width: 100%;
  }

@@ -1,14 +1,13 @@
  .linkWrap {
-
      transition: all 0.3s ease-out;
+ }
 
-     [class*="active"] {
-         background-color: white;
-     }
+ a[class*="active"] {
+     background-color: white;
+ }
 
-     [class*="active"]:hover {
-         background-color: white;
-     }
+ a[class*="active"]:hover {
+     background-color: white;
  }
 
  .link {
