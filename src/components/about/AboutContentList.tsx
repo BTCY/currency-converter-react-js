@@ -15,7 +15,10 @@ export interface IAboutContentListItem {
 }
 
 
-const ListItem = memo(({ boldText, text }: IAboutContentListItem): ReactElement =>
+const ListItem = memo(({
+    boldText,
+    text
+}: IAboutContentListItem): ReactElement =>
     <li className="mb-2">
         {boldText && <span className="fw-bold">{boldText}</span>} {text && text}
     </li>,
