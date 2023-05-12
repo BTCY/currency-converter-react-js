@@ -34,7 +34,7 @@ export type StoreData<T> =
     T extends Stores.LatestExchangeRates ? IApiLatestExchangeRates :
     T extends Stores.AvailableCurrencies ? IApiAllAvailableCurrencies :
     T extends Stores.ExchangeRateHistory ? IApiExchangeRateHistory :
-    any;
+    unknown;
 
 
 /** 

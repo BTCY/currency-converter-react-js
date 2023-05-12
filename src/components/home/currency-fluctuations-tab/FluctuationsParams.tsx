@@ -11,8 +11,8 @@ import DatePickerCustom from "../../common/date-picker-custom/DatePickerCustom";
 
 interface IFluctuationsParams {
     formik: FormikProps<{
-        startDate: string | null | undefined | any;
-        endDate: string | null | undefined | any;
+        startDate: string | null | undefined;
+        endDate: string | null | undefined;
         base: string;
     }>;
     handleSubmit: () => void;
