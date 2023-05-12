@@ -86,7 +86,10 @@ const CurrencyFluctuationsTab = (): ReactElement => {
     };
 
     return (
-        <TabTemplate title={"Currency fluctuations"}>
+        <TabTemplate title={"Currency fluctuations"}
+            isDisabledResetButton={Array.from(searchParams).length === 0}
+            handleResetButton={() => setSearchParams()}
+        >
 
             {/* Fluctuations params */}
             <ParamsContainer>
@@ -94,7 +97,7 @@ const CurrencyFluctuationsTab = (): ReactElement => {
                     formik={formik}
                     handleSubmit={handleSubmit}
                     isSubmitting={isSubmitting}
-                    availableCurrencies={availableCurrencies}
+                    availableCurrencies={availableCurrencies?.data}
                 />
             </ParamsContainer>
 
@@ -104,7 +107,7 @@ const CurrencyFluctuationsTab = (): ReactElement => {
                     <MetaInfo updateDateMS={Number(currencyFluctuations.update_timestamp)} />
                     <FluctuationsResult
                         result={currencyFluctuations.data}
-                        availableCurrencies={availableCurrencies}
+                        availableCurrencies={availableCurrencies?.data}
                     />
                 </ResultContainer>
             }

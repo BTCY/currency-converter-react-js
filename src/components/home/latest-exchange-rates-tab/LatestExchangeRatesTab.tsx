@@ -68,7 +68,10 @@ const LatestExchangeRatesTab = (): ReactElement => {
     };
 
     return (
-        <TabTemplate title={"Latest Exchange Rates"}>
+        <TabTemplate title={"Latest Exchange Rates"}
+            isDisabledResetButton={Array.from(searchParams).length === 0}
+            handleResetButton={() => setSearchParams()}
+        >
 
             {/* Latest exchange rates params */}
             <ParamsContainer>
@@ -76,7 +79,7 @@ const LatestExchangeRatesTab = (): ReactElement => {
                     formik={formik}
                     handleSubmit={handleSubmit}
                     isSubmitting={isSubmitting}
-                    availableCurrencies={availableCurrencies}
+                    availableCurrencies={availableCurrencies?.data}
                 />
             </ParamsContainer>
 
@@ -89,7 +92,7 @@ const LatestExchangeRatesTab = (): ReactElement => {
 
                     <LatestExchangeRatesResult
                         result={latestExchangeRates.data}
-                        availableCurrencies={availableCurrencies}
+                        availableCurrencies={availableCurrencies?.data}
                     />
                 </ResultContainer>
             }
