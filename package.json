@@ -2,6 +2,7 @@
     "name": "currency-converter",
     "version": "1.0.0",
     "private": true,
+    "homepage": "https://btcy.github.io/currency-converter-react-js/",
     "dependencies": {
         "@reduxjs/toolkit": "^1.9.1",
         "@testing-library/jest-dom": "^5.16.5",
@@ -31,7 +32,9 @@
         "web-vitals": "^2.1.4",
         "yup": "^1.0.2"
     },
-    "scripts": {
+    "scripts": { 
+        "predeploy": "npm run build",
+        "deploy": "gh-pages -d build",
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
@@ -56,6 +59,7 @@
         ]
     },
     "devDependencies": {
-        "@types/react-datepicker": "^4.10.0"
+        "@types/react-datepicker": "^4.10.0",
+        "gh-pages": "^5.0.0"
     }
 }
