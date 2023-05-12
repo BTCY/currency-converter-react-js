@@ -1,8 +1,8 @@
 {
+    "homepage": "https://btcy.github.io/currency-converter-react-js/",
     "name": "currency-converter",
     "version": "1.0.0",
     "private": true,
-    "homepage": "https://btcy.github.io/currency-converter-react-js/",
     "dependencies": {
         "@reduxjs/toolkit": "^1.9.1",
         "@testing-library/jest-dom": "^5.16.5",
