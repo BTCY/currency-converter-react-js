@@ -9,6 +9,18 @@ import { KEY_PATH } from "./indexedDB-service";
  */
 
 
+/** 
+ * IndexedDb: available errors.
+ * 
+ * @enum IndexedDbError   
+ */
+export const enum IndexedDbError {
+
+    /** Store with converted currency */
+    Common = "common",
+};
+
+
 /**
  * Type: dynamic returned from currency API
  * 
@@ -67,4 +79,7 @@ export interface IStoreDataInIndexedDB<T extends Stores> {
 
     /** Data */
     data?: StoreData<T>
+
+    /** Indicates that the data is cached in IndexedDB */
+    isCachedInIndexedDB?:boolean
 };

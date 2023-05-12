@@ -1,4 +1,4 @@
-import { IStoreDataInIndexedDB, Stores } from "./indexedDB-service.types";
+import { IStoreDataInIndexedDB, IndexedDbError, Stores } from "./indexedDB-service.types";
 
 /**
  * @file API: Indexed DB.
@@ -9,7 +9,7 @@ import { IStoreDataInIndexedDB, Stores } from "./indexedDB-service.types";
 export const iDB_NAME = "CurrDashboardDB";
 
 /** DB version */
-export const iDB_VERSION = 3;
+export const iDB_VERSION = 4;
 
 /** Primary key */
 export const KEY_PATH = "key";
@@ -63,11 +63,11 @@ export const putInIndexedDB = <T extends Stores>(
     return new Promise(
         (resolve, reject) => {
             if (!indexedDBSupport())
-                reject(new Error("ERROR_browser_not_supported"));
+                reject(new Error(IndexedDbError.Common));
 
             // open DB
             const openDB = indexedDB.open(iDB_NAME, iDB_VERSION);
-            openDB.onerror = () => reject(new Error("ERROR_putInIndexedDB()_connect_db"));
+            openDB.onerror = () => reject(new Error(IndexedDbError.Common));
             openDB.onupgradeneeded = () => createStructure(openDB);
 
             openDB.onsuccess = async (event: any) => {
@@ -77,7 +77,7 @@ export const putInIndexedDB = <T extends Stores>(
 
                 // put result
                 const putResult = store.put(objectValues);
-                putResult.onerror = () => reject(new Error("ERROR_putInIndexedDB()_put"));
+                putResult.onerror = () => reject(new Error(IndexedDbError.Common));
                 putResult.onsuccess = (e: any) => resolve(e.target.result);
             };
         }
@@ -99,11 +99,11 @@ export const getFromIndexedDB = <T extends Stores>(
     return new Promise(
         (resolve, reject) => {
             if (!indexedDBSupport())
-                reject(new Error("ERROR_browser_not_supported"));
+                reject(new Error(IndexedDbError.Common));
 
             // open DB
             const openDB = indexedDB.open(iDB_NAME, iDB_VERSION);
-            openDB.onerror = () => reject(new Error("ERROR_getFromIndexedDB()_connect_db"));
+            openDB.onerror = () => reject(new Error(IndexedDbError.Common));
             openDB.onupgradeneeded = () => createStructure(openDB);
 
             openDB.onsuccess = (event: any) => {
@@ -113,14 +113,14 @@ export const getFromIndexedDB = <T extends Stores>(
 
                 // get result
                 const getResult = store.get(keyPath);
-                getResult.onerror = () => reject(new Error("ERROR_getFromIndexedDB()_get"));
+                getResult.onerror = () => reject(new Error(IndexedDbError.Common));
                 getResult.onsuccess = (e: any) => {
                     resolve(e.target.result);
                 };
             };
         }
     );
-}; 
+};
 
 
 /**
@@ -132,17 +132,17 @@ export const deleteIndexedDB = (): Promise<unknown> => {
     return new Promise(
         (resolve, reject) => {
             if (!indexedDBSupport())
-                reject(new Error("ERROR_browser_not_supported"));
+                reject(new Error(IndexedDbError.Common));
 
             // open DB
             const openDB = indexedDB.open(iDB_NAME, iDB_VERSION);
-            openDB.onerror = () => reject(new Error("ERROR_deleteIndexedDB()_connect_db")); 
+            openDB.onerror = () => reject(new Error(IndexedDbError.Common));
 
             openDB.onsuccess = (event: any) => {
                 // delete DB
                 const deleteResult = indexedDB.deleteDatabase(iDB_NAME);
 
-                deleteResult.onerror = () => reject(new Error("ERROR_deleteIndexedDB()_delete"));
+                deleteResult.onerror = () => reject(new Error(IndexedDbError.Common));
                 deleteResult.onsuccess = (e: any) => {
                     resolve(e.target.result);
                 };

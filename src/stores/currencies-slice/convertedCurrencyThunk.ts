@@ -15,8 +15,11 @@ export const convertedCurrencyThunk = createAsyncThunk(
     async (
         params: IConvertedCurrencyParams
     ): Promise<IStoreDataInIndexedDB<Stores.ConvertedCurrency>> => {
+
         const key = params.from + "_" + params.to + "_" + params.amount;
-        let convertedCurrency = await getFromIndexedDB(Stores.ConvertedCurrency, key);
+
+        let convertedCurrency = await getFromIndexedDB(Stores.ConvertedCurrency, key).catch(e => { return e });
+
         const diffInMinutes = diff(new Date(), convertedCurrency?.update_timestamp);
 
         if (diffInMinutes === undefined || diffInMinutes > CACHING_RESULT_IN_MINUTES) {
@@ -30,7 +33,7 @@ export const convertedCurrencyThunk = createAsyncThunk(
                         data: result
                     };
 
-                    await putInIndexedDB(Stores.ConvertedCurrency, convertedCurrency);
+                    await putInIndexedDB(Stores.ConvertedCurrency, convertedCurrency).catch(e => { return e });
                 }
             } catch (e) {
                 throw e;

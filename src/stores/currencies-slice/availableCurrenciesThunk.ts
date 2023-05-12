@@ -1,9 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { KEY_PATH, getFromIndexedDB, putInIndexedDB } from "../../api/indexedDB-service";
-import { IApiAllAvailableCurrencies } from "../../api/exchange-rates-service.types";
 import { AVAILABLE_CURR_CACHING_IN_MINUTES } from "./currenciesSlice";
 import { getAllAvailableCurrencies } from "../../api/exchange-rates-service";
-import { Stores } from "../../api/indexedDB-service.types";
+import { IStoreDataInIndexedDB, Stores } from "../../api/indexedDB-service.types";
 import { diff } from "../../utils/dateTimeHelper";
 
 /**
@@ -12,8 +11,16 @@ import { diff } from "../../utils/dateTimeHelper";
 
 export const availableCurrenciesThunk = createAsyncThunk(
     "currencies/availableCurrencies",
-    async (): Promise<IApiAllAvailableCurrencies | undefined> => {
-        let allAvailableCurrencies = await getFromIndexedDB(Stores.AvailableCurrencies, "all");
+    async (): Promise<IStoreDataInIndexedDB<Stores.AvailableCurrencies>> => {
+
+        let isCachedInIndexedDB: boolean = true;
+
+        let allAvailableCurrencies = await getFromIndexedDB(Stores.AvailableCurrencies, "all")
+            .catch(e => {
+                isCachedInIndexedDB = false;
+                return e;
+            });
+
         const diffInMinutes = diff(new Date(), allAvailableCurrencies?.update_timestamp);
 
         if (diffInMinutes === undefined || diffInMinutes > AVAILABLE_CURR_CACHING_IN_MINUTES) {
@@ -24,16 +31,17 @@ export const availableCurrenciesThunk = createAsyncThunk(
                         [KEY_PATH]: "all",
                         store: Stores.AvailableCurrencies,
                         update_timestamp: Number(new Date()),
-                        data: result
+                        data: result,
+                        isCachedInIndexedDB: isCachedInIndexedDB
                     };
 
-                    await putInIndexedDB(Stores.AvailableCurrencies, allAvailableCurrencies);
+                    await putInIndexedDB(Stores.AvailableCurrencies, allAvailableCurrencies).catch(e => { return e });
                 }
             } catch (e) {
                 throw e;
             }
         }
 
-        return allAvailableCurrencies?.data as IApiAllAvailableCurrencies | undefined
+        return allAvailableCurrencies as IStoreDataInIndexedDB<Stores.AvailableCurrencies>
     }
 );

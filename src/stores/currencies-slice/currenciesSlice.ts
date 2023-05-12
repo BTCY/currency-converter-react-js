@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { IStoreDataInIndexedDB, Stores } from "../../api/indexedDB-service.types";
-import { IApiAllAvailableCurrencies } from "../../api/exchange-rates-service.types";
+import { IStoreDataInIndexedDB, IndexedDbError, Stores } from "../../api/indexedDB-service.types";
 import { availableCurrenciesThunk } from "./availableCurrenciesThunk";
 import { convertedCurrencyThunk } from "./convertedCurrencyThunk";
 import { currencyFluctuationsThunk } from "./currencyFluctuationsThunk";
@@ -12,14 +11,12 @@ import { exchangeRateHistoryThunk } from "./exchangeRateHistoryThunk";
  *  Store slice for currency data
  */
 
-//export const CACHING_RESULT_IN_MINUTES = 60;
-export const CACHING_RESULT_IN_MINUTES = 43800;
+export const CACHING_RESULT_IN_MINUTES = 60;
 export const AVAILABLE_CURR_CACHING_IN_MINUTES = 43800;
-export const DEFAULT_ERROR_TEXT = "Error on the server side";
 
 
 export interface ICurrenciesState {
-    availableCurrencies: IApiAllAvailableCurrencies | undefined;
+    availableCurrencies: IStoreDataInIndexedDB<Stores.AvailableCurrencies> | undefined;
     convertedCurrency: IStoreDataInIndexedDB<Stores.ConvertedCurrency> | undefined;
     currencyFluctuations: IStoreDataInIndexedDB<Stores.CurrencyFluctuations> | undefined;
     latestExchangeRates: IStoreDataInIndexedDB<Stores.LatestExchangeRates> | undefined;
@@ -52,8 +49,9 @@ export const currenciesSlice = createSlice({
             })
             .addCase(availableCurrenciesThunk.rejected, (state, action) => {
                 state.status = "failed";
-                state.availableCurrencies = undefined;
-                throw action?.error?.message || DEFAULT_ERROR_TEXT;
+                if (action?.error?.message !== IndexedDbError.Common) {
+                    throw action?.error?.message;
+                }
             })
             // Converted Currency
             .addCase(convertedCurrencyThunk.pending, (state) => {
@@ -65,8 +63,9 @@ export const currenciesSlice = createSlice({
             })
             .addCase(convertedCurrencyThunk.rejected, (state, action) => {
                 state.status = "failed";
-                state.convertedCurrency = undefined;
-                throw action?.error?.message || DEFAULT_ERROR_TEXT;
+                if (action?.error?.message !== IndexedDbError.Common) {
+                    throw action?.error?.message;
+                }
             })
             // Currency Fluctuations
             .addCase(currencyFluctuationsThunk.pending, (state) => {
@@ -78,8 +77,9 @@ export const currenciesSlice = createSlice({
             })
             .addCase(currencyFluctuationsThunk.rejected, (state, action) => {
                 state.status = "failed";
-                state.currencyFluctuations = undefined;
-                throw action?.error?.message || DEFAULT_ERROR_TEXT;
+                if (action?.error?.message !== IndexedDbError.Common) {
+                    throw action?.error?.message;
+                }
             })
             // Latest Exchange Rates
             .addCase(latestExchangeRatesThunk.pending, (state) => {
@@ -91,8 +91,9 @@ export const currenciesSlice = createSlice({
             })
             .addCase(latestExchangeRatesThunk.rejected, (state, action) => {
                 state.status = "failed";
-                state.latestExchangeRates = undefined;
-                throw action?.error?.message || DEFAULT_ERROR_TEXT;
+                if (action?.error?.message !== IndexedDbError.Common) {
+                    throw action?.error?.message;
+                }
             })
             // Exchange Rate History
             .addCase(exchangeRateHistoryThunk.pending, (state) => {
@@ -104,11 +105,13 @@ export const currenciesSlice = createSlice({
             })
             .addCase(exchangeRateHistoryThunk.rejected, (state, action) => {
                 state.status = "failed";
-                state.exchangeRateHistory = undefined;
-                throw action?.error?.message || DEFAULT_ERROR_TEXT;
+                if (action?.error?.message !== IndexedDbError.Common) {
+                    throw action?.error?.message;
+                }
             })
     },
 });
+
 
 export const selectAvailableCurrencies = (state: RootState) => state.currencies.availableCurrencies;
 export const selectConvertedCurrency = (state: RootState) => state.currencies.convertedCurrency;
