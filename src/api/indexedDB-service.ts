@@ -54,7 +54,7 @@ const createStructure = (request: IDBOpenDBRequest): void => {
  * 
  * @param   {Stores}                  storeName      store name where to put data  
  * @param   {IStoreDataInIndexedDB}   objectValues   data
- * @return  {Promise<any>}
+ * @return  {Promise<unknown>}
  */
 export const putInIndexedDB = <T extends Stores>(
     storeName: Stores,
