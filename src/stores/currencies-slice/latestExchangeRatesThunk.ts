@@ -15,8 +15,11 @@ export const latestExchangeRatesThunk = createAsyncThunk(
     async (
         params: ILatestExchangeRatesParams
     ): Promise<IStoreDataInIndexedDB<Stores.LatestExchangeRates> | undefined> => {
+
         const key = (params?.base || "base") + "_" + (params?.symbols || "symbols");
-        let latestExchangeRates = await getFromIndexedDB(Stores.LatestExchangeRates, key);
+
+        let latestExchangeRates = await getFromIndexedDB(Stores.LatestExchangeRates, key).catch(e => { return e });
+
         const diffInMinutes = diff(new Date(), latestExchangeRates?.update_timestamp);
 
         if (diffInMinutes === undefined || diffInMinutes > CACHING_RESULT_IN_MINUTES) {
@@ -30,7 +33,7 @@ export const latestExchangeRatesThunk = createAsyncThunk(
                         data: result
                     };
 
-                    await putInIndexedDB(Stores.LatestExchangeRates, latestExchangeRates);
+                    await putInIndexedDB(Stores.LatestExchangeRates, latestExchangeRates).catch(e => { return e });
                 }
             } catch (e) {
                 throw e;

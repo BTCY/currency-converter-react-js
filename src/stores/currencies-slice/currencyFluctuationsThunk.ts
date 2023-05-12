@@ -15,8 +15,11 @@ export const currencyFluctuationsThunk = createAsyncThunk(
     async (
         params: ICurrencyFluctuationsParams
     ): Promise<IStoreDataInIndexedDB<Stores.CurrencyFluctuations> | undefined> => {
+
         const key = params.start_date + "_" + params.end_date + "_" + (params?.base || "") + "_" + (params?.symbols || "");
-        let currencyFluctuations = await getFromIndexedDB(Stores.CurrencyFluctuations, key);
+
+        let currencyFluctuations = await getFromIndexedDB(Stores.CurrencyFluctuations, key).catch(e => { return e });
+
         const diffInMinutes = diff(new Date(), currencyFluctuations?.update_timestamp);
 
         if (diffInMinutes === undefined || diffInMinutes > CACHING_RESULT_IN_MINUTES) {
@@ -30,7 +33,7 @@ export const currencyFluctuationsThunk = createAsyncThunk(
                         data: result
                     };
 
-                    await putInIndexedDB(Stores.CurrencyFluctuations, currencyFluctuations);
+                    await putInIndexedDB(Stores.CurrencyFluctuations, currencyFluctuations).catch(e => { return e });
                 }
             } catch (e) {
                 throw e;
