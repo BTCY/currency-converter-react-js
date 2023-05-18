@@ -5,7 +5,7 @@
     "description": "Currency converter",
     "private": true,
     "author": "https://github.com/BTCY",
-    "license": "ISC",
+    "license": "MIT",
     "dependencies": {
         "@reduxjs/toolkit": "^1.9.1",
         "@testing-library/jest-dom": "^5.16.5",
