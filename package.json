@@ -2,7 +2,10 @@
     "homepage": "https://btcy.github.io/currency-converter-react-js/",
     "name": "currency-converter",
     "version": "1.0.0",
+    "description": "Currency converter",
     "private": true,
+    "author": "https://github.com/BTCY",
+    "license": "ISC",
     "dependencies": {
         "@reduxjs/toolkit": "^1.9.1",
         "@testing-library/jest-dom": "^5.16.5",
@@ -32,7 +35,7 @@
         "web-vitals": "^2.1.4",
         "yup": "^1.0.2"
     },
-    "scripts": { 
+    "scripts": {
         "predeploy": "npm run build",
         "deploy": "gh-pages -d build",
         "start": "react-scripts start",
