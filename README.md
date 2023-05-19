@@ -40,7 +40,7 @@ For the project to work, the following dependencies must be installed on your sy
    ```
 
 ## Usage <a name = "usage"></a>
-Add, delete, edit and drag tasks. Does not require a database connection. The data is stored locally in the browser of the device.
+Choose currencies, currency pairs, dates and perform various manipulations with them.
 
 
 
