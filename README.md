@@ -1,34 +1,44 @@
-# Getting Started with Create React App
+# Currency converter
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) TS template.
+## Table of Contents
++ [About](#about)
++ [Getting Started](#getting_started)
++ [Usage](#usage) 
 
-## Available Scripts
+## About <a name = "about"></a>
+To-do list with inline editing, drag and drop, and save data locally in the browser.
 
-In the project directory, you can run:
+### Main Features
++ React + TypeScript
++ Basic configuration: Create React App
++ UI: Bootstrap  
++ State Manager: Redux toolkit
++ Results are cached in indexedDB
++ Formik + yup for submitting and validating forms
++ Displaying currency charts using chart.js
++ Working with dates with moment.js
++ Page routing with react-router v6
 
-### `npm start`
+## Getting Started <a name = "getting_started"></a>
+These instructions will help you run a copy of the project on your local machine for development and testing purposes.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Prerequisites
+For the project to work, the following dependencies must be installed on your system:
++ Node.JS and NPM — <a href="https://docs.npmjs.com/downloading-and-installing-node-js-and-npm" target="_blank">Documentation</a>
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Installing project
+0. Copy this repository to your local machine
+1. Run the command in the project folder
+   ```
+   npm install
+   ```
+2. Start the project
+   ```
+   npm start 
+   ```
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
+## Usage <a name = "usage"></a>
+Add, delete, edit and drag tasks. Does not require a database connection. The data is stored locally in the browser of the device.
 
 
 
