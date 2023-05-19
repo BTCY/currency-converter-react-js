@@ -6,7 +6,7 @@
 + [Usage](#usage) 
 
 ## About <a name = "about"></a>
-To-do list with inline editing, drag and drop, and save data locally in the browser.
+Produces various manipulations with currencies. Caches the result for 1 hour to the local machine. Works with external API.
 
 ### Main Features
 + React + TypeScript
@@ -18,6 +18,8 @@ To-do list with inline editing, drag and drop, and save data locally in the brow
 + Displaying currency charts using chart.js
 + Working with dates with moment.js
 + Page routing with react-router v6
++ Saving search parameters in the URL as a search query
++ Used API from <a href="https://apilayer.com/marketplace/exchangerates_data-api" target="_blank">Exchangerates Data Api</a>
 
 ## Getting Started <a name = "getting_started"></a>
 These instructions will help you run a copy of the project on your local machine for development and testing purposes.
